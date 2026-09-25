@@ -23,13 +23,21 @@
 <?
 */
     if($debug >= DEBUG_SHOW_QUERY) {
-        echo '<table border="1">';
         $queries = $gdb->get_queries();
-        echo "<tr><td>Total queries: " . count( $queries ) . "</td></tr>\n";
-        foreach ( $gdb->get_queries() as $query ) {
-            echo "<tr><td>" . $query[0] . "</td></tr>\n";
-        }
-        echo "</table>\n";
+        ?>
+        <div class="mx-auto max-w-4xl px-4 py-6">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Debug: Total queries: <?=count($queries)?></p>
+          <table class="mt-2 w-full border-collapse overflow-hidden rounded-lg border border-slate-200 text-left text-xs">
+            <tbody>
+              <?php foreach ($queries as $query) { ?>
+              <tr class="border-b border-slate-100 last:border-0 odd:bg-white even:bg-slate-50">
+                <td class="px-3 py-1.5 font-mono text-slate-700"><?=safe_display($query[0])?></td>
+              </tr>
+              <?php } ?>
+            </tbody>
+          </table>
+        </div>
+        <?php
     }
     if($debug >= DEBUG_TRACE) { echo xdebug_dump_function_trace(); }
     if($debug >= DEBUG_PROFILE) { echo xdebug_dump_function_profile(); }
