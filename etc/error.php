@@ -93,52 +93,33 @@ class ErrorHandler {
     function halt_error($errtype, $errstr, $errfile, $errline, $errcontext = null) {
         global $debug;
 
-        $output_buffer = ob_get_contents();
+        // Keep (and flush) whatever has already been buffered - typically
+        // the page's header/nav/stylesheet - instead of discarding it, so
+        // a fatal error mid-page still renders inside the normal layout
+        // rather than as a bare, unstyled fragment.
         if (ob_get_length()) {
-            ob_end_clean();
+            ob_end_flush();
         }
 
         ?>
-        <br>
-        <center>
-            <table border="0" cellspacing="1" cellpadding="0">
-                <tr><td><?php echo $errtype; ?></td></tr>
-                <tr><td><p style="color: red;"><?php echo nl2br(htmlentities($errstr)); ?></p></td></tr>
-                <tr><td><p class="center">
-                <?php
-                    if ($this->proceed_url === null) {
-                        echo 'There was an error processing your request.';
-                    } else {
-                        echo '<a href="' . $this->proceed_url . '">Proceed</a>';
-                    }
-                ?>
-                </p></td></tr>
-                <?php
-                    if ($this->verbose == true || (isset($debug) && $debug == true)) { # verbose output
-                        ?>
-                        <center>
-                            <table border="0" cellspacing="0" cellpadding="0">
-                                <tr><td>Full path: <?php echo htmlentities($errfile); ?></td></tr>
-                                <tr><td>Line: <?php echo $errline; ?></td></tr>
-                                <tr><td><?php $this->print_context($errcontext); ?></td></tr>
-                            </table>
-                        </center>
-                        <?php
-                        echo '<tr><td>' . $this->print_stack_trace(2); '</tr></td>';
-                    }
-                ?>
-            </table>
-        </center>
-        <?php
-
-        if ($this->_previous_errors) {
-            ?>
-            <p>Previous non-fatal errors occurred. Page contents follow.</p>
-            <div style="border: solid 1px black; padding: 4px;">
-                <?php echo $output_buffer; ?>
+        <div class="mx-auto max-w-md rounded-lg border border-red-200 bg-red-50 p-6 text-center shadow-sm">
+            <p class="text-xs font-semibold uppercase tracking-wide text-red-700"><?php echo htmlentities($errtype); ?></p>
+            <p class="mt-2 text-sm text-slate-700"><?php echo nl2br(htmlentities($errstr)); ?></p>
+            <?php if ($this->proceed_url === null) { ?>
+            <p class="mt-4 text-sm text-slate-500">There was an error processing your request.</p>
+            <?php } else { ?>
+            <p class="mt-4"><a class="text-sm font-medium text-indigo-600 hover:text-indigo-500" href="<?php echo htmlentities($this->proceed_url); ?>">Proceed</a></p>
+            <?php } ?>
+            <?php if ($this->verbose == true || (isset($debug) && $debug == true)) { # verbose output ?>
+            <div class="mt-4 border-t border-red-200 pt-4 text-left text-xs text-slate-600">
+                <p>Full path: <?php echo htmlentities($errfile); ?></p>
+                <p>Line: <?php echo $errline; ?></p>
+                <?php $this->print_context($errcontext); ?>
+                <?php $this->print_stack_trace(2); ?>
             </div>
-            <?php
-        }
+            <?php } ?>
+        </div>
+        <?php
 
         exit();
     }
