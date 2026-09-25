@@ -23,9 +23,6 @@
    $qs .= "	order by sum(work_total)* ".$gproj->get_scale()." desc";
  };
 
-if ($debug == 1) 
-  echo "<b>SQL Query:</b><br><pre>$qs</pre><br>";
-
  display_last_update('e');
 
  // Fetch every row once into a plain array, used for both the bar chart
