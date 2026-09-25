@@ -96,11 +96,32 @@ class ErrorHandler {
         // Keep (and flush) whatever has already been buffered - typically
         // the page's header/nav/stylesheet - instead of discarding it, so
         // a fatal error mid-page still renders inside the normal layout
-        // rather than as a bare, unstyled fragment.
+        // rather than as a bare, unstyled fragment. Many fatal errors
+        // (eg. a DB connection failure) happen before header.inc has run
+        // at all though, so there may be no <head>/stylesheet buffered
+        // yet - detect that and provide a minimal styled document of our
+        // own in that case.
+        $output_buffer = ob_get_length() ? ob_get_contents() : '';
+        $has_layout = (strpos($output_buffer, '<body') !== false);
+
         if (ob_get_length()) {
             ob_end_flush();
         }
 
+        if (!$has_layout) {
+            ?>
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>stats.distributed.net - error</title>
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+ </head>
+ <body class="bg-slate-50 text-slate-900 antialiased">
+  <main class="flex min-h-screen items-center justify-center px-4 py-6">
+            <?php
+        }
         ?>
         <div class="mx-auto max-w-md rounded-lg border border-red-200 bg-red-50 p-6 text-center shadow-sm">
             <p class="text-xs font-semibold uppercase tracking-wide text-red-700"><?php echo htmlentities($errtype); ?></p>
@@ -120,6 +141,13 @@ class ErrorHandler {
             <?php } ?>
         </div>
         <?php
+        if (!$has_layout) {
+            ?>
+  </main>
+ </body>
+</html>
+            <?php
+        }
 
         exit();
     }
