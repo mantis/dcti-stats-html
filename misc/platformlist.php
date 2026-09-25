@@ -97,38 +97,37 @@ Header("Expires: " . gmdate("D, d M Y", $now) . " $hour:00 GMT");
  # Total number of columns in table, not counting yesterday or total columns. Start at 2 to account for first and last.
  $cols = 3;
  print "
-    <center>
-     <br>
-     <table border=\"1\" cellspacing=\"0\" cellpadding\"0\" >
+    <div class=\"mx-auto max-w-4xl overflow-hidden rounded-lg border border-slate-200 shadow-sm\">
+     <table class=\"w-full text-sm\">
       <tr>";
  for($i=0; $i < strlen($view); $i++) {
    $ch = substr($view,$i,1);
    if($ch == 'c') {
-     print "<th class=\"thead\">CPU</th>";
+     print "<th class=\"thead text-left\">CPU</th>";
      $cols++;
    }
    if($ch == 'o') {
-     print "<th class=\"thead\">OS</th>";
+     print "<th class=\"thead text-left\">OS</th>";
      $cols++;
    }
    if($ch == 'v') {
-     print "<th class=\"thead\">Version</th>";
+     print "<th class=\"thead text-left\">Version</th>";
      $cols++;
    }
  }
 ?>
-       <th class="thead" align="right">First Unit</th>
-       <th class="thead" align="right">Last Unit</th>
+       <th class="thead text-right">First Unit</th>
+       <th class="thead text-right">Last Unit</th>
 <?
- if($show_yesterday){ print "<th class=\"thead\">Yesterday</th>";}
- if($show_total) { print "<th class=\"thead\">Total ".$gproj->get_scaled_unit_name()."</th>";}
+ if($show_yesterday){ print "<th class=\"thead text-right\">Yesterday</th>";}
+ if($show_total) { print "<th class=\"thead text-right\">Total ".$gproj->get_scaled_unit_name()."</th>";}
  print '</tr>';
  $total_yesterday = 0;
  $total_overall = 0;
  for ($i = 0; $i<$rows; $i++) {
-
+   $t_row_bg = ($i % 2 == 0) ? 'bg-white' : 'bg-slate-50';
 ?>
-<tr class="<? echo row_background_color($i)?>">
+<tr class="border-b border-slate-100 last:border-0 <?=$t_row_bg?>">
 <?
  $gdb->data_seek($i);
  $par = $gdb->fetch_object();
@@ -139,22 +138,22 @@ Header("Expires: " . gmdate("D, d M Y", $now) . " $hour:00 GMT");
 
  for($j=0; $j < strlen($view); $j++) {
    $ch = substr($view,$j,1);
-   if($ch == 'c') print "<td><img alt=\"\" height=\"14\" width=\"14\" src=\"/images/icons/cpu/$par->cpuimage\"> $par->cpuname</td>\n";
-   if($ch == 'o') print "<td><img alt=\"\" height=\"14\" width=\"14\" src=\"/images/icons/os/$par->osimage\"> $par->osname</td>\n";
-   if($ch == 'v') print "<td>$par->ver</td>\n";
+   if($ch == 'c') print "<td class=\"py-1.5 px-3 text-left\"><span class=\"inline-flex items-center gap-1.5\"><img alt=\"\" height=\"14\" width=\"14\" src=\"/images/icons/cpu/$par->cpuimage\"> $par->cpuname</span></td>\n";
+   if($ch == 'o') print "<td class=\"py-1.5 px-3 text-left\"><span class=\"inline-flex items-center gap-1.5\"><img alt=\"\" height=\"14\" width=\"14\" src=\"/images/icons/os/$par->osimage\"> $par->osname</span></td>\n";
+   if($ch == 'v') print "<td class=\"py-1.5 px-3 text-left\">$par->ver</td>\n";
  }
 
  print "
- 	<td align=\"right\">$firstd</td>
- 	<td align=\"right\">$lastd</td>
+ 	<td class=\"py-1.5 px-3 text-right tabular-nums\">$firstd</td>
+ 	<td class=\"py-1.5 px-3 text-right tabular-nums\">$lastd</td>
  ";
 
  if($show_yesterday) {
-   print "<td align=\"right\">" . number_style_convert( (float) $par->yesterday ) . "</td>\n";
+   print "<td class=\"py-1.5 px-3 text-right tabular-nums\">" . number_style_convert( (float) $par->yesterday ) . "</td>\n";
    $total_yesterday += (float) $par->yesterday ;
  }
  if($show_total) {
-   print "<td align=\"right\">" . number_style_convert( (float) $par->total ) . "</td>\n";
+   print "<td class=\"py-1.5 px-3 text-right tabular-nums\">" . number_style_convert( (float) $par->total ) . "</td>\n";
    $total_overall += (float) $par->total ;
  }
  print "</tr>";
@@ -165,19 +164,20 @@ Header("Expires: " . gmdate("D, d M Y", $now) . " $hour:00 GMT");
    $padding = (int) $cols - 1;
    print "
    <tr>
-	<td class= \"tfoot\" align=\"right\" colspan=\"$padding\">Total</td>";
+	<td class=\"tfoot text-right\" colspan=\"$padding\">Total</td>";
 
    if ($show_yesterday) {
-     print "<td class= \"tfoot\" align=\"right\">" . number_style_convert($total_yesterday, 0) . "</td>\n";
+     print "<td class=\"tfoot text-right\">" . number_style_convert($total_yesterday, 0) . "</td>\n";
    }
    if ($show_total) {
-     print "<td class= \"tfoot\" align=\"right\">" . number_style_convert($total_overall, 0) . "</td>\n";
+     print "<td class=\"tfoot text-right\">" . number_style_convert($total_overall, 0) . "</td>\n";
    }
  }
 
    print "
    </tr>
   </table>
+ </div>
 ";
    include "../templates/footer.inc";
 ?>

@@ -46,22 +46,22 @@ if ( $rows >= $limit ) {
 }
 
 ?>
-  <div><br></div>
-  <table border="1" cellspacing="0" cellpadding="1" width="100%" class="tborder">
+  <div class="mx-auto max-w-5xl overflow-hidden rounded-lg border border-slate-200 shadow-sm">
+   <table class="w-full text-sm">
     <tr>
-       <td class="tfoot"><?=$btn_back?></td>
+       <td class="tfoot text-left"><?=$btn_back?></td>
        <td colspan="6" class="tfoot">&nbsp;</td>
-       <td align="right" class="tfoot"><?=$btn_fwd?></td>
+       <td class="tfoot text-right"><?=$btn_fwd?></td>
     </tr>
     <tr>
-      <td align="center" class="thead">Rank</td>
-      <td align="center" class="thead">Team</td>
-      <td align="center" class="thead">First Unit</td>
-      <td align="center" class="thead">Last Unit</td>
-      <td align="right" class="thead">Days</td>
-      <td align="right" class="thead">Current Members</td>
-      <td align="right" class="thead"><?=$gproj->get_scaled_unit_name()?> Overall</td>
-      <td align="right" class="thead"><?=$gproj->get_scaled_unit_name()?> Yesterday</td>
+      <th class="thead text-left">Rank</th>
+      <th class="thead text-left">Team</th>
+      <th class="thead text-right">First Unit</th>
+      <th class="thead text-right">Last Unit</th>
+      <th class="thead text-right">Days</th>
+      <th class="thead text-right">Current Members</th>
+      <th class="thead text-right"><?=$gproj->get_scaled_unit_name()?> Overall</th>
+      <th class="thead text-right"><?=$gproj->get_scaled_unit_name()?> Yesterday</th>
     </tr>
     <?
     $totalblocks=0;
@@ -72,8 +72,6 @@ if ( $rows >= $limit ) {
       $teamTmp =& $result[$i];
       $statsTmp =& $teamTmp->get_current_stats();
 
-      $row_bgnd_color = row_background_color($i);
-
       $totalblocks += (float) $statsTmp->get_stats_item('work_total') * $gproj->get_scale();
       $totalblocksy += (float) $statsTmp->get_stats_item('work_today') * $gproj->get_scale();
       $decimal_places=0;
@@ -82,15 +80,15 @@ if ( $rows >= $limit ) {
 
       $teamid = $teamTmp->get_id();
       ?>
-      <tr class="<?=$row_bgnd_color?>">
-        <td><?=$statsTmp->get_stats_item('rank')?><?=html_rank_arrow($statsTmp->get_stats_item('rank_change'))?></td>
-        <td><a href="tmsummary.php?project_id=<?=$project_id?>&amp;team=<?=$teamid?>"><?= safe_display($teamTmp->get_name()) ?></a></td>
-        <td align="right"><?=$first?></td>
-        <td align="right"><?=$last?></td>
-        <td align="right"><?=number_format($statsTmp->get_stats_item('days_working'), 0)?></td>
-        <td align="right"><?=number_format($statsTmp->get_stats_item('members_current'), 0)?></td>
-        <td align="right"><?=number_format( (float) $statsTmp->get_stats_item('work_total') * $gproj->get_scale(), 0)?></td>
-        <td align="right"><?=number_format( (float) $statsTmp->get_stats_item('work_today') * $gproj->get_scale(), 0)?></td>
+      <tr class="border-b border-slate-100 last:border-0 <?=$i % 2 == 0 ? 'bg-white' : 'bg-slate-50'?>">
+        <td class="py-1.5 px-3 text-left"><?=$statsTmp->get_stats_item('rank')?><?=html_rank_arrow($statsTmp->get_stats_item('rank_change'))?></td>
+        <td class="py-1.5 px-3 text-left"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="tmsummary.php?project_id=<?=$project_id?>&amp;team=<?=$teamid?>"><?= safe_display($teamTmp->get_name()) ?></a></td>
+        <td class="py-1.5 px-3 text-right tabular-nums"><?=$first?></td>
+        <td class="py-1.5 px-3 text-right tabular-nums"><?=$last?></td>
+        <td class="py-1.5 px-3 text-right tabular-nums"><?=number_format($statsTmp->get_stats_item('days_working'), 0)?></td>
+        <td class="py-1.5 px-3 text-right tabular-nums"><?=number_format($statsTmp->get_stats_item('members_current'), 0)?></td>
+        <td class="py-1.5 px-3 text-right tabular-nums"><?=number_format( (float) $statsTmp->get_stats_item('work_total') * $gproj->get_scale(), 0)?></td>
+        <td class="py-1.5 px-3 text-right tabular-nums"><?=number_format( (float) $statsTmp->get_stats_item('work_today') * $gproj->get_scale(), 0)?></td>
       </tr>
       <?
       unset($teamTmp);
@@ -98,15 +96,16 @@ if ( $rows >= $limit ) {
     }
     ?>
     <tr>
-      <td class="tfoot"><? echo "$lo-$hi"?></td>
-      <td align="right" colspan="5" class="tfoot">Total</td>
-      <td align="right" class="tfoot"><?=number_format($totalblocks)?></td>
-      <td align="right" class="tfoot"><?=number_format($totalblocksy)?></td>
+      <td class="tfoot text-left"><? echo "$lo-$hi"?></td>
+      <td class="tfoot text-right" colspan="5">Total</td>
+      <td class="tfoot text-right"><?=number_format($totalblocks)?></td>
+      <td class="tfoot text-right"><?=number_format($totalblocksy)?></td>
     </tr>
     <tr>
-      <td class="tfoot"><?=$btn_back?></td>
+      <td class="tfoot text-left"><?=$btn_back?></td>
       <td colspan="6" class="tfoot">&nbsp;</td>
-      <td align="right" class="tfoot"><?=$btn_fwd?></td>
+      <td class="tfoot text-right"><?=$btn_fwd?></td>
     </tr>
-  </table>
+   </table>
+  </div>
 <? include "../templates/footer.inc";?>

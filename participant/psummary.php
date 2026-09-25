@@ -19,16 +19,17 @@ function par_list($i, $par, $stats, &$totaltoday, &$totaltotal, $proj_scale, $co
     $totaltotal += $stats->get_stats_item("work_total");
     $participant = $par->get_display_name();
 
+    $t_highlight = ($color_a == "row3");
     ?>
-    <tr class="<?=row_background_color($i, $color_a, $color_b)?>">
+    <tr class="border-b border-slate-100 last:border-0 <?=$t_highlight ? 'bg-amber-50' : ($i % 2 == 0 ? 'bg-white' : 'bg-slate-50')?>">
       <? if ( $random_stats == 1 ) { ?>
         <!-- *aol voice* YOU'VE GOT RANDOM! */aol voice* -->
       <? } ?>
-      <td align="left"><?echo $stats->get_stats_item("overall_rank") . html_rank_arrow($stats->get_stats_item("overall_change")) ?></td>
-      <td align="left"><a href="psummary.php?project_id=<?=$gproj->get_id()?>&amp;id=<?=$parid?>"><?=safe_display($participant)?></a></td>
-      <td align="right"><?echo number_style_convert($stats->get_stats_item("days_working"));?></td>
-      <td align="right"><?echo number_style_convert($stats->get_stats_item("work_total") * $proj_scale) ?> </td>
-      <td align="right"><?echo number_style_convert($stats->get_stats_item("work_today") * $proj_scale) ?> </td>
+      <td class="py-1.5 px-3 text-left"><?echo $stats->get_stats_item("overall_rank") . html_rank_arrow($stats->get_stats_item("overall_change")) ?></td>
+      <td class="py-1.5 px-3 text-left"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="psummary.php?project_id=<?=$gproj->get_id()?>&amp;id=<?=$parid?>"><?=safe_display($participant)?></a></td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?echo number_style_convert($stats->get_stats_item("days_working"));?></td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?echo number_style_convert($stats->get_stats_item("work_total") * $proj_scale) ?></td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?echo number_style_convert($stats->get_stats_item("work_today") * $proj_scale) ?></td>
     </tr>
     <?
 }
@@ -36,10 +37,10 @@ function par_list($i, $par, $stats, &$totaltoday, &$totaltotal, $proj_scale, $co
 function par_footer($totaltoday, $totaltotal, $proj_scale)
 {
     ?>
-    <tr>
-      <td class="tfoot" align="right" colspan="3">Total</td>
-      <td class="tfoot" align="right"><?echo number_style_convert($totaltotal * $proj_scale)?></td>
-      <td class="tfoot" align="right"><?echo number_style_convert($totaltoday * $proj_scale)?></td>
+    <tr class="bg-slate-800 text-slate-100 font-medium">
+      <td class="py-1.5 px-3 text-right" colspan="3">Total</td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?echo number_style_convert($totaltotal * $proj_scale)?></td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?echo number_style_convert($totaltoday * $proj_scale)?></td>
     </tr>
     <?
 }
@@ -81,103 +82,91 @@ $best_rate = number_format((($best_day_units*$constant_keys_in_one_block)/(86400
 */
 
 ?>
-  <div style="text-align:center">
-    <h1 class="phead"><?=safe_display($gpart->get_display_name())?>'s stats</h1>
-    <table border="0" style="margin: auto">
-      <tr>
-        <td colspan="3">
-          <hr>
+  <div class="text-center">
+    <h1 class="phead mb-4"><?=safe_display($gpart->get_display_name())?>'s stats</h1>
+
+    <? if($gpart -> get_motto() <> '') { ?>
+      <p class="italic text-slate-600 mb-4"><?=markup_to_html($gpart->get_motto())?></p>
+    <? } ?>
+
+    <div class="mx-auto max-w-md overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+      <table class="w-full text-sm">
+        <tr class="border-b border-slate-200">
+          <td class="py-2 px-3"></td>
+          <td class="phead2 py-2 px-3 text-center">Overall</td>
+          <td class="phead2 py-2 px-3 text-center">Yesterday</td>
+        </tr>
+        <tr class="border-b border-slate-100">
+          <td class="phead2 py-1.5 px-3 text-left">Rank:</td>
+          <td class="py-1.5 px-3 text-right tabular-nums">
             <?
-            if($gpart -> get_motto() <> '') {
-                echo '<i>' . markup_to_html($gpart->get_motto()) . '</i><hr>';
+            echo $gpartstats->get_stats_item('overall_rank') . html_rank_arrow($gpartstats -> get_stats_item('overall_change'));
+            ?>
+          </td>
+          <td class="py-1.5 px-3 text-right tabular-nums">
+            <?
+            echo $gpartstats->get_stats_item('day_rank') . html_rank_arrow($gpartstats -> get_stats_item('day_change'));
+            ?>
+          </td>
+        </tr>
+        <tr class="border-b border-slate-100">
+          <td class="phead2 py-1.5 px-3 text-left">Percentile:</td>
+          <td class="py-1.5 px-3 text-right tabular-nums">
+            <?
+            echo number_style_convert( 100 * (1 - ($gpartstats->get_stats_item('overall_rank') / $gprojstats->get_total_emails())), 2 );
+            ?>
+          </td>
+          <td class="py-1.5 px-3 text-right tabular-nums">
+            <?
+            echo number_style_convert( 100 * (1 - ($gpartstats->get_stats_item('day_rank') / $gprojstats->get_stats_item('participants'))), 2 ) ;
+            ?>
+          </td>
+        </tr>
+        <tr class="border-b border-slate-100">
+          <td class="phead2 py-1.5 px-3 text-left"><?=$gproj->get_scaled_unit_name()?>:</td>
+          <td class="py-1.5 px-3 text-right tabular-nums"><?=number_style_convert($gpartstats->get_stats_item('work_total') * $gproj->get_scale()) ?></td>
+          <td class="py-1.5 px-3 text-right tabular-nums"><?=number_style_convert($gpartstats->get_stats_item('work_today') * $gproj->get_scale())?></td>
+        </tr>
+        <tr class="border-b border-slate-100">
+          <td class="phead2 py-1.5 px-3 text-left"><?=$gproj->get_scaled_unit_name()?>/sec:</td>
+          <td class="py-1.5 px-3 text-right tabular-nums">
+            <? if ($gpartstats->get_stats_item('days_working') > 0) {
+                 echo number_style_convert($gpartstats->get_stats_item('work_total') * $gproj->get_scale() / (86400 * $gpartstats->get_stats_item('days_working')), 3);
+               }
+             ?>
+          </td>
+          <td class="py-1.5 px-3 text-right tabular-nums">
+            <? echo number_style_convert($gpartstats -> get_stats_item('work_today') * $gproj -> get_scale() / 86400, 3);
+            ?>
+          </td>
+        </tr>
+        <tr class="border-b border-slate-100">
+          <td class="phead2 py-1.5 px-3 text-left"><?=$gproj -> get_unscaled_unit_name()?>:</td>
+          <td class="py-1.5 px-3 text-right tabular-nums"><?=number_style_convert($gpartstats -> get_stats_item('work_total')) ?></td>
+          <td class="py-1.5 px-3 text-right tabular-nums"><? echo number_style_convert($gpartstats -> get_stats_item('work_today')) ?></td>
+        </tr>
+        <tr class="border-b border-slate-100">
+          <td class="phead2 py-1.5 px-3 text-left"><?=$gproj -> get_unscaled_unit_name()?>/sec:</td>
+          <td class="py-1.5 px-3 text-right tabular-nums">
+            <? if ($gpartstats->get_stats_item('days_working') > 0) {
+                echo number_style_convert($gpartstats->get_stats_item('work_total') / (86400 * $gpartstats->get_stats_item('days_working')), 0);
             }
             ?>
-      </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="phead2" align="center">Overall</td>
-        <td class="phead2" align="center">Yesterday</td>
-      </tr>
-<tr>
-     <td align="left" class="phead2">Rank:</td>
-     <td align="right">
-        <?
-        echo $gpartstats->get_stats_item('overall_rank') . html_rank_arrow($gpartstats -> get_stats_item('overall_change'));
-        ?>
-     </td>
-     <td align="right">
-        <?
-        echo $gpartstats->get_stats_item('day_rank') . html_rank_arrow($gpartstats -> get_stats_item('day_change'));
-        ?>
-     </td>
-</tr>
-<tr>
-     <td align="left" class="phead2">Percentile:</td>
-     <td align="right">
-        <?
-        echo number_style_convert( 100 * (1 - ($gpartstats->get_stats_item('overall_rank') / $gprojstats->get_total_emails())), 2 );
-  ;
-        ?>
-     </td>
-     <td align="right">
-        <?
-  echo number_style_convert( 100 * (1 - ($gpartstats->get_stats_item('day_rank') / $gprojstats->get_stats_item('participants'))), 2 ) ;
-        ?>
-     </td>
-</tr>
-      <tr>
-        <td align="left" class="phead2"><?=$gproj->get_scaled_unit_name()?>:</td>
-        <td align="right"><?=number_style_convert($gpartstats->get_stats_item('work_total') * $gproj->get_scale()) ?></td>
-        <td align="right"><?=number_style_convert($gpartstats->get_stats_item('work_today') * $gproj->get_scale())?></td>
-      </tr>
-      <tr>
-        <td align="left" class="phead2"><?=$gproj->get_scaled_unit_name()?>/sec:</td>
-        <td align="right">
-          <? if ($gpartstats->get_stats_item('days_working') > 0) {
-               echo number_style_convert($gpartstats->get_stats_item('work_total') * $gproj->get_scale() / (86400 * $gpartstats->get_stats_item('days_working')), 3);
-             }
-           ?>
-        </td>
-        <td align="right">
-          <? echo number_style_convert($gpartstats -> get_stats_item('work_today') * $gproj -> get_scale() / 86400, 3);
-
-?>
-        </td>
-      </tr>
-      <tr>
-        <td align="left" class="phead2"><?=$gproj -> get_unscaled_unit_name()?>:</td>
-        <td align="right"><?=number_style_convert($gpartstats -> get_stats_item('work_total')) ?></td>
-        <td align="right"><? echo number_style_convert($gpartstats -> get_stats_item('work_today')) ?></td>
-      </tr>
-      <tr>
-        <td align="left" class="phead2"><?=$gproj -> get_unscaled_unit_name()?>/sec:</td>
-        <td align="right">
-          <? if ($gpartstats->get_stats_item('days_working') > 0) {
-              echo number_style_convert($gpartstats->get_stats_item('work_total') / (86400 * $gpartstats->get_stats_item('days_working')), 0);
-}
-?>
-        </td>
-        <td align="right">
-          <? echo number_style_convert($gpartstats -> get_stats_item('work_today') / 86400, 0);
-
-?>
-        </td>
-      </tr>
-      <tr>
-        <td align="left" class="phead2">Time Working:</td>
-        <td colspan="2" align="right">
+          </td>
+          <td class="py-1.5 px-3 text-right tabular-nums">
+            <? echo number_style_convert($gpartstats -> get_stats_item('work_today') / 86400, 0);
+            ?>
+          </td>
+        </tr>
+        <tr>
+          <td class="phead2 py-1.5 px-3 text-left">Time Working:</td>
+          <td class="py-1.5 px-3 text-right tabular-nums" colspan="2">
             <? echo number_format($gpartstats -> get_stats_item('days_working')) . " day" . plural($gpartstats -> get_stats_item('days_working'));
-
-?>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="3">
-          <hr>
-        </td>
-      </tr>
-    </table>
+            ?>
+          </td>
+        </tr>
+      </table>
+    </div>
     <p>
 
 <?
@@ -211,7 +200,7 @@ were completed at a rate of <?=$best_rate?> Kkeys/sec.
       <img src="graph_phistory.php?project_id=<?=$project_id?>&amp;id=<?=$id?>" /><br>
     <? } ?>
     -->
-    <a href="phistory.php?project_id=<?=$project_id?>&amp;id=<?=$id?>">View this Participant's Work Unit Submission History</a>
+    <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="phistory.php?project_id=<?=$project_id?>&amp;id=<?=$id?>">View this Participant's Work Unit Submission History</a>
     </p>
         <? if (($gproj -> get_type() == 'RC5' or $gproj -> get_type() == 'R72') && ($gpartstats -> get_stats_item('work_today') > 0)) {
             $odds = number_format($gprojstats->get_stats_item('work_units') / $gpartstats -> get_stats_item('work_today'));
@@ -220,49 +209,48 @@ were completed at a rate of <?=$best_rate?> Kkeys/sec.
             The odds are 1 in <?=$odds?> that this participant will find the key before anyone else does.
             </p>
         <? } ?>
-    <table style="margin:auto;" border="1" cellspacing="0">
-      <tr>
-        <th class="phead2" colspan="6" align="center">Neighbors</th>
-      </tr>
-      <tr>
-        <th class="thead">Rank</th>
-        <th class="thead">Participant</th>
-        <th class="thead" align="right">Days</th>
-        <th class="thead" align="right">Overall <?=$gproj->get_scaled_unit_name()?></th>
-        <th class="thead" align="right">Yesterday <?=$gproj->get_scaled_unit_name()?></th>
-      </tr>
-      <?
-        $totaltoday = 0;
-        $totaltotal = 0;
-        $neighbors = $gpart->get_neighbors();
-        $numneighbors = count($neighbors);
-        for ($i = 0; $i < $numneighbors; $i++) {
-            if($gpart->get_id() <> $neighbors[$i]->get_id()) {
-                par_list($i, $neighbors[$i], $neighbors[$i]->get_current_stats(), $totaltoday, $totaltotal, $gproj->get_scale());
-            } else {
-                par_list($i, $neighbors[$i], $neighbors[$i]->get_current_stats(), $totaltoday, $totaltotal, $gproj->get_scale(), "row3", "row3");
-        }
-}
-par_footer($totaltoday, $totaltotal, $gproj->get_scale());
-?>
-</table>
-<br /><br />
+    <div class="mx-auto max-w-3xl overflow-hidden rounded-lg border border-slate-200 shadow-sm">
+      <div class="phead2 bg-slate-100 py-2 text-center">Neighbors</div>
+      <table class="w-full text-sm">
+        <tr>
+          <th class="thead text-left">Rank</th>
+          <th class="thead text-left">Participant</th>
+          <th class="thead text-right">Days</th>
+          <th class="thead text-right">Overall <?=$gproj->get_scaled_unit_name()?></th>
+          <th class="thead text-right">Yesterday <?=$gproj->get_scaled_unit_name()?></th>
+        </tr>
+        <?
+          $totaltoday = 0;
+          $totaltotal = 0;
+          $neighbors = $gpart->get_neighbors();
+          $numneighbors = count($neighbors);
+          for ($i = 0; $i < $numneighbors; $i++) {
+              if($gpart->get_id() <> $neighbors[$i]->get_id()) {
+                  par_list($i, $neighbors[$i], $neighbors[$i]->get_current_stats(), $totaltoday, $totaltotal, $gproj->get_scale());
+              } else {
+                  par_list($i, $neighbors[$i], $neighbors[$i]->get_current_stats(), $totaltoday, $totaltotal, $gproj->get_scale(), "row3", "row3");
+          }
+  }
+  par_footer($totaltoday, $totaltotal, $gproj->get_scale());
+  ?>
+      </table>
+    </div>
+    <br /><br />
 <?
 $numfriends = count($gpart->get_friends());
 if($numfriends >= 1) {
     ?>
-    <table style="margin:auto;" border="1" cellspacing="0">
-      <tr>
-        <th class="phead2" colspan="6" align="center">Friends</th>
-      </tr>
-      <tr>
-        <th class="thead">Rank</th>
-        <th class="thead">Participant</th>
-        <th class="thead" align="right">Days</th>
-        <th class="thead" align="right">Overall <?=$gproj->get_scaled_unit_name()?></th>
-        <th class="thead" align="right">Yesterday <?=$gproj->get_scaled_unit_name()?></th>
-      </tr>
-      <?
+    <div class="mx-auto max-w-3xl overflow-hidden rounded-lg border border-slate-200 shadow-sm">
+      <div class="phead2 bg-slate-100 py-2 text-center">Friends</div>
+      <table class="w-full text-sm">
+        <tr>
+          <th class="thead text-left">Rank</th>
+          <th class="thead text-left">Participant</th>
+          <th class="thead text-right">Days</th>
+          <th class="thead text-right">Overall <?=$gproj->get_scaled_unit_name()?></th>
+          <th class="thead text-right">Yesterday <?=$gproj->get_scaled_unit_name()?></th>
+        </tr>
+        <?
     $totaltoday = 0;
     $totaltotal = 0;
     $printed_self = false;
@@ -276,16 +264,18 @@ if($numfriends >= 1) {
         par_list($i, $par, $stats, $totaltoday, $totaltotal, $gproj->get_scale());
     }
     par_footer($totaltoday, $totaltotal, $gproj -> get_scale());
-    echo("</table>\n");
+    ?>
+      </table>
+    </div>
+    <?
 }
 ?>
-    <hr>
-    <p>
+    <p class="mt-6">
     <form action="ppass.php" method="post">
         <div>
             <input type="hidden" name="project_id" value="<?=$gproj->get_id()?>">
             <input type="hidden" name="id" value="<?=$id?>">
-            <input type="submit" value="Please email me my password.">
+            <input class="rounded bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700 cursor-pointer" type="submit" value="Please email me my password.">
         </div>
     </form>
     </p>

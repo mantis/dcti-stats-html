@@ -51,6 +51,8 @@ if($totPctComp == 100 && $stubsLeft != 0)
 $title = "Stubspace Status";
 #$lastupdate = last_update('e');
 
+$project_filter = array(25, 26, 27, 28);
+
 include "../templates/header.inc";
 
 $nextRowClass = "row2";
@@ -193,8 +195,6 @@ for($i = 0; $i < $cnt; $i++)
 }
 echo "</table>\n";
 echo "<br /><br />";
-
-$project_filter = array(25, 26, 27, 28);
 
 include "../templates/footer.inc";
 

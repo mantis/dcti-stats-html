@@ -70,6 +70,39 @@ if (isset($_REQUEST['team'])) {
 $gdb = new DB($conn_string);
 $gproj = new Project($gdb, $project_id);
 
+// Canonical list of switchable projects, used by the sidebar project
+// switcher (templates/header.inc). A page can narrow this by setting
+// $project_filter to an array of project ids *before* including
+// templates/header.inc (see project/ogr_status.php for an example).
+$stats_project_list = array(
+    3   => 'RC5-56',
+    5   => 'RC5-64',
+    205 => 'RC5-64 (all)',
+    8   => 'RC5-72',
+    24  => 'OGR-24',
+    25  => 'OGR-25',
+    26  => 'OGR-26',
+    27  => 'OGR-27',
+    28  => 'OGR-28',
+);
+
+if (!isset($project_filter)) {
+    $project_filter = array(3, 5, 205, 8, 24, 25, 26, 27, 28);
+}
+
+function stats_project_switch_options($projectFilter)
+{
+    global $stats_project_list;
+    $options = array();
+    foreach ($stats_project_list as $pid => $label) {
+        if (isset($projectFilter) && is_array($projectFilter) && !in_array($pid, $projectFilter)) {
+            continue;
+        }
+        $options[$pid] = $label;
+    }
+    return $options;
+}
+
 function last_update($type)
 {
     global $lastupdate, $project_id, $gdb;
@@ -102,28 +135,16 @@ function last_update($type)
     return $lastupdate;
 }
 
+// Sets $lastupdate (fetching it via last_update() when $type is given), which
+// templates/footer.inc then displays as the "data shown reflects..." banner.
+// This used to also print that banner inline as a table row/close, back when
+// templates/header.inc opened a <table> for the whole page; the sidebar shell
+// no longer does, so it just sets the variable now.
 function display_last_update($type = null)
 {
     global $lastupdate;
     if(isset($type)) {
         $lastupdate = last_update($type);
     }
-
-    ?>
-    <tr>
-        <td colspan="4" align="center" class="lastupdate">
-        <? if(isset($type)) { ?>
-            <? if($lastupdate <> "") { ?>
-                Data shown reflects all blocks received as of <?=$lastupdate?> at 23:59 UTC
-            <? } else { ?>
-                Update currently in progress...
-            <? } ?>
-        <? } else { ?>
-            &nbsp;
-        <? } ?>
-        </td>
-    </tr>
-</table>
-<?
 }
 ?>

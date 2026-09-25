@@ -34,25 +34,25 @@ $lastupdate = last_update('t');
 include "../templates/header.inc";
 
 ?>
-  <div class="phead"><br></div>
-  <table border="1" cellspacing="0" width="100%">
+  <div class="mx-auto max-w-5xl overflow-hidden rounded-lg border border-slate-200 shadow-sm">
+   <table class="w-full text-sm">
     <tr>
-      <td class="thead">Rank</td>
-      <td class="thead">Team</td>
-      <td align="right" class="thead">First Unit</td>
-      <td align="right" class="thead">Last Unit</td>
-      <td align="right" class="thead">Days</td>
-      <td align="right" class="thead">Current Members</td>
-      <td align="right" class="thead"><?=$gproj->get_scaled_unit_name()?> Overall</td>
-      <td align="right" class="thead"><?=$gproj->get_scaled_unit_name()?> Yesterday</td>
+      <th class="thead text-left">Rank</th>
+      <th class="thead text-left">Team</th>
+      <th class="thead text-right">First Unit</th>
+      <th class="thead text-right">Last Unit</th>
+      <th class="thead text-right">Days</th>
+      <th class="thead text-right">Current Members</th>
+      <th class="thead text-right"><?=$gproj->get_scaled_unit_name()?> Overall</th>
+      <th class="thead text-right"><?=$gproj->get_scaled_unit_name()?> Yesterday</th>
     </tr>
-    <? 
+    <?
 
     $totalblocks = 0;
     $totalblocksy = 0;
     if($rows <= 0)
     {
-      echo "<tr><td colspan=\"8\" align=\"center\">No Matching Records Found</td></tr>\n";
+      echo "<tr><td class=\"py-4 px-3 text-center text-slate-500\" colspan=\"8\">No Matching Records Found</td></tr>\n";
     }
     for ($i = 0; $i < $rows; $i++) {
       $teamTmp =& $result[$i];
@@ -63,24 +63,25 @@ include "../templates/header.inc";
       $totalblocksy += (float) $statsTmp->get_stats_item('work_today') * $gproj->get_scale();
 
     ?>
-    <tr class="<?=row_background_color($i)?>">
-      <td><?= $statsTmp->get_stats_item('overall_rank') . html_rank_arrow($statsTmp->get_stats_item('rank_change'))?></td>
-      <td><a href="tmsummary.php?project_id=<?=$project_id?>&team=<?=$teamid?>"><font color="#cc0000"><?=safe_display($teamTmp->get_name())?></font></a></td>
-      <td align="right"><?= $statsTmp->get_stats_item('first_date')?></td>
-      <td align="right"><?= $statsTmp->get_stats_item('last_date')?></td>
-      <td align="right"><?= number_format($statsTmp->get_stats_item('days_working'))?></td>
-      <td align="right"><?=$members?></td>
-      <td align="right"><?=number_format( (float) $statsTmp->get_stats_item('work_total') * $gproj->get_scale())?> </td>
-      <td align="right"><?=number_format( (float) $statsTmp->get_stats_item('work_today') * $gproj->get_scale())?> </td>
+    <tr class="border-b border-slate-100 last:border-0 <?=$i % 2 == 0 ? 'bg-white' : 'bg-slate-50'?>">
+      <td class="py-1.5 px-3 text-left"><?= $statsTmp->get_stats_item('overall_rank') . html_rank_arrow($statsTmp->get_stats_item('rank_change'))?></td>
+      <td class="py-1.5 px-3 text-left"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="tmsummary.php?project_id=<?=$project_id?>&team=<?=$teamid?>"><?=safe_display($teamTmp->get_name())?></a></td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?= $statsTmp->get_stats_item('first_date')?></td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?= $statsTmp->get_stats_item('last_date')?></td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?= number_format($statsTmp->get_stats_item('days_working'))?></td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?=$members?></td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?=number_format( (float) $statsTmp->get_stats_item('work_total') * $gproj->get_scale())?></td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?=number_format( (float) $statsTmp->get_stats_item('work_today') * $gproj->get_scale())?></td>
     </tr>
     <?
     }
     ?>
     <tr>
-      <td class="tfoot"><?=$rows?></td>
-      <td class="tfoot" colspan="5" align="right">Total</td>
-      <td class="tfoot" align="right"><?=number_format($totalblocks, 0)?></td>
-      <td class="tfoot" align="right"><?=number_format($totalblocksy, 0)?></td>
+      <td class="tfoot text-left"><?=$rows?></td>
+      <td class="tfoot text-right" colspan="5">Total</td>
+      <td class="tfoot text-right"><?=number_format($totalblocks, 0)?></td>
+      <td class="tfoot text-right"><?=number_format($totalblocksy, 0)?></td>
     </tr>
-  </table>
+   </table>
+  </div>
 <?include "../templates/footer.inc";?>

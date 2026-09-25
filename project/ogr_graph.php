@@ -1,119 +1,73 @@
-<?php
-// ************ OGR Status Graphing Module           ***
-// ************ Filename: ogr_graph.pl               ***
-// ************ Author: TheJet, May 2003            ***
-// ************ Based on code by: Dyyryath, Jun 2001 ***
-// ************                                      ***
-// ************ Version: 1.0a                        ***
+<?
+// vi: ts=2 sw=2 tw=120 syntax=php
+// OGR Phase 1/2 completion history, rendered client-side with uPlot.
+// Replaces the old jpgraph-generated static PNG (see git history for
+// project/ogr_graph.php's jpgraph version and etc/jpgraph/, removed).
+// Data comes from project/ogr_graph_data.php.
 
-// ************ Setup any USE statements and initialize variables
 include "../etc/global.inc";
-include "../etc/db_pgsql.php";
-include "../etc/jpgraph/jpgraph.php";
-include "../etc/jpgraph/jpgraph_line.php";
+include "../etc/modules.inc";
+include "../etc/project.inc";
 
-$history                 = "60";
-$dbDSN                   = "dbname=ogr";
-$table                   = "ogr_complete";
-$numeric_scale           = 1000000;
-$scale_text              = "millions";
+$title = "OGR-$project_id Completion Statistics";
 
-
-// ************ Setup the CGI data
-$project = (int)$_GET["project_id"];
-
-// ************ Connect to the database
-$db = new DB($dbDSN);
-if($db == 0)
-{
-  print "Error connecting to database\n";
-  print "Last Error: " + $db->get_last_error();
-  exit();
-}
-
-// ************ Get the data
-$queryData = $db->query("SELECT rundate, count, pass1, pass2 FROM $table WHERE project_id = $project ORDER BY rundate DESC LIMIT $history");
-
-if($queryData == 0)
-{
-  print "Error performing query";
-  exit();
-}
-
-while($result = $db->fetch_array($queryData))
-{ 
-    $xData1[] = (int)$result{'count'}/$numeric_scale;
-    $xData2[] = (int)$result{'pass1'}/$numeric_scale;
-    $xData3[] = (int)$result{'pass2'}/$numeric_scale;
-    $xData4[] = ($result{'pass1'}/$result{'count'} + $result{'pass2'}/$result{'count'}) /2 * 100;
-    $xLabel[] = $result{'rundate'};
-    
-    if ($result{'count'} > $max) { $max = (int)$result{'count'}; }
-}
-
-// ************ Change the graph orientation
-$xData1 = array_reverse($xData1);
-$xData2 = array_reverse($xData2);
-$xData3 = array_reverse($xData3);
-$xData4 = array_reverse($xData4);
-$xLabel = array_reverse($xLabel);
-
-$graph = new Graph(450,300,"auto");
-$graph->SetScale("textlin", 0, (int)$max/$numeric_scale);
-$graph->SetY2Scale("lin", 0, 100);
-$graph->title->Set("OGR-$project Completion Statistics");
-$graph->yaxis->SetTitle("Stubs ($scale_text)", "middle");
-$graph->yaxis->SetTitleMargin(30);
-$graph->yaxis->title->SetFont(FF_FONT1,FS_BOLD);
-$graph->y2axis->SetTitle("% complete (aggregate)", "middle");
-$graph->y2axis->title->SetFont(FF_FONT1,FS_BOLD);
-$graph->y2axis->SetTitleMargin(35);
-
-// Use built in font
-$graph->title->SetFont(FF_FONT2,FS_BOLD);
-
-// Make the margin around the plot a little bit bigger
-// then default
-$graph->img->SetMargin(60,60,40,70);
-#$graph->img->SetAntiAliasing();
-
-// Slightly adjust the legend from it's default position in the
-// top right corner to middle right side
-$graph->legend->Pos(0.5,0.90,"center","center");
-$graph->legend->SetLayout(LEGEND_HOR);
-
-// Set the x-axis labels
-$graph->xaxis->SetTickLabels($xLabel);
-#$graph->xaxis->SetTextLabelInterval(5);
-$graph->xaxis->SetTextTickInterval(12);
-
-// Create a red line plot
-//$p1 = new LinePlot($xData1);
-//$p1->SetColor("red");
-//$p1->SetLegend("Stub Count");
-//$graph->Add($p1);
-
-// Create a red line plot
-$p2 = new LinePlot($xData2);
-$p2->SetColor("blue");
-$p2->SetLegend("Pass1 Stubs Completed");
-#$p2->SetWeight(1);
-$graph->Add($p2);
-
-// Create a red line plot
-$p3 = new LinePlot($xData3);
-$p3->SetColor("red");
-$p3->SetLegend("Pass2 Stubs Completed");
-#$p3->SetWeight(3);
-$graph->Add($p3);
-
-// Add the %-complete graph
-$p4 = new LinePlot($xData4);
-$p4->SetColor("#770077");
-$p4->SetLegend("%-complete");
-#$p4->SetWeight(1.25);
-$graph->AddY2($p4);
-
-// Finally output the  image
-$graph->Stroke();
+include "../templates/header.inc";
 ?>
+
+<div class="mx-auto max-w-3xl">
+  <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+    <div id="ogr-graph" class="h-80 w-full text-sm text-slate-500">Loading chart&hellip;</div>
+    <noscript>
+      <p class="text-sm text-slate-600">This chart needs JavaScript. The underlying data is available as JSON at
+        <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="ogr_graph_data.php?project_id=<?=$project_id?>">ogr_graph_data.php?project_id=<?=$project_id?></a>.
+      </p>
+    </noscript>
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uplot@1/dist/uPlot.min.css">
+<script src="https://cdn.jsdelivr.net/npm/uplot@1/dist/uPlot.iife.min.js"></script>
+<script>
+(function () {
+  var container = document.getElementById('ogr-graph');
+
+  fetch('ogr_graph_data.php?project_id=<?=$project_id?>')
+    .then(function (r) { return r.json(); })
+    .then(function (rows) {
+      if (!rows.length) {
+        container.textContent = 'No completion history available for this project yet.';
+        return;
+      }
+
+      var dates = rows.map(function (r) { return Math.floor(new Date(r.date).getTime() / 1000); });
+      var pass1 = rows.map(function (r) { return r.pass1 / 1e6; });
+      var pass2 = rows.map(function (r) { return r.pass2 / 1e6; });
+      var pctComplete = rows.map(function (r) {
+        return r.count > 0 ? ((r.pass1 / r.count + r.pass2 / r.count) / 2) * 100 : 0;
+      });
+
+      container.textContent = '';
+      new uPlot({
+        width: container.clientWidth,
+        height: 320,
+        scales: { pct: { range: [0, 100] } },
+        series: [
+          {},
+          { label: 'Pass 1 stubs (M)', stroke: '#4f46e5', width: 2 },
+          { label: 'Pass 2 stubs (M)', stroke: '#dc2626', width: 2 },
+          { label: '% complete', stroke: '#d97706', width: 2, scale: 'pct' },
+        ],
+        axes: [
+          {},
+          { label: 'Stubs (millions)', stroke: '#475569', grid: { stroke: '#e2e8f0' } },
+          { label: '% complete', scale: 'pct', side: 1, stroke: '#475569', grid: { show: false } },
+        ],
+      }, [dates, pass1, pass2, pctComplete], container);
+    })
+    .catch(function () {
+      container.textContent = 'Unable to load chart data.';
+    });
+})();
+</script>
+
+<? include "../templates/footer.inc"; ?>

@@ -16,7 +16,9 @@ include "../etc/teamstats.php";
 // Query server
 $team = new Team($gdb, $gproj, $tm);
 if($team->get_id() == 0) {
-	echo "<H2>That team is not known.</H2><BR>";
+	$title = "Team Summary";
+	include "../templates/header.inc";
+	echo '<p class="text-center text-slate-600">That team is not known.</p>';
 	include "../templates/footer.inc";
 	exit;
 }
@@ -38,61 +40,62 @@ if (private_markupurl_safety($team->get_logo()) != "") {
   $logo = "";
 }
 ?>
-<div style="text-align:center;">
-<h1 class="phead"><?= safe_display($team->get_name()) ?></h1>
+<div class="text-center">
+<h1 class="phead mb-4"><?= safe_display($team->get_name()) ?></h1>
 <?if($team->get_id_mismatch() == true) {?>
-  <h2 class="phead2" style="color: red">NOTICE: This team has been renumbered, the new
+  <h2 class="phead2 text-red-600 mb-4">NOTICE: This team has been renumbered, the new
   team ID is <?=$team->get_id()?>.</h2>
 <?}?>
-  <table align="center">
-    <tr>
-      <td><?= $logo ?></td>
-      <td><?= markup_to_html($team->get_description()) ?></td>
-    </tr>
-  </table>
-  Team Contact: <a href="mailto:<?= safe_display($team->get_contact_email()) ?>"><?=$team->get_contact_name()?></a>.
-  <br>
-  <br>
-  <table cellspacing="4" style="margin: auto;">
-    <tr>
-      <td></td>
-      <td align="center" class="phead2">Overall</td>
+<? if ($logo != "" || $team->get_description() != "") { ?>
+  <div class="flex items-center justify-center gap-4 mb-4">
+    <?= $logo ?>
+    <div class="text-left text-sm text-slate-700"><?= markup_to_html($team->get_description()) ?></div>
+  </div>
+<? } ?>
+  <p class="mb-4 text-sm text-slate-600">
+    Team Contact: <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="mailto:<?= safe_display($team->get_contact_email()) ?>"><?=$team->get_contact_name()?></a>.
+  </p>
+  <div class="mx-auto max-w-md overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+  <table class="w-full text-sm">
+    <tr class="border-b border-slate-200">
+      <td class="py-2 px-3"></td>
+      <td class="phead2 py-2 px-3 text-center">Overall</td>
 <? if ($stats->get_stats_item('work_today') > 0) { ?>
-      <td align="center" class="phead2">Yesterday</td>
+      <td class="phead2 py-2 px-3 text-center">Yesterday</td>
 <? } ?>
     </tr>
-    <tr>
-      <td align="left" class="phead2">Rank:</td>
-      <td align="right"><?= $stats->get_stats_item('overall_rank') . " " . html_rank_arrow($stats->get_stats_item('overall_rank_previous') - $stats->get_stats_item('overall_rank')) ?></td>
+    <tr class="border-b border-slate-100">
+      <td class="phead2 py-1.5 px-3 text-left">Rank:</td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?= $stats->get_stats_item('overall_rank') . " " . html_rank_arrow($stats->get_stats_item('overall_rank_previous') - $stats->get_stats_item('overall_rank')) ?></td>
 <? if ($stats->get_stats_item('work_today') > 0) { ?>
-      <td align="right"><?= $stats->get_stats_item('day_rank') . " " . html_rank_arrow($stats->get_stats_item('day_rank_previous') - $stats->get_stats_item('day_rank')) ?></td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?= $stats->get_stats_item('day_rank') . " " . html_rank_arrow($stats->get_stats_item('day_rank_previous') - $stats->get_stats_item('day_rank')) ?></td>
 <? } ?>
     </tr>
-    <tr>
+    <tr class="border-b border-slate-100">
     <? if ( $random_stats == 1 ) { ?>
       <!-- A random we will go... -->
     <? } ?>
-      <td align="left" class="phead2"><?= $gproj->get_scaled_unit_name() ?>:</td>
-      <td align="right"><?= number_style_convert($stats->get_stats_item('work_total') * $gproj->get_scale()) ?></td>
+      <td class="phead2 py-1.5 px-3 text-left"><?= $gproj->get_scaled_unit_name() ?>:</td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?= number_style_convert($stats->get_stats_item('work_total') * $gproj->get_scale()) ?></td>
 <? if ($stats->get_stats_item('work_today') > 0) { ?>
-      <td align="right"><?= number_style_convert($stats->get_stats_item('work_today') * $gproj->get_scale()) ?></td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?= number_style_convert($stats->get_stats_item('work_today') * $gproj->get_scale()) ?></td>
 <? } ?>
     </tr>
     <? if ($stats->get_stats_item('days_working') > 0) { ?>
-    <tr>
-      <td align="left" class="phead2"><?= $gproj->get_scaled_unit_name() ?>/sec:</td>
-      <td align="right"><?= number_style_convert($stats->get_stats_item('work_total') * $gproj->get_scale() / (86400 * $stats->get_stats_item('days_working')), 3) ?></td>
+    <tr class="border-b border-slate-100">
+      <td class="phead2 py-1.5 px-3 text-left"><?= $gproj->get_scaled_unit_name() ?>/sec:</td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?= number_style_convert($stats->get_stats_item('work_total') * $gproj->get_scale() / (86400 * $stats->get_stats_item('days_working')), 3) ?></td>
 <? if ($stats->get_stats_item('work_today') > 0) { ?>
-      <td align="right"><?= number_style_convert($stats->get_stats_item('work_today') * $gproj->get_scale() / 86400, 3) ?></td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?= number_style_convert($stats->get_stats_item('work_today') * $gproj->get_scale() / 86400, 3) ?></td>
     <? } ?>
     </tr>
 <? } ?>
     <?if($stats->get_stats_item('members_overall') > 0) {?>
-    <tr>
-      <td align="left" class="phead2"><?= $gproj->get_scaled_unit_name() ?>/member:</td>
-      <td align="right"><?= number_style_convert($stats->get_stats_item('work_total') * $gproj->get_scale() / $stats->get_stats_item('members_overall')) ?></td>
+    <tr class="border-b border-slate-100">
+      <td class="phead2 py-1.5 px-3 text-left"><?= $gproj->get_scaled_unit_name() ?>/member:</td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?= number_style_convert($stats->get_stats_item('work_total') * $gproj->get_scale() / $stats->get_stats_item('members_overall')) ?></td>
 <? if ($stats->get_stats_item('work_today') > 0) { ?>
-      <td align="right"><?= number_style_convert($stats->get_stats_item('work_today') * $gproj->get_scale() / $stats->get_stats_item('members_today')) ?></td>
+      <td class="py-1.5 px-3 text-right tabular-nums"><?= number_style_convert($stats->get_stats_item('work_today') * $gproj->get_scale() / $stats->get_stats_item('members_today')) ?></td>
 <? } ?>
     </tr>
     <?}?>
@@ -123,56 +126,70 @@ if (private_markupurl_safety($team->get_logo()) != "") {
     <?}?>
     -->
     <tr>
-      <td align="left" class="phead2">Time Working:</td>
-      <td align="right" colspan="<?= ($stats->get_stats_item('work_today') > 0) ? 3 : 2 ?>"><?= number_style_convert($stats->get_stats_item('days_working')) ?> days</td>
+      <td class="phead2 py-1.5 px-3 text-left">Time Working:</td>
+      <td class="py-1.5 px-3 text-right tabular-nums" colspan="<?= ($stats->get_stats_item('work_today') > 0) ? 3 : 2 ?>"><?= number_style_convert($stats->get_stats_item('days_working')) ?> days</td>
     </tr>
   </table>
-  <? if($gproj->get_total_units() > 0 && $stats->get_stats_item('work_today') == 0)
-     {
-   ?>
-  <p>The odds are 1 in a zillion-trillion that this team will find the key before anyone else does.</p>
-  <?} else if ($gproj->get_total_units() > 0 && $stats->get_stats_item('work_today') > 0) {
-    $gprojstats = $gproj->get_current_stats();
+  </div>
+  <?
+  $t_show_odds = ($gproj->get_total_units() > 0);
+  if ($t_show_odds) {
+      if ($stats->get_stats_item('work_today') == 0) {
+          $t_odds_value = "a zillion-trillion";
+      } else {
+          $gprojstats = $gproj->get_current_stats();
+          $t_odds_value = "1 in " . number_style_convert($gprojstats->get_stats_item('work_units') / $stats->get_stats_item('work_today'));
+      }
+  }
   ?>
-  <p>The odds are 1 in <?= number_style_convert($gprojstats->get_stats_item('work_units') / $stats->get_stats_item('work_today')) ?> that this team will
-    find the key before anyone else does.</p>
-  <? } ?>
-  <p>
-    This team has had <?= number_style_convert($stats->get_stats_item('members_overall')) ?> participants contribute blocks.
-    Of those, <?= number_style_convert($stats->get_stats_item('members_current')) ?> are still on this team,
-    and <?= number_style_convert($stats->get_stats_item('members_today')) ?> submitted work today.
-  </p>
+  <div class="mx-auto mt-4 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
+   <? if ($t_show_odds) { ?>
+    <div class="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
+     <div class="text-2xl font-semibold text-slate-900"><?=$t_odds_value?></div>
+     <div class="mt-1 text-xs text-slate-500">Odds of finding the key first</div>
+    </div>
+   <? } ?>
+    <div class="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
+     <div class="text-2xl font-semibold text-slate-900"><?=number_style_convert($stats->get_stats_item('members_overall'))?></div>
+     <div class="mt-1 text-xs text-slate-500">Participants contributed</div>
+    </div>
+    <div class="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
+     <div class="text-2xl font-semibold text-slate-900"><?=number_style_convert($stats->get_stats_item('members_current'))?></div>
+     <div class="mt-1 text-xs text-slate-500">Current members</div>
+    </div>
+    <div class="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
+     <div class="text-2xl font-semibold text-slate-900"><?=number_style_convert($stats->get_stats_item('members_today'))?></div>
+     <div class="mt-1 text-xs text-slate-500">Submitted work today</div>
+    </div>
+  </div>
   <?
   //Some buttons to view team history will go here
   if ($team->get_show_members() == "NO") {
-    ?>	
-    <p style="text-align:center">This team wishes to keep its membership private.<p></center>
-  <? } else {  
-    if ($stats->get_stats_item('work_today') == 0) {
-      print "<p style=\"text-align:center\">Click here to view this team's 
-      <a href=\"tmember.php?project_id=$project_id&amp;team=$tm\">overall</a> participant stats";
-    } else {
-      print "<p style=\"text-align: center;\">Click here to view this team's participant stats for
-      <a href=\"tmember.php?project_id=$project_id&amp;team=$tm&amp;source=y\">yesterday</a> or
-      <a href=\"tmember.php?project_id=$project_id&amp;team=$tm\">overall</a>";
-    }
-	
-    if ($team->get_show_members() == "PAS") {
-      print " (Password required)";
-    }
-
-    print ".</p>";
-  }
+    ?>
+    <p class="mt-4 text-sm text-slate-600">This team wishes to keep its membership private.</p>
+  <? } else { ?>
+    <div class="mt-4 flex flex-wrap items-center justify-center gap-2 text-sm text-slate-600">
+     <span>View this team's participant stats:</span>
+     <? if ($stats->get_stats_item('work_today') > 0) { ?>
+      <a class="rounded border border-indigo-200 bg-indigo-50 px-3 py-1 font-medium text-indigo-700 hover:bg-indigo-100" href="tmember.php?project_id=<?=$project_id?>&amp;team=<?=$tm?>&amp;source=y">Yesterday</a>
+     <? } ?>
+      <a class="rounded border border-indigo-200 bg-indigo-50 px-3 py-1 font-medium text-indigo-700 hover:bg-indigo-100" href="tmember.php?project_id=<?=$project_id?>&amp;team=<?=$tm?>">Overall</a>
+     <? if ($team->get_show_members() == "PAS") { ?>
+      <span class="text-xs text-slate-400">(password required)</span>
+     <? } ?>
+    </div>
+  <? }
 
   //A list of teams goes here
-  ?> 
-    <table border="1" cellspacing="0" style="margin: auto;">
+  ?>
+  <div class="mx-auto mt-4 max-w-3xl overflow-hidden rounded-lg border border-slate-200 shadow-sm">
+    <table class="w-full text-sm">
       <tr>
-        <th class="thead">Rank</th>
-        <th class="thead">Team</th>
-        <th class="thead" align="right">Days</th>
-        <th class="thead" align="right"><?= $gproj->get_scaled_unit_name() ?></th>
-        <th class="thead" align="right">Yesterday</th>
+        <th class="thead text-left">Rank</th>
+        <th class="thead text-left">Team</th>
+        <th class="thead text-right">Days</th>
+        <th class="thead text-right"><?= $gproj->get_scaled_unit_name() ?></th>
+        <th class="thead text-right">Yesterday</th>
       </tr>
       <?
       $totalwork = 0;
@@ -180,47 +197,51 @@ if (private_markupurl_safety($team->get_logo()) != "") {
       for ($i = 0; $i < count($neighbors); $i++) {
         $tmpStats = $neighbors[$i]->get_current_stats();
       ?>
-        <tr class="<?= row_background_color($i) ?>">
-        <?        
+        <tr class="border-b border-slate-100 last:border-0 <?=$i % 2 == 0 ? 'bg-white' : 'bg-slate-50'?>">
+        <?
         $totalwork += $tmpStats->get_stats_item('work_total');
         $yestwork += $tmpStats->get_stats_item('work_today');
         ?>
-          <td><?= $tmpStats->get_stats_item('overall_rank') . " " . html_rank_arrow($tmpStats->get_stats_item('overall_rank_previous') - $tmpStats->get_stats_item('overall_rank')) ?></td>
-          <td>
-              <a href="tmsummary.php?project_id=<?= $project_id ?>&amp;team=<?= $neighbors[$i]->get_id() ?>"><?= safe_display($neighbors[$i]->get_name()) ?></a>
+          <td class="py-1.5 px-3 text-left"><?= $tmpStats->get_stats_item('overall_rank') . " " . html_rank_arrow($tmpStats->get_stats_item('overall_rank_previous') - $tmpStats->get_stats_item('overall_rank')) ?></td>
+          <td class="py-1.5 px-3 text-left">
+              <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="tmsummary.php?project_id=<?= $project_id ?>&amp;team=<?= $neighbors[$i]->get_id() ?>"><?= safe_display($neighbors[$i]->get_name()) ?></a>
           </td>
-          <td align="right"><?= number_style_convert($tmpStats->get_stats_item('days_working')) ?></td>
-          <td align="right"><?= number_style_convert($tmpStats->get_stats_item('work_total') * $gproj->get_scale()) ?></td>
-          <td align="right"><?= number_style_convert($tmpStats->get_stats_item('work_today') * $gproj->get_scale()) ?></td>
+          <td class="py-1.5 px-3 text-right tabular-nums"><?= number_style_convert($tmpStats->get_stats_item('days_working')) ?></td>
+          <td class="py-1.5 px-3 text-right tabular-nums"><?= number_style_convert($tmpStats->get_stats_item('work_total') * $gproj->get_scale()) ?></td>
+          <td class="py-1.5 px-3 text-right tabular-nums"><?= number_style_convert($tmpStats->get_stats_item('work_today') * $gproj->get_scale()) ?></td>
         </tr>
       <?
       }
       ?>
       <tr>
-        <td class="tfoot" align="right" colspan="3">Total</td>
-        <td class="tfoot" align="right"><?= number_style_convert($totalwork * $gproj->get_scale()) ?></td>
-        <td class="tfoot" align="right"><?= number_style_convert($yestwork * $gproj->get_scale()) ?></td>
+        <td class="tfoot text-right" colspan="3">Total</td>
+        <td class="tfoot text-right"><?= number_style_convert($totalwork * $gproj->get_scale()) ?></td>
+        <td class="tfoot text-right"><?= number_style_convert($yestwork * $gproj->get_scale()) ?></td>
       </tr>
     </table>
-    <hr>
-    <a href="/participant/pjointeam.php?team=<?=$tm?>">I want to join this team!</a>
-    <hr>
-    <form action="tmedit.php" method="post">
-      <p>
-        Edit this team's information 
-        <br>
-        Password:
-        <input name="pass" size="8" maxlength="8" type="password">
-        <input name="team" type="hidden" value="<?=$team->get_id()?>">
-        <input value="Edit" type="submit">
-      </p>
-    </form>
-    <form action="tmpass.php" method="post"><p>
-    If you are the team coordinator, and you've forgotten your team password,<br> click
-    <input type="hidden" name="team" value="<?=$team->get_id()?>">
-    <input type="submit" value="here"> and the password will be mailed to
-    <?=$team->get_contact_name()?>.
-    </p></form>
+  </div>
+    <p class="mt-6 text-center">
+      <a class="inline-block rounded bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500" href="/participant/pjointeam.php?team=<?=$tm?>">I want to join this team!</a>
+    </p>
+
+    <div class="mx-auto mt-8 max-w-md rounded-lg border border-slate-200 bg-slate-50 p-4 text-left">
+      <div class="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Team Coordinator</div>
+
+      <form action="tmedit.php" method="post" class="mb-4">
+        <label class="mb-1 block text-sm text-slate-600">Edit this team's information</label>
+        <div class="flex gap-2">
+          <input class="min-w-0 flex-1 rounded border border-slate-300 px-2 py-1 text-sm" name="pass" size="8" maxlength="8" type="password" placeholder="Team password">
+          <input name="team" type="hidden" value="<?=$team->get_id()?>">
+          <input class="rounded bg-slate-800 px-3 py-1 text-sm font-medium text-white hover:bg-slate-700 cursor-pointer" value="Edit" type="submit">
+        </div>
+      </form>
+
+      <form action="tmpass.php" method="post">
+        <p class="mb-2 text-sm text-slate-600">Forgotten your team password? We'll email it to <?=$team->get_contact_name()?>.</p>
+        <input type="hidden" name="team" value="<?=$team->get_id()?>">
+        <input class="rounded border border-slate-300 bg-white px-3 py-1 text-sm font-medium text-slate-700 hover:bg-slate-100 cursor-pointer" type="submit" value="Email me the password">
+      </form>
+    </div>
   </div>
 
 <? include "../templates/footer.inc"; ?>

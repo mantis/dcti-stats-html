@@ -1,51 +1,21 @@
-<?
-if(!isset($project_filter))
-{
-  $project_filter = array(3, 5, 205, 8, 24, 25, 26, 27, 28);
-}
+    </main>
 
-function show_project_link($projectId, $projectFilter)
-{
-  global $project_id;
-  if($projectId == $project_id)
-  {
-    return false;
-  }
-
-  if(isset($projectFilter) && 
-     is_array($projectFilter) &&
-     !in_array($projectId, $projectFilter))
-  {
-    return false;
-  } 
-
-  return true;
-}
-
-    $query_string = '';
-    foreach ($_GET as $getvar => $getval) {
-        if ($getvar != 'project_id') {
-            $query_string .= '&amp;' . htmlentities($getvar) . '=' . htmlentities(stripslashes($getval));
-        }
-    }
-?>
-<hr/>
-<div style="text-align: center;"> This page in other projects: <br />
-<? if (show_project_link(3, $project_filter)) { ?> <a href="<?=$myname?>?project_id=3<?=$query_string?>">RC5-56</a>  <? } 
-   if (show_project_link(5, $project_filter)) { ?> <a href="<?=$myname?>?project_id=5<?=$query_string?>">RC5-64</a>  <? } 
-   if (show_project_link(205, $project_filter)) { ?> <a href="<?=$myname?>?project_id=205<?=$query_string?>">RC5-64 (all)</a>  <? } 
-   if (show_project_link(8, $project_filter)) { ?> <a href="<?=$myname?>?project_id=8<?=$query_string?>">RC5-72</a>  <? } 
-   if (show_project_link(24, $project_filter)) { ?> <a href="<?=$myname?>?project_id=24<?=$query_string?>">OGR-24</a> <? } 
-   if (show_project_link(25, $project_filter)) { ?> <a href="<?=$myname?>?project_id=25<?=$query_string?>">OGR-25</a> <? } 
-   if (show_project_link(26, $project_filter)) { ?> <a href="<?=$myname?>?project_id=26<?=$query_string?>">OGR-26</a> <? } 
-   if (show_project_link(27, $project_filter)) { ?> <a href="<?=$myname?>?project_id=27<?=$query_string?>">OGR-27</a> <? } 
-   if (show_project_link(28, $project_filter)) { ?> <a href="<?=$myname?>?project_id=28<?=$query_string?>">OGR-28</a> <? } 
-?>
-</div>
-   <div style="text-align: center">
-    <a href="http://www.php.net"><img src="/images/php.gif" alt="PHP4" /></a>
-    <a href="http://www.postgresql.org/"><img src="/images/pg-power.jpg" alt="PostgreSQL" /></a>
+    <footer class="mt-auto border-t border-slate-200 bg-white">
+<? if( isset( $lastupdate ) ) { ?>
+     <div class="border-b border-slate-100 bg-amber-50 text-center text-xs text-amber-700 py-1.5 px-4">
+<? if( $lastupdate <> "" ) { ?>
+      Data shown reflects all blocks received as of <?=$lastupdate?> at 23:59 UTC. Current time is <?=gmstrftime('%d-%b-%Y %T')?>.
+<? } else { ?>
+      Update currently in progress...
+<? } ?>
+     </div>
+<? } ?>
+     <div class="px-4 py-6 text-center text-xs text-slate-400">
+      Built with <a class="hover:underline hover:text-slate-500" href="http://www.php.net">PHP</a> and <a class="hover:underline hover:text-slate-500" href="http://www.postgresql.org/">PostgreSQL</a>
+     </div>
+    </footer>
    </div>
+  </div>
 <?
 /* if($debug >= DEBUG_TIME ) {
 ?>

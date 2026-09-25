@@ -22,15 +22,15 @@ $lastupdate = last_update('e');
 include "../templates/header.inc";
 
 ?>
-     <div><br></div>
-      <table border="1" cellspacing="0" cellpadding="1" width="100%" class="tborder">
+    <div class="mx-auto max-w-4xl overflow-hidden rounded-lg border border-slate-200 shadow-sm">
+     <table class="w-full text-sm">
       <tr>
-       <th class="thead">Rank</th>
-       <th class="thead">Participant</th>
-       <th class="thead" align="right">First Unit</th>
-       <th class="thead" align="right">Last Unit</th>
-       <th class="thead" align="right">Days</th>
-       <th class="thead" align="right"><?=$gproj->get_scaled_unit_name()?></th>
+       <th class="thead text-left">Rank</th>
+       <th class="thead text-left">Participant</th>
+       <th class="thead text-right">First Unit</th>
+       <th class="thead text-right">Last Unit</th>
+       <th class="thead text-right">Days</th>
+       <th class="thead text-right"><?=$gproj->get_scaled_unit_name()?></th>
       </tr>
 <?
 
@@ -43,13 +43,13 @@ if ($plist) {
 		$statspar =& $par->get_current_stats();
 	    $totalblocks = $totalblocks + (float) $statspar -> get_stats_item('blocks') * $gproj->get_scale();
 	    ?>
-		<tr class="<?=row_background_color($i)?>">
-			<td><?=$statspar -> get_stats_item('rank')?><?=html_rank_arrow($statspar -> get_stats_item('change')) ?></td>
-			<td><a href="psummary.php?project_id=<?=$project_id?>&amp;id=<?=$par -> get_id() ?>"><?=safe_display($par -> get_display_name()) ?></a></td>
-			<td align="right"><?=$statspar -> get_stats_item('first_date') ?></td>
-			<td align="right"><?=$statspar -> get_stats_item('last_date') ?></td>
-			<td align="right"><?=$statspar -> get_stats_item('days_working')?></td>
-			<td align="right"><?=number_style_convert((float) $statspar -> get_stats_item('blocks') * $gproj->get_scale()) ?></td>
+		<tr class="border-b border-slate-100 last:border-0 <?=$i % 2 == 0 ? 'bg-white' : 'bg-slate-50'?>">
+			<td class="py-1.5 px-3 text-left"><?=$statspar -> get_stats_item('rank')?><?=html_rank_arrow($statspar -> get_stats_item('change')) ?></td>
+			<td class="py-1.5 px-3 text-left"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="psummary.php?project_id=<?=$project_id?>&amp;id=<?=$par -> get_id() ?>"><?=safe_display($par -> get_display_name()) ?></a></td>
+			<td class="py-1.5 px-3 text-right tabular-nums"><?=$statspar -> get_stats_item('first_date') ?></td>
+			<td class="py-1.5 px-3 text-right tabular-nums"><?=$statspar -> get_stats_item('last_date') ?></td>
+			<td class="py-1.5 px-3 text-right tabular-nums"><?=$statspar -> get_stats_item('days_working')?></td>
+			<td class="py-1.5 px-3 text-right tabular-nums"><?=number_style_convert((float) $statspar -> get_stats_item('blocks') * $gproj->get_scale()) ?></td>
 		</tr>
 	 <?
 	    $i++;
@@ -59,26 +59,27 @@ if ($plist) {
 }
 $totalblocks = number_format($totalblocks, 0);
 if ($lo > sizeof($plist)) {
-    $btn_back = "<a href=\"$myname?project_id=$project_id&amp;low=$prev_lo&amp;limit=$limit&amp;source=$source\">Back $limit</a>";
+    $btn_back = "<a class=\"text-slate-100 hover:underline\" href=\"$myname?project_id=$project_id&amp;low=$prev_lo&amp;limit=$limit&amp;source=$source\">Back $limit</a>";
 } else {
     $btn_back = "&nbsp;";
 }
 
 if (sizeof($plist) >= $limit) {
-    $btn_fwd = "<a href=\"$myname?project_id=$project_id&amp;low=$next_lo&amp;limit=$limit&amp;source=$source\">Next $limit</a>";
+    $btn_fwd = "<a class=\"text-slate-100 hover:underline\" href=\"$myname?project_id=$project_id&amp;low=$next_lo&amp;limit=$limit&amp;source=$source\">Next $limit</a>";
 } else {
     $btn_fwd = "&nbsp;";
 }
 ?>
 	 <tr>
-	  <td class="tfoot"><? echo "$lo-$hi"?></td>
-	  <td class="tfoot" align="right" colspan="4">Total</td>
-	  <td class="tfoot" align="right"><?=$totalblocks?></td>
+	  <td class="tfoot text-left"><? echo "$lo-$hi"?></td>
+	  <td class="tfoot text-right" colspan="4">Total</td>
+	  <td class="tfoot text-right"><?=$totalblocks?></td>
 	 </tr>
 	 <tr>
-	  <td class="tfoot"><?=$btn_back?></td>
+	  <td class="tfoot text-left"><?=$btn_back?></td>
 	  <td class="tfoot" colspan="4">&nbsp;</td>
-	  <td class="tfoot" align="right"><?=$btn_fwd?></td>
+	  <td class="tfoot text-right"><?=$btn_fwd?></td>
 	 </tr>
-	</table>
+     </table>
+    </div>
 <? include "../templates/footer.inc"; ?>

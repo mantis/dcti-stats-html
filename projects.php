@@ -10,7 +10,6 @@ include "templates/header.inc";
 if( file_exists("cache/index_$project_id.inc")) {
     readfile( "cache/index_$project_id.inc");
 } else {
-    display_last_update();
     include("templates/stale.inc");
 }
 

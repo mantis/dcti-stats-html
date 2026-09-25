@@ -40,12 +40,13 @@ This page, like many stats pages, has a version which is far more suitable
 for machine parsing.  Please try the url:
 http://stats.distributed.net/participant/phistory_raw.php?project_id=$project_id&id=$id
 -->
-    <p align="center"><a href="psummary.php?project_id=<?=$project_id?>&amp;id=<?=$id?>">View <?=safe_display($gpart->get_display_name())?>'s Participant Summary</a></p>
-      <table align="center" border="1" cellspacing="0" cellpadding="1" >
+    <p class="text-center"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="psummary.php?project_id=<?=$project_id?>&amp;id=<?=$id?>">View <?=safe_display($gpart->get_display_name())?>'s Participant Summary</a></p>
+    <div class="mx-auto mt-4 max-w-2xl overflow-hidden rounded-lg border border-slate-200 shadow-sm">
+      <table class="w-full text-sm">
       <tr>
-       <th class="thead">Date</th>
-       <th class="thead" align="right"><?=$gproj->get_scaled_unit_name()?></th>
-       <th class="thead">&nbsp;</th>
+       <th class="thead text-left">Date</th>
+       <th class="thead text-right"><?=$gproj->get_scaled_unit_name()?></th>
+       <th class="thead"></th>
       </tr>
 <?
 
@@ -64,19 +65,20 @@ foreach ($history as $histrow)
     $date_fmt = $histrow->stats_date;
     $width = (int) (((float)$histrow->work_units / $maxwork_units) * 200) + 1;
     ?>
-      <tr class=<?=row_background_color($i);?>>
+      <tr class="border-b border-slate-100 last:border-0 <?=$i % 2 == 0 ? 'bg-white' : 'bg-slate-50'?>">
       <? if ( $random_stats == 1 ) { ?>
         <!-- Mmmm... random data... -->
       <? } ?>
-        <td><?=$date_fmt?></td>
-        <td align="right"><?=$work_units_fmt?></td>
-        <td align="left"><img src="/images/bar.jpg" height="8" width="<?=$width?>" alt=""></td>
+        <td class="py-1.5 px-3 text-left"><?=$date_fmt?></td>
+        <td class="py-1.5 px-3 text-right tabular-nums"><?=$work_units_fmt?></td>
+        <td class="py-1.5 px-3"><div class="h-2 rounded-full bg-indigo-600" style="width: <?=$width?>px"></div></td>
       </tr>
 <?
 	$i++;
 	}
 ?>
-    </table>
-    <p align="center"><a href="psummary.php?project_id=<?=$project_id?>&amp;id=<?=$id?>">View <?=safe_display($gpart->get_display_name())?>'s Participant Summary</a></p>
+      </table>
+    </div>
+    <p class="mt-4 text-center"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="psummary.php?project_id=<?=$project_id?>&amp;id=<?=$id?>">View <?=safe_display($gpart->get_display_name())?>'s Participant Summary</a></p>
 <?include "../templates/footer.inc";
 ?>
