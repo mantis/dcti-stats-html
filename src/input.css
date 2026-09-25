@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+/*
+ * Legacy component classes.
+ *
+ * These class names (row1/row2/row3, thead/tfoot/tcontent/tborder,
+ * phead/phead2, htitle/hcontent/hsubtitle/lastupdate) are emitted by PHP
+ * across ~40 stats pages that haven't been individually redesigned yet
+ * (etc/modules.inc row_background_color(), etc/config.inc.default
+ * $bar_color_a/$bar_color_b, and inline class="thead" etc. in listing
+ * pages). Redefining them here re-skins every page that references them
+ * without touching their markup. Keep these to color/type/spacing only —
+ * no display/layout changes — since they're applied to arbitrary <td>/<tr>
+ * elements in table layouts we aren't restructuring yet.
+ */
+@layer components {
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+  }
+  a {
+    @apply text-indigo-600 hover:text-indigo-800;
+  }
+
+  .row1 {
+    @apply bg-white;
+  }
+  .row2 {
+    @apply bg-slate-50;
+  }
+  .row3 {
+    @apply bg-amber-50;
+  }
+
+  .thead {
+    @apply bg-slate-800 text-slate-100 font-semibold py-2 px-3 align-bottom;
+  }
+  .thead a,
+  .thead a:visited,
+  .thead a:hover {
+    @apply text-slate-100 font-semibold no-underline hover:underline;
+  }
+
+  .tfoot {
+    @apply bg-slate-800 text-slate-100 font-medium py-1.5 px-3;
+  }
+  .tfoot a,
+  .tfoot a:visited,
+  .tfoot a:hover {
+    @apply text-slate-100 font-medium no-underline hover:underline;
+  }
+
+  .tcontent {
+    @apply text-slate-800;
+  }
+  .tborder {
+    @apply border border-slate-300;
+  }
+
+  .phead {
+    @apply text-center font-bold text-2xl text-slate-900;
+  }
+  .phead2 {
+    @apply font-semibold text-slate-600;
+  }
+
+  .htitle {
+    @apply text-xl font-bold text-white bg-slate-900 py-3 px-4;
+  }
+  .hcontent {
+    @apply text-sm text-slate-300 bg-slate-950 p-3;
+  }
+  .hcontent a,
+  .hcontent a:visited,
+  .hcontent a:hover {
+    @apply text-slate-100 underline decoration-slate-600 hover:decoration-slate-100;
+  }
+  .hsubtitle {
+    @apply text-base font-semibold text-indigo-400;
+  }
+
+  .lastupdate {
+    @apply text-xs text-amber-300 bg-slate-800 py-1 px-3;
+  }
+}
