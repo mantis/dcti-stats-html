@@ -106,10 +106,12 @@ Header("Expires: " . gmdate("D, d M Y", $now) . " $hour:00 GMT");
      $par = $gdb->fetch_object();
      $value = (float) $par->$chart_value_field;
      if (strpos($view, 'c') !== false) {
-       $cpu_breakdown[$par->cpuname] = (isset($cpu_breakdown[$par->cpuname]) ? $cpu_breakdown[$par->cpuname] : 0) + $value;
+       $cpuname = trim($par->cpuname);
+       $cpu_breakdown[$cpuname] = (isset($cpu_breakdown[$cpuname]) ? $cpu_breakdown[$cpuname] : 0) + $value;
      }
      if (strpos($view, 'o') !== false) {
-       $os_breakdown[$par->osname] = (isset($os_breakdown[$par->osname]) ? $os_breakdown[$par->osname] : 0) + $value;
+       $osname = trim($par->osname);
+       $os_breakdown[$osname] = (isset($os_breakdown[$osname]) ? $os_breakdown[$osname] : 0) + $value;
      }
    }
  }
