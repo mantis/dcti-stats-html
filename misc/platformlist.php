@@ -94,6 +94,101 @@ Header("Expires: " . gmdate("D, d M Y", $now) . " $hour:00 GMT");
 
  $rows = $gdb->num_rows();
 
+ // --- CPU / OS share breakdown, built from the (cpu,os) rows already
+ // fetched above - no extra query needed. Uses whichever value column the
+ // requested $view produced (lifetime total takes priority over yesterday).
+ $chart_value_field = $show_total ? 'total' : ($show_yesterday ? 'yesterday' : null);
+ $cpu_breakdown = array();
+ $os_breakdown = array();
+ if ($chart_value_field !== null) {
+   for ($i = 0; $i < $rows; $i++) {
+     $gdb->data_seek($i);
+     $par = $gdb->fetch_object();
+     $value = (float) $par->$chart_value_field;
+     if (strpos($view, 'c') !== false) {
+       $cpu_breakdown[$par->cpuname] = (isset($cpu_breakdown[$par->cpuname]) ? $cpu_breakdown[$par->cpuname] : 0) + $value;
+     }
+     if (strpos($view, 'o') !== false) {
+       $os_breakdown[$par->osname] = (isset($os_breakdown[$par->osname]) ? $os_breakdown[$par->osname] : 0) + $value;
+     }
+   }
+ }
+
+ // Validated categorical palette (dataviz skill default, light-mode slots
+ // 1-6): fixed hue order, never cycled. A 7th+ category folds into "Other".
+ $stats_share_colors = array('#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300');
+ $stats_share_other_color = '#64748b';
+
+ function stats_share_ink($hex) {
+   $hex = ltrim($hex, '#');
+   $r = hexdec(substr($hex, 0, 2));
+   $g = hexdec(substr($hex, 2, 2));
+   $b = hexdec(substr($hex, 4, 2));
+   $luma = 0.299 * $r + 0.587 * $g + 0.114 * $b;
+   return $luma > 150 ? '#0f172a' : '#ffffff';
+ }
+
+ function render_share_bar($label, $breakdown) {
+   global $stats_share_colors, $stats_share_other_color;
+   if (empty($breakdown)) return;
+   $total = array_sum($breakdown);
+   if ($total <= 0) return;
+
+   arsort($breakdown);
+   $top = array_slice($breakdown, 0, 6, true);
+   $other = $total - array_sum($top);
+
+   $segments = array();
+   $i = 0;
+   foreach ($top as $name => $value) {
+     $segments[] = array('name' => $name, 'value' => $value, 'color' => $stats_share_colors[$i]);
+     $i++;
+   }
+   if ($other > 0) {
+     $segments[] = array('name' => 'Other', 'value' => $other, 'color' => $stats_share_other_color);
+   }
+   $n = count($segments);
+
+   print '<div>';
+   print '<h3 class="text-sm font-semibold text-slate-900">' . htmlspecialchars($label) . '</h3>';
+   print '<div class="mt-2 flex h-4 w-full overflow-hidden rounded-full" style="gap:2px">';
+   foreach ($segments as $idx => $seg) {
+     $pct = 100 * $seg['value'] / $total;
+     if ($n == 1) {
+       $radius = 'border-radius:9999px';
+     } else if ($idx == 0) {
+       $radius = 'border-radius:9999px 0 0 9999px';
+     } else if ($idx == $n - 1) {
+       $radius = 'border-radius:0 9999px 9999px 0';
+     } else {
+       $radius = 'border-radius:0';
+     }
+     $ink = stats_share_ink($seg['color']);
+     print '<div class="flex items-center justify-center text-[10px] font-semibold" style="width:' . $pct . '%; background-color:' . $seg['color'] . '; ' . $radius . '; color:' . $ink . '" title="' . htmlspecialchars($seg['name']) . ': ' . number_format($pct, 1) . '%">';
+     if ($pct >= 8) {
+       print number_format($pct, 0) . '%';
+     }
+     print '</div>';
+   }
+   print '</div>';
+
+   print '<div class="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-xs">';
+   foreach ($segments as $seg) {
+     $pct = 100 * $seg['value'] / $total;
+     print '<span class="inline-flex items-center gap-1.5"><span class="inline-block size-2.5 rounded-full" style="background-color:' . $seg['color'] . '"></span><span class="text-slate-700">' . htmlspecialchars($seg['name']) . '</span><span class="text-slate-500 tabular-nums">' . number_format($pct, 1) . '%</span></span>';
+   }
+   print '</div>';
+   print '</div>';
+ }
+
+ if (!empty($cpu_breakdown) || !empty($os_breakdown)) {
+   $chart_caption = $show_total ? 'lifetime units' : 'yesterday';
+   print '<div class="mx-auto mb-8 max-w-4xl grid gap-8 sm:grid-cols-2">';
+   render_share_bar('CPU share (' . $chart_caption . ')', $cpu_breakdown);
+   render_share_bar('OS share (' . $chart_caption . ')', $os_breakdown);
+   print '</div>';
+ }
+
  # Total number of columns in table, not counting yesterday or total columns. Start at 2 to account for first and last.
  $cols = 3;
  print "
