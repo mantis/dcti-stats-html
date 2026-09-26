@@ -100,7 +100,11 @@
   # non-zero rate yesterday.
   $timeline_available = false;
   if ($gproj->get_total_units() > 0 && $yest_unscaled_rate_raw > 0 && $time_working_raw > 0) {
-      $timeline_days_to_100 = $total_remaining / $yest_unscaled_rate_raw;
+      // $yest_unscaled_rate_raw is units/second (see above), so convert back
+      // to a per-day rate here rather than dividing units directly by it -
+      // otherwise this ends up in seconds and gets multiplied by 86400 a
+      // second time below, inflating the projected date by a factor of 86400.
+      $timeline_days_to_100 = $total_remaining / ($yest_unscaled_rate_raw * 86400);
       $timeline_days_to_50 = $timeline_days_to_100 / 2;
       $timeline_today_ts = time();
       $timeline_start_ts = $timeline_today_ts - ($time_working_raw * 86400);
@@ -112,6 +116,13 @@
           $timeline_start_year = date('Y', $timeline_start_ts);
           $timeline_50_year = date('Y', $timeline_50_ts);
           $timeline_100_year = date('Y', $timeline_100_ts);
+          // Years stay plain for any normal calendar year; projects with an
+          // astronomically large remaining keyspace (eg. RC5-72) can push
+          // these out to years so large that thousands separators are
+          // needed to keep them readable.
+          $format_year = function($y) {
+              return (abs($y) >= 10000) ? number_format($y) : (string)$y;
+          };
           $timeline_today_pct = min(100, max(0, 100 * ($timeline_today_ts - $timeline_start_ts) / $timeline_span));
           $timeline_50_pct = min(100, max(0, 100 * ($timeline_50_ts - $timeline_start_ts) / $timeline_span));
 
@@ -206,10 +217,17 @@
    <div class="mx-auto max-w-4xl text-left">
 
      <p class="text-sm text-slate-500">Figures include every block received as of <?=safe_display($lastupdate)?>.</p>
-     <h1 class="mt-2 text-4xl font-extrabold leading-none text-slate-900 sm:text-5xl"><?=safe_display($gproj->get_name())?></h1>
+     <div class="mt-2 flex flex-wrap items-center gap-3">
+       <h1 class="text-4xl font-extrabold leading-none text-slate-900 sm:text-5xl"><?=safe_display($gproj->get_name())?></h1>
+<? if (stats_project_is_completed($project_id)) { ?>
+       <span class="inline-block rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-500">Completed</span>
+<? } else { ?>
+       <span class="inline-block rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">Active</span>
+<? } ?>
+     </div>
      <p class="mt-4 max-w-2xl text-lg text-slate-700 sm:text-xl">
 <? if ($timeline_available) { ?>
-       Searching since <?=$timeline_start_year?> and <strong class="font-bold tabular-nums"><?=$pct_searched?>%</strong> of the way through the keyspace.
+       Searching since <?=$format_year($timeline_start_year)?> and <strong class="font-bold tabular-nums"><?=$pct_searched?>%</strong> of the way through the keyspace.
 <? } elseif (isset($pct_searched)) { ?>
        <strong class="font-bold tabular-nums"><?=$pct_searched?>%</strong> of the keyspace has been searched so far.
 <? } ?>
@@ -221,20 +239,20 @@
 <? if ($timeline_available) { ?>
      <figure class="mt-12">
        <div class="relative h-3 rounded-full bg-slate-200" role="img"
-            aria-label="Timeline from <?=$timeline_start_year?>. Today is about <?=number_format($timeline_today_pct,0)?> percent of the way along. At yesterday's pace the key is most likely found around <?=$timeline_50_year?>, and the full keyspace would be searched by <?=$timeline_100_year?>.">
+            aria-label="Timeline from <?=$format_year($timeline_start_year)?>. Today is about <?=number_format($timeline_today_pct,0)?> percent of the way along. At yesterday's pace the key is most likely found around <?=$format_year($timeline_50_year)?>, and the full keyspace would be searched by <?=$format_year($timeline_100_year)?>.">
          <div class="absolute inset-y-0 left-0 rounded-full bg-slate-900" style="width: <?=$timeline_today_pct?>%"></div>
          <div class="absolute inset-y-0 opacity-40" style="left: <?=$timeline_today_pct?>%; width: <?=($timeline_50_pct - $timeline_today_pct)?>%; background-image: repeating-linear-gradient(90deg, #0f172a 0 2px, transparent 2px 6px);"></div>
          <div class="absolute -top-2 h-7 w-1 -translate-x-1/2 rounded bg-amber-500" style="left: <?=$timeline_today_pct?>%"></div>
          <div class="absolute top-1/2 size-4 -translate-y-1/2 -translate-x-1/2 rounded-full border-[3px] border-slate-900 bg-white" style="left: <?=$timeline_50_pct?>%"></div>
 <? foreach ($timeline_gridlines as $g) { ?>
-         <span class="absolute top-full mt-2 hidden -translate-x-1/2 text-xs tabular-nums text-slate-500 md:block" style="left: <?=$g['pct']?>%"><?=$g['year']?></span>
+         <span class="absolute top-full mt-2 hidden -translate-x-1/2 text-xs tabular-nums text-slate-500 md:block" style="left: <?=$g['pct']?>%"><?=$format_year($g['year'])?></span>
 <? } ?>
          <span class="absolute top-full mt-2 -translate-x-1/2 text-xs font-semibold tabular-nums text-slate-900" style="left: <?=$timeline_today_pct?>%">Today</span>
-         <span class="absolute top-full mt-2 -translate-x-1/2 text-xs font-semibold tabular-nums text-slate-900" style="left: <?=$timeline_50_pct?>%"><?=$timeline_50_year?></span>
+         <span class="absolute top-full mt-2 -translate-x-1/2 text-xs font-semibold tabular-nums text-slate-900" style="left: <?=$timeline_50_pct?>%"><?=$format_year($timeline_50_year)?></span>
        </div>
        <figcaption class="mt-10 max-w-2xl text-sm text-slate-600">
-         At yesterday's pace, the key is most likely to turn up around <strong class="font-semibold text-slate-900"><?=$timeline_50_year?></strong>, when half the remaining keyspace has been searched.
-         Searching every last key would take until <?=$timeline_100_year?>. The key could equally be found in tomorrow's blocks.
+         At yesterday's pace, the key is most likely to turn up around <strong class="font-semibold text-slate-900"><?=$format_year($timeline_50_year)?></strong>, when half the remaining keyspace has been searched.
+         Searching every last key would take until <?=$format_year($timeline_100_year)?>. The key could equally be found in tomorrow's blocks.
        </figcaption>
      </figure>
 <? } ?>
