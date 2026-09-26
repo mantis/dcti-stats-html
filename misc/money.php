@@ -18,11 +18,9 @@
 
         if ( $debug > 0 ) { echo "<!-- filename = $filename -->\n"; }
         ?>
-        <center>
-        <p>
-        Apologies, these pages are currently being built. Please try again in a few minutes.
-        </p>
-        </center>
+        <div class="mx-auto max-w-md rounded-lg border border-slate-200 bg-white p-6 text-center text-sm text-slate-600 shadow-sm">
+          Apologies, these pages are currently being built. Please try again in a few minutes.
+        </div>
   <?
     }
 

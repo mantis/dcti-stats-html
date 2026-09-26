@@ -8,19 +8,11 @@ include "../etc/global.inc";
 include "../etc/modules.inc";
 include "../etc/project.inc";
 
-display_last_update('e');
-
 if ( $gproj->get_prize() == 0 ) {
   print "
-    <center>
-      <p>
-        <font size=\"+2\">
-          Sorry, there's no prize for this contest.
-        </font>
-      </p>
-    </center>
-  </body>
-</html>";
+    <div class=\"mx-auto max-w-md rounded-lg border border-slate-200 bg-white p-6 text-center text-sm text-slate-600 shadow-sm\">
+      Sorry, there's no prize for this contest.
+    </div>";
  exit;
 }
 
@@ -57,122 +49,82 @@ if( $np_winner <> 1 ) {
 }
 
 print "
-  <center>
-   <br>
-   <p>
-    <font  size=\"+2\">
-     The US\$$fmt_prize prize will be divided as follows:
-    </font>
-   </p>
-   <table border=\"0\">
-    <tr>
-     <td>$nm_winner</td>
-     <td>US\$$fmt_a</td>
-    </tr>
-    <tr>
-     <td>The individual who finds the key</td>
-     <td>US\$$fmt_b</td>
-    </tr>
-    <tr>
-     <td>The winning individual's team</td>
-     <td>US\$$fmt_c</td>
-    </tr>
-    <tr>
-     <td>$nm_runnerup</td>
-     <td>US\$$fmt_d</td>
-    </tr>
-   </table>
-   <hr>
-   <p>
-    <font size=\"+2\">
-     How this is determined:
-    </font>
-   </p>
-   <table width=\"80%\" border=\"0\">
-    <tr>
-     <td>
-      <p>
-       Each individual participant involved in the effort is allowed to select
-       which non-profit he or she would prefer to send the prize money.  Each
-       person will be given one vote per block submitted.  The non-profit that
-       receives the most votes will be given 60% of the prize money.
-      </p>
-      <p>
-       Of the remaining 40%, 10% will be given to the individual who finds the
-       key and 10% will be given to that person's team.  If the winning individual
-       is NOT on a team when they find the key, they will receive the entire 20%.
-      </p>
-      <p>
-       The 20% remaining will be retained by distributed.net to fund additional
-       projects.
-      </p>
-      <p>
-       If distributed.net is, however, selected as the recipient non-profit, the
-       20% that would have otherwise gone to distributed.net will instead be given
-       to the runner-up non-profit.
-      </p>
-      <p>
-       Is everyone confused yet?
-      </p>
-      <p>
-       To choose your non-profit, simply edit your participant information.
-       <br>
-       If you know your email address and stats password, you can do so
-       <a href=\"/pedit.php3\">here and now</a>.
-      </p>
-     </td>
-    </tr>
-   </table>
-   <hr>
-   <p>
-    <font size=\"+2\">
-     Current Voting Scoreboard
-    </font>
-   </p>
-   <table>
-    <tr bgcolor=\"#cccccc\">
-     <td>Non-Profit</td>
-     <td align=\"right\">Votes</td>
-     <td align=\"right\">Supporters</td>
-    </tr>";
+  <div class=\"mx-auto max-w-2xl space-y-8\">
+
+    <div class=\"overflow-hidden rounded-lg border border-slate-200 shadow-sm\">
+      <div class=\"phead2 bg-slate-100 py-2 text-center\">The US\$$fmt_prize prize will be divided as follows</div>
+      <table class=\"w-full text-sm\">
+        <tr class=\"border-b border-slate-100\">
+          <td class=\"py-1.5 px-3\">$nm_winner</td>
+          <td class=\"py-1.5 px-3 text-right tabular-nums\">US\$$fmt_a</td>
+        </tr>
+        <tr class=\"border-b border-slate-100\">
+          <td class=\"py-1.5 px-3\">The individual who finds the key</td>
+          <td class=\"py-1.5 px-3 text-right tabular-nums\">US\$$fmt_b</td>
+        </tr>
+        <tr class=\"border-b border-slate-100\">
+          <td class=\"py-1.5 px-3\">The winning individual's team</td>
+          <td class=\"py-1.5 px-3 text-right tabular-nums\">US\$$fmt_c</td>
+        </tr>
+        <tr>
+          <td class=\"py-1.5 px-3\">$nm_runnerup</td>
+          <td class=\"py-1.5 px-3 text-right tabular-nums\">US\$$fmt_d</td>
+        </tr>
+      </table>
+    </div>
+
+    <div>
+      <h2 class=\"mb-2 text-lg font-semibold text-slate-900\">How this is determined</h2>
+      <div class=\"space-y-3 text-sm leading-relaxed text-slate-700\">
+        <p>Each individual participant involved in the effort is allowed to select which non-profit he or she would prefer to send the prize money. Each person will be given one vote per block submitted. The non-profit that receives the most votes will be given 60% of the prize money.</p>
+        <p>Of the remaining 40%, 10% will be given to the individual who finds the key and 10% will be given to that person's team. If the winning individual is NOT on a team when they find the key, they will receive the entire 20%.</p>
+        <p>The 20% remaining will be retained by distributed.net to fund additional projects.</p>
+        <p>If distributed.net is, however, selected as the recipient non-profit, the 20% that would have otherwise gone to distributed.net will instead be given to the runner-up non-profit.</p>
+        <p>Is everyone confused yet?</p>
+        <p>To choose your non-profit, simply edit your participant information. If you know your email address and stats password, you can do so <a class=\"text-indigo-600 hover:text-indigo-800 hover:underline\" href=\"/pedit.php3\">here and now</a>.</p>
+      </div>
+    </div>
+
+    <div class=\"overflow-hidden rounded-lg border border-slate-200 shadow-sm\">
+      <div class=\"phead2 bg-slate-100 py-2 text-center\">Current Voting Scoreboard</div>
+      <table class=\"w-full text-sm\">
+        <tr>
+          <th class=\"thead text-left\">Non-Profit</th>
+          <th class=\"thead text-right\">Votes</th>
+          <th class=\"thead text-right\">Supporters</th>
+        </tr>";
  for( $i=0; $i<$rows; $i++) {
    $gdb->data_seek($i);
    $par = $gdb->fetch_object();
    $votes = number_style_convert($par->votes);
    $people = number_style_convert($par->people);
+   $t_row_bg = ($i % 2 == 0) ? 'bg-white' : 'bg-slate-50';
    print "
-    <tr>
-     <td>$par->name</td>
-     <td align=\"right\">$votes</td>
-     <td align=\"right\">$people</td>
-    </tr>";
+        <tr class=\"border-b border-slate-100 last:border-0 $t_row_bg\">
+          <td class=\"py-1.5 px-3\">$par->name</td>
+          <td class=\"py-1.5 px-3 text-right tabular-nums\">$votes</td>
+          <td class=\"py-1.5 px-3 text-right tabular-nums\">$people</td>
+        </tr>";
  }
  print "
-   </table>
-   <hr>
-   <p>
-    <font size=\"+2\">
-     Non-Profit Information and Links
-    </font>
-   </p>
-   <table width=\"80%\">";
+      </table>
+    </div>
+
+    <div class=\"overflow-hidden rounded-lg border border-slate-200 shadow-sm\">
+      <div class=\"phead2 bg-slate-100 py-2 text-center\">Non-Profit Information and Links</div>
+      <div class=\"divide-y divide-slate-100\">";
  for( $i=$rows-1; $i>=0; $i--) {
    $gdb->data_seek($i);
    $par = $gdb->fetch_object($result);
    print "
-    <tr>
-     <td colspan=\"2\" bgcolor=\"#ccccc\">
-      <a href=\"$par->url\"><font size=\"+1\" color=\"#000044\">$par->name</font></a>
-     </td>
-    </tr>
-    <tr>
-     <td width=\"20\">&nbsp;</td>
-     <td>$par->comments</td>
-    </tr>";
+        <div class=\"p-3\">
+          <a class=\"font-semibold text-indigo-600 hover:text-indigo-800 hover:underline\" href=\"$par->url\">$par->name</a>
+          <p class=\"mt-1 text-sm text-slate-700\">$par->comments</p>
+        </div>";
  }
 
 ?>
-   </table>
-  </center>
- </body>
-</html>
+      </div>
+    </div>
+
+  </div>
