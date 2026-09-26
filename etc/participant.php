@@ -804,7 +804,7 @@ class Participant {
 	$retVal = [];
 
         for($i = 0; $i < $cnt; $i++) {
-            $partTmp = new Participant($db, $project, null);
+            $partTmp = new Participant($db, $project);
             $statsTmp = new ParticipantStats($db, $project);
             $statsTmp->explode($result[$i]);
             $partTmp->explode($result[$i], $statsTmp);
@@ -986,7 +986,7 @@ class Participant {
 	$retVal = [];
         for($i = 0; $i < $cnt; $i++)
         {
-            $parTmp = new Participant($db, $project, null);
+            $parTmp = new Participant($db, $project);
             $statsTmp = new ParticipantStats($db, $project);
             $statsTmp->explode($result[$i]);
             $parTmp->explode($result[$i], $statsTmp);
