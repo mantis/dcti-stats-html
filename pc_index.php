@@ -289,7 +289,7 @@
      (function () {
        var container = document.getElementById('pace-sparkline');
 
-       fetch('misc/rate_history_data.php?days=30')
+       fetch('misc/rate_history_data.php?project_id=<?=$project_id?>&days=30')
          .then(function (r) { return r.json(); })
          .then(function (rows) {
            if (!rows.length) {
