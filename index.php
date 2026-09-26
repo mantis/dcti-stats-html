@@ -5,6 +5,7 @@ $title = "Home";
 
 include "etc/global.inc";
 include "etc/modules.inc";
+include "etc/project.inc";
 
 $stats_projects = array(
     array('id' => 8,   'name' => 'RC5-72',       'icon' => 'cowhead.gif', 'desc' => "RSA Labs' 72bit RC5 Encryption Challenge",                  'status' => 'active'),
