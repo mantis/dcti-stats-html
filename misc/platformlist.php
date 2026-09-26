@@ -151,7 +151,7 @@ Header("Expires: " . gmdate("D, d M Y", $now) . " $hour:00 GMT");
 
    print '<div>';
    print '<h3 class="text-sm font-semibold text-slate-900">' . htmlspecialchars($label) . '</h3>';
-   print '<div class="mt-2 flex h-4 w-full overflow-hidden rounded-full" style="gap:2px">';
+   print '<div class="mt-2 flex h-6 w-full overflow-hidden rounded-full" style="gap:2px">';
    foreach ($segments as $idx => $seg) {
      $pct = 100 * $seg['value'] / $total;
      if ($n == 1) {
@@ -164,9 +164,13 @@ Header("Expires: " . gmdate("D, d M Y", $now) . " $hour:00 GMT");
        $radius = 'border-radius:0';
      }
      $ink = stats_share_ink($seg['color']);
-     print '<div class="flex items-center justify-center text-[10px] font-semibold" style="width:' . $pct . '%; background-color:' . $seg['color'] . '; ' . $radius . '; color:' . $ink . '" title="' . htmlspecialchars($seg['name']) . ': ' . number_format($pct, 1) . '%">';
-     if ($pct >= 8) {
-       print number_format($pct, 0) . '%';
+     print '<div class="flex items-center justify-center overflow-hidden whitespace-nowrap px-1 text-[11px] font-semibold" style="width:' . $pct . '%; background-color:' . $seg['color'] . '; ' . $radius . '; color:' . $ink . '" title="' . htmlspecialchars($seg['name']) . ': ' . number_format($pct, 1) . '%">';
+     // A bare percentage inside a segment doesn't say what it's a percentage
+     // of, so only label a segment inline once it's wide enough to carry its
+     // name alongside the number - otherwise skip the label and let the
+     // legend (and hover title) name it instead.
+     if ($pct >= (strlen($seg['name']) + 6) * 2) {
+       print htmlspecialchars($seg['name']) . '&nbsp;' . number_format($pct, 0) . '%';
      }
      print '</div>';
    }
