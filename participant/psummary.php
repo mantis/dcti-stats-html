@@ -205,9 +205,21 @@ were completed at a rate of <?=$best_rate?> Kkeys/sec.
         <? if (($gproj -> get_type() == 'RC5' or $gproj -> get_type() == 'R72') && ($gpartstats -> get_stats_item('work_today') > 0)) {
             $odds = number_format($gprojstats->get_stats_item('work_units') / $gpartstats -> get_stats_item('work_today'));
             ?>
-            <p>
-            The odds are 1 in <?=$odds?> that this participant will find the key before anyone else does.
-            </p>
+            <div class="mx-auto max-w-md mt-4">
+              <div class="flex items-center gap-3 rounded-lg border border-indigo-200 bg-indigo-50 px-4 py-3">
+                <div class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-indigo-600 text-white">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"></circle>
+                  </svg>
+                </div>
+                <div>
+                  <div class="text-lg font-bold text-indigo-700">1 in <?=$odds?></div>
+                  <div class="text-xs text-slate-600">odds this participant finds the key before anyone else does</div>
+                </div>
+              </div>
+            </div>
         <? } ?>
     <div class="mx-auto max-w-3xl overflow-hidden rounded-lg border border-slate-200 shadow-sm">
       <div class="phead2 bg-slate-100 py-2 text-center">Neighbors</div>
