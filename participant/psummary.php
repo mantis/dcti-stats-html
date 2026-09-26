@@ -89,6 +89,11 @@ $best_rate = number_format((($best_day_units*$constant_keys_in_one_block)/(86400
       <p class="italic text-slate-600 mb-4"><?=markup_to_html($gpart->get_motto())?></p>
     <? } ?>
 
+    <? if (!$gpartstats -> are_stats_loaded()) { ?>
+    <div class="mx-auto max-w-md rounded-lg border border-slate-200 bg-white p-6 text-sm text-slate-600 shadow-sm">
+      This participant hasn't submitted any work yet, so there are no stats to show.
+    </div>
+    <? } else { ?>
     <div class="mx-auto max-w-md overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
       <table class="w-full text-sm">
         <tr class="border-b border-slate-200">
@@ -203,12 +208,20 @@ were completed at a rate of <?=$best_rate?> Kkeys/sec.
         $phistory_values[] = round((float) $histrow->work_units * $gproj->get_scale());
     }
     ?>
-    <? if (count($phistory_dates) > 1) { ?>
     <div class="mx-auto mt-4 max-w-2xl rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+      <div class="mb-2 flex items-baseline justify-between gap-2">
+        <span class="text-sm font-semibold text-slate-600">Daily <?=$gproj->get_scaled_unit_name()?></span>
+        <a class="whitespace-nowrap text-sm text-indigo-600 hover:text-indigo-800 hover:underline" href="phistory.php?project_id=<?=$project_id?>&amp;id=<?=$id?>">Full history &rarr;</a>
+      </div>
+      <? if (count($phistory_dates) > 1) { ?>
       <div id="phistory-chart" class="h-64 w-full text-sm text-slate-500">Loading chart&hellip;</div>
       <noscript><p class="text-xs text-slate-500">Daily history chart needs JavaScript; see the full history for a table.</p></noscript>
+      <? } else { ?>
+      <p class="text-xs text-slate-500">Not enough history yet for a chart.</p>
+      <? } ?>
     </div>
 
+    <? if (count($phistory_dates) > 1) { ?>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uplot@1/dist/uPlot.min.css">
     <script src="https://cdn.jsdelivr.net/npm/uplot@1/dist/uPlot.iife.min.js"></script>
     <script>
@@ -234,8 +247,6 @@ were completed at a rate of <?=$best_rate?> Kkeys/sec.
     })();
     </script>
     <? } ?>
-
-    <p class="mt-4 text-center"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="phistory.php?project_id=<?=$project_id?>&amp;id=<?=$id?>">View this Participant's Full Work Unit Submission History</a></p>
         <? if (($gproj -> get_type() == 'RC5' or $gproj -> get_type() == 'R72') && ($gpartstats -> get_stats_item('work_today') > 0)) {
             $odds = number_format($gprojstats->get_stats_item('work_units') / $gpartstats -> get_stats_item('work_today'));
             ?>
@@ -316,6 +327,7 @@ if($numfriends >= 1) {
     <?
 }
 ?>
+    <? } ?>
     <p class="mt-6">
     <form action="ppass.php" method="post">
         <div>
