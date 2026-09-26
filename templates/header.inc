@@ -22,8 +22,13 @@ if (isset($project_id)) {
     <div class="p-5 flex items-center gap-3">
      <a href="/" class="shrink-0"><img src="/images/dcti128.jpg" alt="stats.distributed.net" height="56" width="74" class="rounded"></a>
      <div class="min-w-0">
-      <div class="text-white font-semibold leading-tight truncate">
-       <? if(isset($gproj) && $gproj->get_name() != null) { echo safe_display($gproj->get_name()); } else { echo "stats.distributed.net"; } ?>
+      <div class="flex min-w-0 items-center gap-2">
+       <div class="min-w-0 truncate text-white font-semibold leading-tight">
+        <? if(isset($gproj) && $gproj->get_name() != null) { echo safe_display($gproj->get_name()); } else { echo "stats.distributed.net"; } ?>
+       </div>
+<? if ( isset( $project_id ) && function_exists( 'stats_project_is_completed' ) && stats_project_is_completed( $project_id ) ) { ?>
+       <span class="shrink-0 rounded-full bg-slate-800 px-2 py-0.5 text-[10px] font-medium text-slate-400">Completed</span>
+<? } ?>
       </div>
       <div class="text-xs text-slate-500">distributed.net stats</div>
      </div>

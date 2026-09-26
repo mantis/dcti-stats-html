@@ -90,6 +90,18 @@ if (!isset($project_filter)) {
     $project_filter = array(3, 5, 205, 8, 24, 25, 26, 27, 28);
 }
 
+// Projects whose keyspace has been fully searched (or otherwise retired) vs
+// still actively running. Kept as an explicit list alongside
+// $stats_project_list since "done" isn't something derivable from the stats
+// DB itself.
+$stats_project_completed = array(3, 5, 205, 24, 25, 26, 27, 28);
+
+function stats_project_is_completed($project_id)
+{
+    global $stats_project_completed;
+    return in_array((int)$project_id, $stats_project_completed);
+}
+
 function stats_project_switch_options($projectFilter)
 {
     global $stats_project_list;
