@@ -36,14 +36,14 @@ function safe_display($string)
 function html_rank_arrow($change)
 {
     if ($change > 0) {
-        return "<span style=\"color: #009900\">(<img src=\"/images/up.gif\" alt=\"+\">$change)</span>";
+        return "<span style=\"color: #009900; white-space: nowrap\">(<img src=\"/images/up.gif\" alt=\"+\" style=\"display: inline; vertical-align: middle\">$change)</span>";
     } else {
         if ($change < 0) {
             $offset = - $change;
-            return "<span style=\"color: #990000\">(<img src=\"/images/down.gif\" alt=\"-\">$offset)</span>";
-        } 
-    } 
-} 
+            return "<span style=\"color: #990000; white-space: nowrap\">(<img src=\"/images/down.gif\" alt=\"-\" style=\"display: inline; vertical-align: middle\">$offset)</span>";
+        }
+    }
+}
 
 function number_style_convert($number, $decimal_places = 0)
 {
