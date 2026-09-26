@@ -178,12 +178,15 @@ Header("Expires: " . gmdate("D, d M Y", $now) . " $hour:00 GMT");
    }
    print '</div>';
 
-   print '<div class="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-xs">';
+   print '<table class="mt-3 w-full text-xs"><tbody>';
    foreach ($segments as $seg) {
      $pct = 100 * $seg['value'] / $total;
-     print '<span class="inline-flex items-center gap-1.5"><span class="inline-block size-2.5 rounded-full" style="background-color:' . $seg['color'] . '"></span><span class="text-slate-700">' . htmlspecialchars($seg['name']) . '</span><span class="text-slate-500 tabular-nums">' . number_format($pct, 1) . '%</span></span>';
+     print '<tr class="border-b border-slate-100 last:border-0">';
+     print '<td class="py-1 pr-2"><span class="inline-flex items-center gap-1.5"><span class="inline-block size-2.5 shrink-0 rounded-full" style="background-color:' . $seg['color'] . '"></span><span class="text-slate-700">' . htmlspecialchars($seg['name']) . '</span></span></td>';
+     print '<td class="py-1 text-right text-slate-500 tabular-nums">' . number_format($pct, 1) . '%</td>';
+     print '</tr>';
    }
-   print '</div>';
+   print '</tbody></table>';
    print '</div>';
  }
 
