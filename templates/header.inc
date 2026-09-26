@@ -115,7 +115,12 @@ if (isset($project_id)) {
    <div class="min-w-0 flex-1 md:flex md:flex-col md:min-h-screen">
     <div class="border-b border-slate-200 bg-white px-4 py-3">
      <? if (isset($title)) { ?>
-      <h1 class="text-lg font-semibold text-slate-900"><?=$title?></h1>
+      <div class="flex flex-wrap items-center gap-2">
+       <h1 class="text-lg font-semibold text-slate-900"><?=$title?></h1>
+<? if ( isset( $project_id ) && function_exists( 'stats_project_is_completed' ) && stats_project_is_completed( $project_id ) ) { ?>
+       <span class="inline-block rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500">Completed</span>
+<? } ?>
+      </div>
      <? } ?>
     </div>
 
