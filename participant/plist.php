@@ -44,7 +44,7 @@ if ($plist) {
 	    $totalblocks = $totalblocks + (float) $statspar -> get_stats_item('blocks') * $gproj->get_scale();
 	    ?>
 		<tr class="border-b border-slate-100 last:border-0 <?=$i % 2 == 0 ? 'bg-white' : 'bg-slate-50'?>">
-			<td class="py-1.5 px-3 text-left"><?=$statspar -> get_stats_item('rank')?><?=html_rank_arrow($statspar -> get_stats_item('change')) ?></td>
+			<td class="py-1.5 px-3 text-left whitespace-nowrap"><?=$statspar -> get_stats_item('rank')?><?=html_rank_arrow($statspar -> get_stats_item('change')) ?></td>
 			<td class="py-1.5 px-3 text-left"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="psummary.php?project_id=<?=$project_id?>&amp;id=<?=$par -> get_id() ?>"><?=safe_display($par -> get_display_name()) ?></a></td>
 			<td class="py-1.5 px-3 text-right tabular-nums"><?=$statspar -> get_stats_item('first_date') ?></td>
 			<td class="py-1.5 px-3 text-right tabular-nums"><?=$statspar -> get_stats_item('last_date') ?></td>

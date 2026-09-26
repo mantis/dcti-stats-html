@@ -25,7 +25,7 @@ function par_list($i, $par, $stats, &$totaltoday, &$totaltotal, $proj_scale, $co
       <? if ( $random_stats == 1 ) { ?>
         <!-- *aol voice* YOU'VE GOT RANDOM! */aol voice* -->
       <? } ?>
-      <td class="py-1.5 px-3 text-left"><?echo $stats->get_stats_item("overall_rank") . html_rank_arrow($stats->get_stats_item("overall_change")) ?></td>
+      <td class="py-1.5 px-3 text-left whitespace-nowrap"><?echo $stats->get_stats_item("overall_rank") . html_rank_arrow($stats->get_stats_item("overall_change")) ?></td>
       <td class="py-1.5 px-3 text-left"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="psummary.php?project_id=<?=$gproj->get_id()?>&amp;id=<?=$parid?>"><?=safe_display($participant)?></a></td>
       <td class="py-1.5 px-3 text-right tabular-nums"><?echo number_style_convert($stats->get_stats_item("days_working"));?></td>
       <td class="py-1.5 px-3 text-right tabular-nums"><?echo number_style_convert($stats->get_stats_item("work_total") * $proj_scale) ?></td>
@@ -98,12 +98,12 @@ $best_rate = number_format((($best_day_units*$constant_keys_in_one_block)/(86400
         </tr>
         <tr class="border-b border-slate-100">
           <td class="phead2 py-1.5 px-3 text-left">Rank:</td>
-          <td class="py-1.5 px-3 text-right tabular-nums">
+          <td class="py-1.5 px-3 text-right tabular-nums whitespace-nowrap">
             <?
             echo $gpartstats->get_stats_item('overall_rank') . html_rank_arrow($gpartstats -> get_stats_item('overall_change'));
             ?>
           </td>
-          <td class="py-1.5 px-3 text-right tabular-nums">
+          <td class="py-1.5 px-3 text-right tabular-nums whitespace-nowrap">
             <?
             echo $gpartstats->get_stats_item('day_rank') . html_rank_arrow($gpartstats -> get_stats_item('day_change'));
             ?>

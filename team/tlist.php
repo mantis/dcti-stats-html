@@ -81,7 +81,7 @@ if ( $rows >= $limit ) {
       $teamid = $teamTmp->get_id();
       ?>
       <tr class="border-b border-slate-100 last:border-0 <?=$i % 2 == 0 ? 'bg-white' : 'bg-slate-50'?>">
-        <td class="py-1.5 px-3 text-left"><?=$statsTmp->get_stats_item('rank')?><?=html_rank_arrow($statsTmp->get_stats_item('rank_change'))?></td>
+        <td class="py-1.5 px-3 text-left whitespace-nowrap"><?=$statsTmp->get_stats_item('rank')?><?=html_rank_arrow($statsTmp->get_stats_item('rank_change'))?></td>
         <td class="py-1.5 px-3 text-left"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="tmsummary.php?project_id=<?=$project_id?>&amp;team=<?=$teamid?>"><?= safe_display($teamTmp->get_name()) ?></a></td>
         <td class="py-1.5 px-3 text-right tabular-nums"><?=$first?></td>
         <td class="py-1.5 px-3 text-right tabular-nums"><?=$last?></td>

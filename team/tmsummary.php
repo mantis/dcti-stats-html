@@ -66,9 +66,9 @@ if (private_markupurl_safety($team->get_logo()) != "") {
     </tr>
     <tr class="border-b border-slate-100">
       <td class="phead2 py-1.5 px-3 text-left">Rank:</td>
-      <td class="py-1.5 px-3 text-right tabular-nums"><?= $stats->get_stats_item('overall_rank') . " " . html_rank_arrow($stats->get_stats_item('overall_rank_previous') - $stats->get_stats_item('overall_rank')) ?></td>
+      <td class="py-1.5 px-3 text-right tabular-nums whitespace-nowrap"><?= $stats->get_stats_item('overall_rank') . " " . html_rank_arrow($stats->get_stats_item('overall_rank_previous') - $stats->get_stats_item('overall_rank')) ?></td>
 <? if ($stats->get_stats_item('work_today') > 0) { ?>
-      <td class="py-1.5 px-3 text-right tabular-nums"><?= $stats->get_stats_item('day_rank') . " " . html_rank_arrow($stats->get_stats_item('day_rank_previous') - $stats->get_stats_item('day_rank')) ?></td>
+      <td class="py-1.5 px-3 text-right tabular-nums whitespace-nowrap"><?= $stats->get_stats_item('day_rank') . " " . html_rank_arrow($stats->get_stats_item('day_rank_previous') - $stats->get_stats_item('day_rank')) ?></td>
 <? } ?>
     </tr>
     <tr class="border-b border-slate-100">
@@ -202,7 +202,7 @@ if (private_markupurl_safety($team->get_logo()) != "") {
         $totalwork += $tmpStats->get_stats_item('work_total');
         $yestwork += $tmpStats->get_stats_item('work_today');
         ?>
-          <td class="py-1.5 px-3 text-left"><?= $tmpStats->get_stats_item('overall_rank') . " " . html_rank_arrow($tmpStats->get_stats_item('overall_rank_previous') - $tmpStats->get_stats_item('overall_rank')) ?></td>
+          <td class="py-1.5 px-3 text-left whitespace-nowrap"><?= $tmpStats->get_stats_item('overall_rank') . " " . html_rank_arrow($tmpStats->get_stats_item('overall_rank_previous') - $tmpStats->get_stats_item('overall_rank')) ?></td>
           <td class="py-1.5 px-3 text-left">
               <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="tmsummary.php?project_id=<?= $project_id ?>&amp;team=<?= $neighbors[$i]->get_id() ?>"><?= safe_display($neighbors[$i]->get_name()) ?></a>
           </td>
