@@ -260,7 +260,7 @@
 <? if ($pace_multiplier !== null) { ?>
      <section class="mt-14">
        <h2 class="text-xl font-bold text-slate-900">Pace</h2>
-       <div class="mt-4 grid gap-8 md:grid-cols-[1fr_18rem] md:items-end">
+       <div class="mt-4 grid gap-8 md:items-end <?=($gproj->get_total_units() > 0) ? 'md:grid-cols-[1fr_14rem_14rem]' : 'md:grid-cols-[1fr_18rem]'?>">
          <div>
            <p class="text-5xl font-bold leading-none tabular-nums text-slate-900"><?=$pace_multiplier?>&times;</p>
            <p class="mt-2 text-sm text-slate-500">Yesterday's rate against the lifetime average</p>
@@ -275,6 +275,13 @@
              </div>
            </div>
          </div>
+<? if ($gproj->get_total_units() > 0) { ?>
+         <div class="rounded-lg border border-slate-200 bg-white p-4">
+           <p class="text-3xl font-bold leading-none tabular-nums text-indigo-700">1 in <?=$odds?></p>
+           <p class="mt-2 text-xs text-slate-500">odds of finding the key in the next 24 hours</p>
+           <p class="mt-3 border-t border-slate-100 pt-2 text-xs text-slate-500">Yesterday covered <?=$yest_pct?>% of the keyspace &mdash; <?=$yest_pct_remaining?>% of what remains.</p>
+         </div>
+<? } ?>
          <div>
            <div id="pace-sparkline" class="h-16 w-full text-xs text-slate-400">Loading&hellip;</div>
            <noscript><p class="text-xs text-slate-500">Daily rate history needs JavaScript.</p></noscript>
@@ -366,12 +373,6 @@
            </tbody>
          </table>
        </div>
-<? if ($gproj->get_total_units() > 0 ) { ?>
-       <p class="mt-4 max-w-2xl text-sm text-slate-600">
-         Yesterday covered <?=$yest_pct?>% of the keyspace (<?=$yest_pct_remaining?>% of what remains).
-         That puts the odds of finding the key in the next 24 hours at 1 in <strong class="font-semibold text-slate-900"><?=$odds?></strong>.
-       </p>
-<? } ?>
      </section>
 
 <? if ($gproj->get_id() == 24 || $gproj->get_id() == 25 || isset($ogrng_pct_searched)) { ?>
