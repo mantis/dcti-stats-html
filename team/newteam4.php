@@ -13,7 +13,7 @@
      $title = "Team Creation Disabled";
      include "../templates/header.inc";
      include "../templates/readonly.inc";
-     print "</body></html";
+     include "../templates/footer.inc";
      exit;
   }
   $title = "Adding Team data to stats...";
@@ -38,51 +38,49 @@
   if($retVal != "")
   {
     // validation error
-    print "<br><h2>Validation Errors occurred:</h2><br>";
-    print str_replace("\n", "<br>", $retVal);
-    print "<br><a href=\"javascript:history.back()\">Go back and correct the problem</a><br>";
-    //include("../templates/footer.inc");
+    ?>
+    <div class="mx-auto max-w-md rounded-lg border border-red-200 bg-red-50 p-4 text-center text-sm text-red-700">
+      <h2 class="mb-2 text-base font-semibold">Validation errors occurred</h2>
+      <p><?=nl2br(safe_display($retVal))?></p>
+      <p class="mt-3"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="javascript:history.back()">Go back and correct the problem</a></p>
+    </div>
+    <?
+    include "../templates/footer.inc";
     exit(0);
-  }
-  else
-  {
-    // Save was successful
   }
 
   $password = $newteam->get_password();
   $teamnum = $newteam->get_id();
+?>
+  <div class="mx-auto max-w-xl text-center">
+    <h1 class="phead mb-6">Saving your new team&hellip;</h1>
 
-  
-  print "
-	  <div style=\"text-align: center\">
-	   <h2>Saving your new team...</h2>
-	   <h1>Your team number is:</h1>
-           <p>
-            <h2 style=\"color: #770000\">$teamnum</h2>
-	   </p>
-	   <h1>Your team configuration password is:</h1>
-           <p>
-            <h2 style=\"color: #770000\">$password</h2>
-	   </p>
-	   <p>
-	    Your team will <span style=\"font-weight: bold; color: #770000\">not</span> be listed in the stats database  <span style=\"font-weight: bold;\">until you've joined it</span>
-	   </p>
-	   <p>
-	    After you join your team, it will show up after the next stats run.
-	   </p>
-	   <p>
-	    You may edit your team information by using this link:
-	    <br>
-	    <a href=\"tmedit.php?team=$teamnum&pass=$password\">http://stats.distributed.net/team/tmedit.php?team=$teamnum&pass=$password</a>
-	   </p>
-	   <p>
-	    You should also join your team by using this link:
-	    <br>
-	    This link will require you to know your email address and your
-	    participant password.
-	    <br>
-	    <a href=\"/participant/pjointeam.php?team=$teamnum\">http://stats.distributed.net/participant/pjointeam.php?team=$teamnum</a>
-	   </p>
-	  </div>";
+    <div class="mx-auto grid max-w-md gap-4 sm:grid-cols-2">
+      <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Team number</p>
+        <p class="mt-1 text-2xl font-bold tabular-nums text-red-700"><?=safe_display($teamnum)?></p>
+      </div>
+      <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Configuration password</p>
+        <p class="mt-1 text-2xl font-bold tabular-nums text-red-700"><?=safe_display($password)?></p>
+      </div>
+    </div>
+
+    <p class="mx-auto mt-6 max-w-md text-sm text-slate-600">
+      Your team will <strong class="text-red-700">not</strong> be listed in the stats database <strong>until you've joined it</strong>. After you join your team, it will show up after the next stats run.
+    </p>
+
+    <div class="mx-auto mt-6 max-w-md space-y-4 text-left text-sm">
+      <div>
+        <p class="text-slate-700">You may edit your team information by using this link:</p>
+        <a class="break-all text-indigo-600 hover:text-indigo-800 hover:underline" href="tmedit.php?team=<?=$teamnum?>&amp;pass=<?=$password?>">http://stats.distributed.net/team/tmedit.php?team=<?=safe_display($teamnum)?>&amp;pass=<?=safe_display($password)?></a>
+      </div>
+      <div>
+        <p class="text-slate-700">You should also join your team by using this link. This will require you to know your email address and your participant password.</p>
+        <a class="break-all text-indigo-600 hover:text-indigo-800 hover:underline" href="/participant/pjointeam.php?team=<?=$teamnum?>">http://stats.distributed.net/participant/pjointeam.php?team=<?=safe_display($teamnum)?></a>
+      </div>
+    </div>
+  </div>
+<?
 include "../templates/footer.inc";
 ?>
