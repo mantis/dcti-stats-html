@@ -2,6 +2,7 @@
   // $Id: newteam4.php,v 1.16 2005/12/07 05:44:01 fiddles Exp $
   
   include "../etc/global.inc";
+  include "../etc/modules.inc";
   include "../etc/project.inc";
   include "../etc/team.php";
   include "../etc/teamstats.php";

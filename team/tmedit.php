@@ -5,6 +5,7 @@
   // Input may come from the url, http headers, or a client cookie
   
   include "../etc/global.inc";
+  include "../etc/modules.inc";
   include "../etc/project.inc";
   include "../etc/tmsecure.inc";
 
