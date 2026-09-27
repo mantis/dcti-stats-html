@@ -16,9 +16,9 @@ if (isset($project_id)) {
   <link rel="stylesheet" type="text/css" href="/css/default.css" />
  </head>
  <body class="bg-slate-50 text-slate-900 antialiased">
-  <div class="md:flex md:items-start">
+  <div class="min-[1366px]:flex min-[1366px]:items-start">
 
-   <aside class="bg-slate-950 text-slate-300 md:w-72 md:shrink-0 md:sticky md:top-0 md:h-screen md:overflow-y-auto">
+   <aside class="bg-slate-950 text-slate-300 min-[1366px]:w-72 min-[1366px]:shrink-0 min-[1366px]:sticky min-[1366px]:top-0 min-[1366px]:h-screen min-[1366px]:overflow-y-auto">
     <div class="p-5 flex items-center gap-3">
      <a href="/" class="shrink-0"><img src="/images/dcti128.jpg" alt="stats.distributed.net" height="56" width="74" class="rounded"></a>
      <div class="min-w-0">
@@ -112,7 +112,7 @@ if (isset($project_id)) {
     </nav>
    </aside>
 
-   <div class="min-w-0 flex-1 md:flex md:flex-col md:min-h-screen">
+   <div class="min-w-0 flex-1 min-[1366px]:flex min-[1366px]:flex-col min-[1366px]:min-h-screen">
     <div class="border-b border-slate-200 bg-white px-4 py-3">
      <? if (isset($title)) { ?>
       <h1 class="text-lg font-semibold text-slate-900"><?=$title?></h1>
