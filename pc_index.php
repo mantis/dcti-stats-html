@@ -79,11 +79,16 @@
   # Pace: yesterday's rate vs the lifetime average, and the bar widths to show it
   $overall_unscaled_rate_raw = $gprojstats->get_tot_units() / ($time_working_raw*86400);
   $yest_unscaled_rate_raw = $gprojstats->get_stats_item('work_units') / 86400;
+  // get_current_stats() loads the latest daily_summary row for the project -
+  // for a completed project that's its last active day rather than
+  // yesterday, so the multiplier itself is still a valid historical fact,
+  // it's just labelled "the final day" instead of "yesterday" below.
   if ($overall_unscaled_rate_raw > 0) {
       $pace_multiplier = number_format($yest_unscaled_rate_raw / $overall_unscaled_rate_raw, 1);
   } else {
       $pace_multiplier = null;
   }
+  $is_completed = stats_project_is_completed($project_id);
   $pace_max_rate = max($yest_unscaled_rate_raw, $overall_unscaled_rate_raw, 1);
   $pace_yest_bar_pct = min(100, max(1, 100 * $yest_unscaled_rate_raw / $pace_max_rate));
   $pace_overall_bar_pct = min(100, max(1, 100 * $overall_unscaled_rate_raw / $pace_max_rate));
@@ -99,7 +104,7 @@
   # yesterday's rate. Only meaningful for a finite keyspace with a
   # non-zero rate yesterday.
   $timeline_available = false;
-  if ($gproj->get_total_units() > 0 && $yest_unscaled_rate_raw > 0 && $time_working_raw > 0) {
+  if (!$is_completed && $gproj->get_total_units() > 0 && $yest_unscaled_rate_raw > 0 && $time_working_raw > 0) {
       // $yest_unscaled_rate_raw is units/second (see above), so convert back
       // to a per-day rate here rather than dividing units directly by it -
       // otherwise this ends up in seconds and gets multiplied by 86400 a
@@ -219,7 +224,7 @@
      <p class="text-sm text-slate-500">Figures include every block received as of <?=safe_display($lastupdate)?>.</p>
      <div class="mt-2 flex flex-wrap items-center gap-3">
        <h1 class="text-4xl font-extrabold leading-none text-slate-900 sm:text-5xl"><?=safe_display($gproj->get_name())?></h1>
-<? if (stats_project_is_completed($project_id)) { ?>
+<? if ($is_completed) { ?>
        <span class="inline-block rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-500">Completed</span>
 <? } else { ?>
        <span class="inline-block rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">Active</span>
@@ -232,7 +237,11 @@
        <strong class="font-bold tabular-nums"><?=$pct_searched?>%</strong> of the keyspace has been searched so far.
 <? } ?>
 <? if ($pace_multiplier !== null) { ?>
+  <? if ($is_completed) { ?>
+       On the final day of searching, <?=safe_display($lastupdate)?>, the project ran at <strong class="font-bold tabular-nums"><?=$pace_multiplier?>&times;</strong> its lifetime average.
+  <? } else { ?>
        Yesterday ran at <strong class="font-bold tabular-nums"><?=$pace_multiplier?>&times;</strong> the project's lifetime average.
+  <? } ?>
 <? } ?>
      </p>
 
@@ -259,10 +268,23 @@
 
 <? if ($pace_multiplier !== null) { ?>
      <section class="mt-14">
-       <h2 class="text-xl font-bold text-slate-900">Pace</h2>
-       <div class="mt-4 grid gap-8 md:items-end <?=($gproj->get_total_units() > 0) ? 'md:grid-cols-[1fr_14rem_14rem]' : 'md:grid-cols-[1fr_18rem]'?>">
+       <h2 class="text-xl font-bold text-slate-900"><?=$is_completed ? 'Final Day' : 'Pace'?></h2>
+       <div class="mt-4 grid gap-8 md:items-end <?=(!$is_completed && $gproj->get_total_units() > 0) ? 'md:grid-cols-[1fr_14rem_14rem]' : 'md:grid-cols-[1fr_18rem]'?>">
          <div>
            <p class="text-5xl font-bold leading-none tabular-nums text-slate-900"><?=$pace_multiplier?>&times;</p>
+<? if ($is_completed) { ?>
+           <p class="mt-2 text-sm text-slate-500">The final day's rate against the lifetime average</p>
+           <div class="mt-5 space-y-3 text-sm">
+             <div>
+               <div class="flex justify-between"><span class="text-slate-600">Final day (<?=safe_display($lastupdate)?>)</span><span class="font-semibold tabular-nums text-slate-900"><?=$yest_scaled_rate?> <?=$gproj->get_scaled_unit_name()?>/sec</span></div>
+               <div class="mt-1 h-2.5 w-full rounded-full bg-slate-200"><div class="h-2.5 rounded-full bg-indigo-600" style="width: <?=$pace_yest_bar_pct?>%"></div></div>
+             </div>
+             <div>
+               <div class="flex justify-between"><span class="text-slate-600">Lifetime average</span><span class="font-semibold tabular-nums text-slate-900"><?=$overall_scaled_rate?> <?=$gproj->get_scaled_unit_name()?>/sec</span></div>
+               <div class="mt-1 h-2.5 w-full rounded-full bg-slate-200"><div class="h-2.5 rounded-full bg-slate-400" style="width: <?=$pace_overall_bar_pct?>%"></div></div>
+             </div>
+           </div>
+<? } else { ?>
            <p class="mt-2 text-sm text-slate-500">Yesterday's rate against the lifetime average</p>
            <div class="mt-5 space-y-3 text-sm">
              <div>
@@ -274,8 +296,9 @@
                <div class="mt-1 h-2.5 w-full rounded-full bg-slate-200"><div class="h-2.5 rounded-full bg-slate-400" style="width: <?=$pace_overall_bar_pct?>%"></div></div>
              </div>
            </div>
+<? } ?>
          </div>
-<? if ($gproj->get_total_units() > 0) { ?>
+<? if (!$is_completed && $gproj->get_total_units() > 0) { ?>
          <div class="rounded-lg border border-slate-200 bg-white p-4">
            <p class="text-3xl font-bold leading-none tabular-nums text-indigo-700">1 in <?=$odds?></p>
            <p class="mt-2 text-xs text-slate-500">odds of finding the key in the next 24 hours</p>
@@ -285,7 +308,7 @@
          <div>
            <div id="pace-sparkline" class="h-16 w-full text-xs text-slate-400">Loading&hellip;</div>
            <noscript><p class="text-xs text-slate-500">Daily rate history needs JavaScript.</p></noscript>
-           <div class="mt-2 text-xs text-slate-500">Daily rate, last 30 days</div>
+           <div class="mt-2 text-xs text-slate-500"><?=$is_completed ? 'Daily rate, final 30 days' : 'Daily rate, last 30 days'?></div>
          </div>
        </div>
      </section>
