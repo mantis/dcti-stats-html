@@ -3,6 +3,7 @@
 // $Id: pretire.php,v 1.30 2007/11/10 02:57:58 snikkel Exp $
 
 include "../etc/global.inc";
+include "../etc/modules.inc";
 include "../etc/project.inc";
 include "../etc/psecure.inc";
 include "../etc/team.php";
