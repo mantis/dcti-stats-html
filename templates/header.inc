@@ -16,9 +16,9 @@ if (isset($project_id)) {
   <link rel="stylesheet" type="text/css" href="/css/default.css" />
  </head>
  <body class="bg-slate-50 text-slate-900 antialiased">
-  <div class="min-[1366px]:flex min-[1366px]:items-start">
+  <div class="lg:flex lg:items-start">
 
-   <aside class="bg-slate-950 text-slate-300 min-[1366px]:w-72 min-[1366px]:shrink-0 min-[1366px]:sticky min-[1366px]:top-0 min-[1366px]:h-screen min-[1366px]:overflow-y-auto">
+   <aside class="bg-slate-950 text-slate-300 lg:w-72 lg:shrink-0 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto">
     <div class="p-5 flex items-center gap-3">
      <a href="/" class="shrink-0"><img src="/images/dcti128.jpg" alt="stats.distributed.net" height="56" width="74" class="rounded"></a>
      <div class="min-w-0">
@@ -32,8 +32,12 @@ if (isset($project_id)) {
       </div>
       <div class="text-xs text-slate-500">distributed.net stats</div>
      </div>
+     <button type="button" aria-controls="site-menu" aria-expanded="false" aria-label="Menu" onclick="var m=document.getElementById('site-menu');m.classList.toggle('hidden');this.setAttribute('aria-expanded',!m.classList.contains('hidden'))" class="lg:hidden ml-auto shrink-0 rounded p-2 text-slate-300 hover:bg-slate-900 hover:text-white">
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+     </button>
     </div>
 
+    <div id="site-menu" class="hidden lg:block">
     <? if ( isset( $project_id ) && function_exists( 'stats_project_switch_options' ) ) { ?>
     <div class="px-5 pb-5">
      <label for="project-switch" class="block text-xs font-semibold uppercase tracking-wide text-indigo-400 mb-1">Project</label>
@@ -110,9 +114,10 @@ if (isset($project_id)) {
       <? } ?>
      </div>
     </nav>
+    </div>
    </aside>
 
-   <div class="min-w-0 flex-1 min-[1366px]:flex min-[1366px]:flex-col min-[1366px]:min-h-screen">
+   <div class="min-w-0 flex-1 lg:flex lg:flex-col lg:min-h-screen">
     <div class="border-b border-slate-200 bg-white px-4 py-3">
      <? if (isset($title)) { ?>
       <h1 class="text-lg font-semibold text-slate-900"><?=$title?></h1>
