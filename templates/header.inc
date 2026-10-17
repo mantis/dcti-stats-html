@@ -77,7 +77,7 @@ if (isset($project_id)) {
        <a class="block rounded px-2 py-1 -mx-2 text-slate-100 hover:bg-slate-900 hover:text-white" href="/participant/plist.php?<?=$t_project_id?>&amp;low=1&amp;limit=100&amp;source=y">Top 100 Participants Yesterday</a>
       </div>
       <form method="GET" name="par-search" id="par-search" action="/participant/psearch.php" class="flex gap-1.5">
-       <input type="hidden" name="project_id" value="<?=$project_id?>">
+       <input type="hidden" name="project_id" value="<?=$project_id ?? ""?>">
        <input class="min-w-0 flex-1 rounded border-0 bg-slate-900 px-2 py-1 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500" type="text" name="st" size="16" maxlength="42" placeholder="Search participants">
        <input class="rounded bg-indigo-600 px-3 py-1 font-medium text-white hover:bg-indigo-500 cursor-pointer" type="submit" value="Go">
       </form>
@@ -90,7 +90,7 @@ if (isset($project_id)) {
        <a class="block rounded px-2 py-1 -mx-2 text-slate-100 hover:bg-slate-900 hover:text-white" href="/team/tlist.php?<?=$t_project_id?>&amp;low=1&amp;limit=100&amp;source=y">Top 100 Teams Yesterday</a>
       </div>
       <form id="team-search" name="team-search" method="GET" action="/team/tsearch.php" class="flex gap-1.5">
-       <input type="hidden" name="project_id" value="<?=$project_id?>">
+       <input type="hidden" name="project_id" value="<?=$project_id ?? ""?>">
        <input class="min-w-0 flex-1 rounded border-0 bg-slate-900 px-2 py-1 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500" type="text" name="st" size="16" maxlength="32" placeholder="Search teams">
        <input class="rounded bg-indigo-600 px-3 py-1 font-medium text-white hover:bg-indigo-500 cursor-pointer" type="submit" value="Go">
       </form>
@@ -99,7 +99,7 @@ if (isset($project_id)) {
      <div>
       <div class="text-xs font-semibold uppercase tracking-wide text-indigo-400 mb-2">Account</div>
       <div class="space-y-1">
-       <a class="block rounded px-2 py-1 -mx-2 text-slate-100 hover:bg-slate-900 hover:text-white" href="/participant/pedit.php?project_id=<?=$gproj->get_id()?>">Edit your Information</a>
+       <a class="block rounded px-2 py-1 -mx-2 text-slate-100 hover:bg-slate-900 hover:text-white" href="/participant/pedit.php?project_id=<?=isset($gproj) ? $gproj->get_id() : ""?>">Edit your Information</a>
        <a class="block rounded px-2 py-1 -mx-2 text-slate-100 hover:bg-slate-900 hover:text-white" href="/team/newteam1.php">Create a new Team</a>
       </div>
      </div>
