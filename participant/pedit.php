@@ -14,11 +14,6 @@ include "../etc/team.php";
 // Form posts back to this page; saved fields are re-read below so the page shows the new values.
 $saved = false;
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['dem_yob']) && $readonly_pedit == 0) {
-  if (($_POST['cookie'] ?? '') == "yes") {
-    SetCookie("sbid",$id,time()+3600*24*365,"/");
-    SetCookie("sbpass",$pass,time()+3600*24*365,"/");
-  }
-
   $listas = (int) $_POST['listas'];
   if ($gpart->get_list_mode() <= 2 && $listas <= 2)
     $gpart->set_list_mode($listas);
@@ -348,14 +343,6 @@ display_last_update();
           </div>
         </div>
       </section>
-
-      <div class="rounded-lg border border-slate-200 bg-white p-4 text-center shadow-sm">
-        <label class="inline-flex items-center gap-2 text-sm text-slate-700">
-          <input name="cookie" type="checkbox" value="yes" class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
-          Save my login information in a cookie
-        </label>
-        <p class="mt-2 text-xs text-red-600">It would be very silly to do this on a machine you share with others or on a machine that's not in a secure location. This will store your password on the machine.</p>
-      </div>
 
       <div class="text-center">
         <input type="submit" value="Update my information" class="cursor-pointer rounded bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-500">
