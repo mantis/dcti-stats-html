@@ -38,7 +38,7 @@ include "../templates/header.inc";
 <!-- IMPORTANT NOTE TO SCRIPTERS!
 This page, like many stats pages, has a version which is far more suitable
 for machine parsing.  Please try the url:
-http://stats.distributed.net/participant/phistory_raw.php?project_id=$project_id&id=$id
+http://stats.distributed.net/json/phistory.php?project_id=<?=$project_id?>&id=<?=$id?>
 -->
     <p class="text-center"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="psummary.php?project_id=<?=$project_id?>&amp;id=<?=$id?>">View <?=safe_display($gpart->get_display_name())?>'s Participant Summary</a></p>
 
