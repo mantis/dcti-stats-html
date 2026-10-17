@@ -36,7 +36,7 @@ function magic_verify($token)
 {
 	global $gdb, $gproj;
 	$bits = explode('.', (string)$token);
-	if (count($bits) != 3 || !ctype_digit($bits[0]) || !ctype_digit($bits[1]) || $bits[1] < time()) return null;
+	if (count($bits) != 3 || !preg_match('/^\d+$/', $bits[0]) || !preg_match('/^\d+$/', $bits[1]) || $bits[1] < time()) return null;
 
 	$part = new Participant($gdb, $gproj, (int)$bits[0]);
 	if ($part->get_id() != (int)$bits[0] || $part->get_email() == "") return null;
@@ -51,7 +51,7 @@ function magic_verify($token)
 function magic_send($email)
 {
 	global $gdb, $gproj;
-	if (!filter_var($email, FILTER_VALIDATE_EMAIL)) return;
+	if (!preg_match('/^[^@\s]+@[^@\s]+$/', $email)) return;
 
 	$part = new Participant($gdb, $gproj, $email);
 	if ($part->get_id() == 0 || strtolower($part->get_email()) != strtolower($email)) return;
