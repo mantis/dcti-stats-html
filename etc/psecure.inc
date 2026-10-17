@@ -20,7 +20,8 @@ if (isset($_REQUEST['pass']))
  */
 function render_login_form($error = '')
 {
-	global $title;
+	// header.inc/footer.inc are included from function scope, so import the globals they read.
+	global $title, $debug, $gdb, $log_timing, $gproj, $project_id, $lastupdate, $other, $source;
 	$title = 'Log In Required';
 
 	$field_cls = "w-full rounded-md border border-slate-300 px-3 py-1.5 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500";
