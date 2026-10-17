@@ -11,6 +11,35 @@ include "../etc/modules.inc";
 include "../etc/psecure.inc";
 include "../etc/team.php";
 
+// Form posts back to this page; saved fields are re-read below so the page shows the new values.
+$saved = false;
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['dem_yob']) && $readonly_pedit == 0) {
+  if (($_POST['cookie'] ?? '') == "yes") {
+    SetCookie("sbid",$id,time()+3600*24*365,"/");
+    SetCookie("sbpass",$pass,time()+3600*24*365,"/");
+  }
+
+  $listas = (int) $_POST['listas'];
+  if ($gpart->get_list_mode() <= 2 && $listas <= 2)
+    $gpart->set_list_mode($listas);
+  $gpart->set_non_profit((int) $_POST['nonprofit']);
+  $gpart->set_dem_yob((int) $_POST['dem_yob']);
+  $gpart->set_dem_heard((int) $_POST['dem_heard']);
+  $gpart->set_dem_gender($_POST['dem_gender']);
+  $gpart->set_dem_motivation((int) $_POST['dem_motivation']);
+  $gpart->set_dem_country($_POST['dem_country']);
+  $gpart->set_contact_name($_POST['contact_name']);
+  $gpart->set_contact_phone($_POST['contact_phone']);
+  $gpart->set_motto($_POST['motto']);
+  $gpart->set_friends(implode(',', array_map('intval', [$_POST['friend_a'], $_POST['friend_b'], $_POST['friend_c'], $_POST['friend_d'], $_POST['friend_e']])));
+
+  if ($gpart->save() != "") {
+    trigger_error("There was an error saving your participant information. <a href=\"javascript:history.back()\">Correct the error</a><br><br>");
+    exit(0);
+  }
+  $saved = true;
+}
+
 $title = 'Participant Edit';
 $nonprofit = 0+$gpart->get_non_profit();
 
@@ -191,7 +220,13 @@ display_last_update();
       <strong>Read-only.</strong> The server is currently undergoing maintenance. As a result, you cannot currently edit your details. Sorry for any inconvenience.
     </div>
 <? } else { ?>
-    <form action="pedit_save.php" method="post" class="space-y-6">
+<? if ($saved) { ?>
+    <div class="mb-6 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-center text-sm text-emerald-700" role="status">
+      Your information has been saved.
+      <a class="font-medium underline" href="psummary.php?project_id=<?=$gproj->get_id()?>&amp;id=<?=safe_display($gpart->get_id())?>">Return to your participant summary</a>
+    </div>
+<? } ?>
+    <form action="pedit.php" method="post" class="space-y-6">
       <input name="id" type="hidden" value="<?=safe_display($gpart->get_id())?>">
       <input name="pass" type="hidden" value="<?=safe_display($pass)?>">
       <input name="project_id" type="hidden" value="<?=$gproj->get_id()?>">
