@@ -2,7 +2,7 @@
 
 // $Id: pedit.php,v 1.27 2006/11/02 15:41:31 thejet Exp $
 //
-// psecure.inc will obtain $id and $pass from the user.
+// psecure.inc logs the user in from an emailed link (?t=) and sets $gpart, $id and $token.
 // Input may come from the url, http headers, or a client cookie
 
 include "../etc/global.inc";
@@ -223,7 +223,7 @@ display_last_update();
 <? } ?>
     <form action="pedit.php" method="post" class="space-y-6">
       <input name="id" type="hidden" value="<?=safe_display($gpart->get_id())?>">
-      <input name="pass" type="hidden" value="<?=safe_display($pass)?>">
+      <input name="t" type="hidden" value="<?=safe_display($token)?>">
       <input name="project_id" type="hidden" value="<?=$gproj->get_id()?>">
 
       <section class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
@@ -233,9 +233,9 @@ display_last_update();
             <span class="<?=$label_cls?>">Team</span>
             <p class="text-sm text-slate-600"><?=safe_display("$team: $teamname")?></p>
             <p class="mt-1 text-xs text-slate-500">
-              To join a team, have your email address and password handy and visit that team's stats summary page.
+              To join a team, visit that team's stats summary page.
 <? if ($team != 0) { ?>
-              If you do not wish to be on a team, click <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="pjointeam.php?team=0">here</a>.
+              If you do not wish to be on a team, click <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="pjointeam.php?team=0&amp;t=<?=urlencode($token)?>">here</a>.
 <? } ?>
             </p>
           </div>
@@ -353,7 +353,7 @@ display_last_update();
     <div class="mx-auto mt-10 max-w-lg text-center text-sm text-slate-600">
       <p>If this address is no longer current/valid, you may &ldquo;retire&rdquo; its blocks into another email address. Before you can do this, you should update all of your clients to your new email address and wait for that new address to appear in the stats database.</p>
 <? if ($readonly_pretire == 0) { ?>
-      <p class="mt-2"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="pretire.php?id=<?=$id?>&amp;pass=<?=$test_pass?>">Retire this email address permanently</a></p>
+      <p class="mt-2"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="pretire.php?t=<?=urlencode($token)?>">Retire this email address permanently</a></p>
 <? } else { ?>
       <p class="mt-2 text-slate-400">Retiring is temporarily unavailable.</p>
 <? } ?>

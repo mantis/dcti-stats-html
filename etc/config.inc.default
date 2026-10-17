@@ -81,3 +81,14 @@ define('MAX_OLD_TEAM_ID', 0); // Used to handle team IDs that have been re-numbe
 $log_timing = 0;    // Set to 1 to log page load times
 
 ?>
+
+
+///////////////////
+// Participant login (emailed magic links, see etc/psecure.inc)
+///////////////////
+
+// REQUIRED. Long random string, keep it private. Changing it logs everyone out.
+// define('MAGIC_SECRET', '');
+// define('MAGIC_TTL', 3600);                            // link/login lifetime in seconds
+// define('MAGIC_BASE_URL', 'https://stats.distributed.net');
+// define('MAGIC_FROM', 'passmail@distributed.net');

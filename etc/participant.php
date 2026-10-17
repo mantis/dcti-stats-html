@@ -135,6 +135,12 @@ class Participant {
         return $this->_authed;
     }
 
+    // Mark this participant as logged in (see psecure.inc, which verifies the login link first).
+    function authorize()
+    {
+        $this->_authed = true;
+    }
+
     /**
      * The listmode of this user
      *

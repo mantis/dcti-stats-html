@@ -53,7 +53,7 @@ if ( !isset($_REQUEST['destid']) && !isset($_REQUEST['ems']) )
 	   <form action="pretire.php" method="post">
 	    <input type="text" name="ems" size="64" maxlength="64">
 	    <input type="hidden" name="id" value="<?=$id?>">
-	    <input type="hidden" name="pass" value="<?=$pass?>">
+	    <input type="hidden" name="t" value="<?=safe_display($token)?>">
 	    <input type="submit" value="Search for this email">
 	   </form>
 	  </p>
@@ -86,7 +86,7 @@ if ( !isset($_REQUEST['destid']) && !isset($_REQUEST['ems']) )
       	  		$tmpid = 0 + $ROWparticipant->id;
       	  		if ($tmpid != $id) {
       	  			echo '<tr><td align="right">' . $tmpid . '</td>
-	  	       		<td><a href="pretire.php?id=' . $id . '&pass=' . $pass . '&destid=' . $tmpid . '">' . $ROWparticipant->email . '</a></td></tr>';
+	  	       		<td><a href="pretire.php?t=' . urlencode($token) . '&destid=' . $tmpid . '">' . $ROWparticipant->email . '</a></td></tr>';
       	  		}
 		}
       		echo '</table>';
