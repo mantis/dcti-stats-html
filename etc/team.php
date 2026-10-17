@@ -336,8 +336,8 @@ class Team
            // Uniqueness
            if($retVal == "")
            {
-             $sql = "SELECT * FROM stats_team WHERE team != " . $this->_state->team . " AND lower(name) = '" . strtolower($this->_state->name) . "'::char(64)";
-             $queryData = $this->_db->query_first($sql);
+             $sql = 'SELECT * FROM stats_team WHERE team != $1 AND lower(name) = $2::char(64)';
+             $queryData = $this->_db->query_bound_first($sql, array((int) $this->_state->team, strtolower($this->_state->name)));
 
              if($queryData != FALSE)
              {
