@@ -7,11 +7,8 @@ function json_out($data, $status = 200)
   while (ob_get_level()) ob_end_clean();
   http_response_code($status);
   header("Content-Type: application/json; charset=utf-8");
-  // DB text may be ISO-8859-1; json_encode only accepts UTF-8.
-  array_walk_recursive($data, function (&$v) {
-    if (is_string($v) && !mb_check_encoding($v, 'UTF-8')) $v = mb_convert_encoding($v, 'UTF-8', 'ISO-8859-1');
-  });
-  echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+  // DB is UTF8; substitute (rather than fail on) any stray invalid byte.
+  echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_INVALID_UTF8_SUBSTITUTE);
   exit;
 }
 
