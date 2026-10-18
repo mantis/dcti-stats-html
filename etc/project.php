@@ -76,7 +76,7 @@ class Project {
     }
     function get_prize()
     {
-        return $this -> _state -> prize;
+        return $this -> _state -> prize ?? 0; // no state for the "no project" (id 0) object used by team pages
     }
 
     function get_scaled_unit_name()
