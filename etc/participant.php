@@ -363,6 +363,22 @@ class Participant {
     }
 
     /**
+     * Demographic: Year of birth
+     *
+     * @access public
+     * @type int
+     */
+    function get_dem_yob()
+    {
+        return $this -> _state -> dem_yob;
+    }
+
+    function set_dem_yob($value)
+    {
+        $this -> _state -> dem_yob = $this->_db->prepare_int($value);
+    }
+
+    /**
      * Demographic: How participant learned about distributed.net
      *
      * @access public
@@ -376,6 +392,22 @@ class Participant {
     function set_dem_heard($value)
     {
         $this -> _state -> dem_heard = $this->_db->prepare_int($value);
+    }
+
+    /**
+     * Demographic: Gender of participant
+     *
+     * @access public
+     * @type string
+     */
+    function get_dem_gender()
+    {
+        return $this -> _state -> dem_gender;
+    }
+
+    function set_dem_gender($value)
+    {
+        $this -> _state -> dem_gender = stripslashes($value);
     }
 
     /**
@@ -611,19 +643,23 @@ class Participant {
         $qs  = 'UPDATE stats_participant ' .
           '          SET password = $1, ' .
           '              listmode = $2, ' .
-          '              dem_heard = $3, ' .
-          '              dem_motivation = $4, '.
-          '              dem_country = $5, ' .
-          '              contact_name = $6, ' .
-          '              contact_phone = $7, ' .
-          '              motto = $8, ' .
-          '              nonprofit = $9 ' .
-          '              WHERE id = $10;';
+          '              dem_yob = $3, ' .
+          '              dem_heard = $4, ' .
+          '              dem_motivation = $5, '.
+          '              dem_gender = $6, ' .
+          '              dem_country = $7, ' .
+          '              contact_name = $8, ' .
+          '              contact_phone = $9, ' .
+          '              motto = $10, ' .
+          '              nonprofit = $11 ' .
+          '              WHERE id = $12;';
 
         $params = array( $this->_state->password,
                          (int)$this->_state->listmode,
+                         (int)$this->_state->dem_yob,
                          (int)$this->_state->dem_heard,
                          (int)$this->_state->dem_motivation,
+                         (trim($this->_state->dem_gender) == "" ? NULL : $this->_state->dem_gender),
                          (trim($this->_state->dem_country) == "" ? NULL : $this->_state->dem_country),
                          $this->_state->contact_name,
                          $this->_state->contact_phone,
@@ -677,6 +713,11 @@ class Participant {
             $strResult .= "Contact Name must be filled to use Real Name list mode.\n";
         if(strlen($this->_state->contact_name) > 50)
             $strResult .= "Contact Name must be no more than 50 characters.\n";
+        if($this->_state->dem_gender != "M" &&
+           $this->_state->dem_gender != "F" &&
+           trim($this->_state->dem_gender) != "" &&
+           !is_null($this->_state->dem_gender))
+            $strResult .= "Invalid gender specification(".$this->_state->dem_gender.").\n";
         if(strlen($this->_state->dem_country) != 2 && $this->_state->dem_country != "")
             $strResult .= "Invalid country selected.\n";
         if(strlen($this->_state->contact_phone) > 20)

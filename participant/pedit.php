@@ -13,12 +13,14 @@ include "../etc/team.php";
 
 // Form posts back to this page; saved fields are re-read below so the page shows the new values.
 $saved = false;
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save']) && $readonly_pedit == 0) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['dem_yob']) && $readonly_pedit == 0) {
   $listas = (int) $_POST['listas'];
   if ($gpart->get_list_mode() <= 2 && $listas <= 2)
     $gpart->set_list_mode($listas);
   $gpart->set_non_profit((int) $_POST['nonprofit']);
+  $gpart->set_dem_yob((int) $_POST['dem_yob']);
   $gpart->set_dem_heard((int) $_POST['dem_heard']);
+  $gpart->set_dem_gender($_POST['dem_gender']);
   $gpart->set_dem_motivation((int) $_POST['dem_motivation']);
   $gpart->set_dem_country($_POST['dem_country']);
   $gpart->set_contact_name($_POST['contact_name']);
@@ -157,6 +159,17 @@ switch ($gpart->get_dem_heard()) {
 		break;
 }
 
+$gsel_male = '';
+$gsel_female = '';
+switch ($gpart->get_dem_gender()) {
+	case "M":
+		$gsel_male="selected";
+		break;
+	case "F":
+		$gsel_female="selected";
+		break;
+}
+
 $msel_dunno='';
 $msel_cool='';
 $msel_politic='';
@@ -211,7 +224,6 @@ display_last_update();
     <form action="pedit.php" method="post" class="space-y-6">
       <input name="id" type="hidden" value="<?=safe_display($gpart->get_id())?>">
       <input name="t" type="hidden" value="<?=safe_display($token)?>">
-      <input name="save" type="hidden" value="1">
       <input name="project_id" type="hidden" value="<?=$gproj->get_id()?>">
 
       <section class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
@@ -287,6 +299,18 @@ display_last_update();
       <section class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
         <div class="phead2 bg-slate-100 px-4 py-2 text-sm">About You</div>
         <div class="grid gap-4 p-4 sm:grid-cols-2">
+          <div>
+            <label class="<?=$label_cls?>" for="dem_yob">Year you were born</label>
+            <input id="dem_yob" name="dem_yob" value="<?=safe_display($gpart->get_dem_yob())?>" size="4" class="<?=$field_cls?>">
+          </div>
+          <div>
+            <label class="<?=$label_cls?>" for="dem_gender">Gender</label>
+            <select id="dem_gender" name="dem_gender" class="<?=$field_cls?>">
+              <option value="">Private</option>
+              <option value="M" <?=$gsel_male?>>Male</option>
+              <option value="F" <?=$gsel_female?>>Female</option>
+            </select>
+          </div>
           <div>
             <label class="<?=$label_cls?>" for="dem_country">Country</label>
             <select id="dem_country" name="dem_country" class="<?=$field_cls?>">
