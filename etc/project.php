@@ -44,6 +44,7 @@ class Project {
 
     var $_state;
     var $_name;
+    var $_type;
     var $_totalunits;
     var $_scale;
     var $_scaled_unit_name;
