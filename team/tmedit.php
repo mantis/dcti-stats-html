@@ -1,152 +1,174 @@
 <?php
-  // $Id: tmedit.php,v 1.15 2005/12/07 05:44:01 fiddles Exp $
+// $Id: tmedit.php,v 1.15 2005/12/07 05:44:01 fiddles Exp $
+//
+// tmsecure.inc logs the coordinator in from an emailed link (?t=) and sets $gteam and $token.
 
-  // psecure.inc will obtain $id and $pass from the user.
-  // Input may come from the url, http headers, or a client cookie
-  
-  include "../etc/global.inc";
-  include "../etc/modules.inc";
-  include "../etc/project.inc";
-  include "../etc/tmsecure.inc";
+include "../etc/global.inc";
+include "../etc/modules.inc";
+include "../etc/project.inc";
+include "../etc/tmsecure.inc";
 
-  unset($gproj);
-  $gproj = new Project($gdb, 0);
+unset($gproj);
+$gproj = new Project($gdb, 0);
 
-  $lmlist = $lmmore = '';
-  if($gteam->get_listmode() <= 2) {
-    $sel_normal = $sel_restricted = $sel_closed = $sel_obscure = $sel_realname = '';
-    switch ($gteam->get_listmode()) {
-      case 0:
-        $sel_normal = "selected";
-        break;
-      case 1:
-        $sel_restricted = "selected";
-        break;
-      case 2:
-        $sel_closed = "selected";
-        break;
-    }
-    $lmlist = "
-          <select name=\"listmode\">
-          <option value=\"0\" $sel_normal>Anyone may join this team.</option>
-          <option value=\"1\" $sel_obscure>A password is required to join this team.</option>
-          <option value=\"2\" $sel_realname>This team has disbanded.</option>
-          </select>";
-  } else {
-    switch ($gteam->get_listmode()) {
-      case 8:
-      case 18:
-        $lmlist = "This team has a known hacker as a member.";
-        break;
-      case 9:
-      case 19:
-        $lmlist = "This team has a known spammer as a member.";
-        break;
-    }
-    if ($gteam->get_listmode() >= 10) {
-      $lmmore = "This team will not be ranked or listed.";
-    }
+$field_cls = "w-full rounded-md border border-slate-300 px-3 py-1.5 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500";
+$label_cls = "block text-sm font-medium text-slate-700 mb-1";
+
+$locked = in_array($gteam->get_listmode(), array(8, 9, 18, 19));
+
+// Form posts back to this page; saved fields are re-read below so the page shows the new values.
+$saved = false;
+$errors = "";
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['save']) && $readonly_tmedit == 0 && !$locked) {
+  if ($gteam->get_listmode() <= 2 && isset($_POST['listmode']) && (int) $_POST['listmode'] <= 2)
+    $gteam->set_listmode((int) $_POST['listmode']);
+  $gteam->set_name($_POST['name']);
+  $gteam->set_url($_POST['url']);
+  $gteam->set_contact_name($_POST['contactname']);
+  $gteam->set_contact_email($_POST['contactemail']);
+  $gteam->set_logo($_POST['logo']);
+  $gteam->set_show_members($_POST['showmembers']);
+  $gteam->set_show_password($_POST['showpassword']);
+  $gteam->set_description($_POST['description']);
+
+  $errors = $gteam->save();
+  $saved = $errors == "";
+}
+
+// A changed contact email invalidates the link in use, so hand out a fresh one for it.
+if ($saved && strtolower($gteam->get_contact_email()) != strtolower($_POST['old_contactemail'] ?? $gteam->get_contact_email())) {
+  $token = $gteam->get_id() . '.' . ($exp = time() + MAGIC_TTL) . '.' . team_magic_sign($gteam, $exp);
+}
+
+$lmlist = $lmmore = '';
+if ($gteam->get_listmode() <= 2) {
+  $lm = $gteam->get_listmode();
+  $lmlist = "<select name=\"listmode\" class=\"$field_cls\">"
+    . "<option value=\"0\"" . ($lm == 0 ? " selected" : "") . ">Anyone may join this team.</option>"
+    . "<option value=\"1\"" . ($lm == 1 ? " selected" : "") . ">A password is required to join this team.</option>"
+    . "<option value=\"2\"" . ($lm == 2 ? " selected" : "") . ">This team has disbanded.</option>"
+    . "</select>";
+} else {
+  switch ($gteam->get_listmode()) {
+    case 8:
+    case 18:
+      $lmlist = "This team has a known hacker as a member.";
+      break;
+    case 9:
+    case 19:
+      $lmlist = "This team has a known spammer as a member.";
+      break;
   }
-
-  $psel_yes = $psel_no = $psel_pas = '';
-  switch ($gteam->get_show_members()) {
-    case 'YES':
-      $psel_yes = "selected";
-      break;
-    case 'NO':
-      $psel_no = "selected";
-      break;
-    case 'PAS':
-      $psel_pas = "selected";
-      break;
+  if ($gteam->get_listmode() >= 10) {
+    $lmmore = "This team will not be ranked or listed.";
   }
+}
 
-  $lastupdate = last_update('t');
-  $title = "Edit Team Information";
-  include "../templates/header.inc";
+$title = "Edit Team Information";
+include "../templates/header.inc";
+display_last_update('t');
 ?>
-  <div style="text-align: center;">
-<?php if ($readonly_tmedit == 0) { ?>
-  <form action="tmedit_save.php" method="post">
-  <h2>Team Configuration for Team #<?=$tm?></h2>
-<?php } else { ?>
-    <h2>Team Configuration for Team #<?=$tm?></h2>
-    <p><b><font colour=red>Read-Only</font></b><br>
-The server is currently undergoing maintenance. As a result, you cannot currently edit this team's details.  Sorry for the inconvenience.</p>
-<?php } ?>
-    <table style="margin: auto; text-align: left;" width="75%">
-     <tr>
-      <td>Team Name:</td>
-      <td><input name="name" value="<?=htmlspecialchars($gteam->get_name())?>" size="50" maxlength="64"></td>
-     </tr>
-     <tr>
-      <td>&nbsp;</td>
-      <td>
-        <span style="font-size: smaller">No HTML in Team Names.  If you try, it will look silly.
-        <br>
-        Changes to Team Names will not fully take effect until the next stats run.
-        </span>
-      </td>
-     </tr>
-     <tr>
-      <td>Team Web Page:</td>
-      <td><input name="url" value="<?=htmlspecialchars($gteam->get_url())?>" size="50" maxlength="64"></td>
-     </tr>
-     <tr>
-      <td>Team Logo url:</td>
-      <td><input name="logo" value="<?=htmlspecialchars($gteam->get_logo())?>" size="50" maxlength="64"></td>
-     </tr>
-<?include "../etc/markuplegend.inc";?>
-     <tr>
-      <td>Description:</td>
-      <td><textarea name="description" cols="50" rows="5"><?=htmlspecialchars($gteam->get_description())?></textarea></td>
-     </tr>
-     <tr>
-      <td>&nbsp;</td>
-      <td><span style="font-size: smaller">HTML is permitted in the description.</span></td>
-     </tr>
-     <tr>
-      <td>Coordinator's Name:</td>
-      <td><input name="contactname" value="<?=htmlspecialchars($gteam->get_contact_name())?>" size="50" maxlength="64"></td>
-     </tr> 
-     <tr>
-      <td>Coordinator's Email:</td>
-      <td><input name="contactemail" value="<?=htmlspecialchars($gteam->get_contact_email())?>" size="50" maxlength="64"></td>
-     </tr> 
-     <tr>
-      <td>Privacy:</td>
-      <td>
-       <select name="showmembers">
-        <option value="YES" <?=$psel_yes?>>Public Members Listing</option>
-        <option value="NO" <?=$psel_no?>>No Members Listing</option>
-        <option value="PAS" <?=$psel_pas?>>Private Members Listing</option>
-       </select>
-      </td>
-     </tr>
-     <tr>
-      <td>Team Members' Password:</td>
-      <td><input name="showpassword" value="<?=htmlspecialchars($gteam->get_show_password())?>" size="16" maxlength="16"></td>
-     </tr> 
-     <tr>
-      <td colspan="2" align="center">
-       <hr>
-       Check this box <input name="cookie" type="checkbox" value="yes"> to save your login information in a cookie<br>
-       <span style="color: red">It would be very silly to do this on a machine you share with others<br>
-        or on a machine that's not in a secure location.<br>
-        This will store your password on the machine.</span>
-        <hr>
-<?php if ($readonly_tmedit == 0) { ?>
-       <input name="team" type="hidden" value="<?=$tm?>">
-       <input name="pass" type="hidden" value="<?=htmlspecialchars($pass)?>">
-       <input value="Update information" type="submit">
-<?php } ?>
-      </td>
-     </tr>
-    </table>
-    <p>
-     <i>All, most, or some of the above may or may not work yet.</i>
-    </p>
-<?php if ($readonly == 0) { ?></form><?php } ?>
+  <div class="mx-auto max-w-2xl">
+    <h1 class="phead mb-1">Team Configuration</h1>
+    <p class="mb-6 text-center text-sm text-slate-600">Team #<?=(int) $tm?></p>
+
+<? if ($locked) { ?>
+    <div class="mx-auto max-w-md rounded-lg border border-red-200 bg-red-50 p-4 text-center text-sm text-red-700">
+      This team is locked and cannot be edited. Contact <a class="underline" href="mailto:help@distributed.net">help@distributed.net</a> for help.
+    </div>
+<? } elseif ($readonly_tmedit != 0) { ?>
+    <div class="mx-auto max-w-md rounded-lg border border-red-200 bg-red-50 p-4 text-center text-sm text-red-700">
+      <strong>Read-only.</strong> The server is currently undergoing maintenance. As a result, you cannot currently edit this team's details. Sorry for any inconvenience.
+    </div>
+<? } else { ?>
+<? if ($saved) { ?>
+    <div class="mb-6 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-center text-sm text-emerald-700" role="status">
+      Your information has been saved. Name changes take full effect after the next stats run.
+      <a class="font-medium underline" href="tmsummary.php?team=<?=(int) $gteam->get_id()?>">Return to the team summary</a>
+    </div>
+<? } elseif ($errors != "") { ?>
+    <div class="mb-6 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700" role="alert">
+      <strong>Validation errors:</strong><br><?=nl2br(safe_display($errors))?>
+    </div>
+<? } ?>
+    <form action="tmedit.php" method="post" class="space-y-6">
+      <input name="team" type="hidden" value="<?=(int) $gteam->get_id()?>">
+      <input name="t" type="hidden" value="<?=safe_display($token)?>">
+      <input name="save" type="hidden" value="1">
+      <input name="old_contactemail" type="hidden" value="<?=safe_display($gteam->get_contact_email())?>">
+
+      <section class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+        <div class="phead2 bg-slate-100 px-4 py-2 text-sm">Team</div>
+        <div class="space-y-4 p-4">
+          <div>
+            <label class="<?=$label_cls?>" for="name">Team Name</label>
+            <input id="name" name="name" value="<?=safe_display($gteam->get_name())?>" maxlength="64" class="<?=$field_cls?>">
+            <p class="mt-1 text-xs text-slate-500">No HTML in team names. Changes take full effect after the next stats run.</p>
+          </div>
+          <div>
+            <label class="<?=$label_cls?>" for="url">Team Web Page</label>
+            <input id="url" name="url" value="<?=safe_display($gteam->get_url())?>" maxlength="64" class="<?=$field_cls?>">
+          </div>
+          <div>
+            <label class="<?=$label_cls?>" for="logo">Team Logo URL</label>
+            <input id="logo" name="logo" value="<?=safe_display($gteam->get_logo())?>" maxlength="64" class="<?=$field_cls?>">
+          </div>
+          <div>
+            <span class="<?=$label_cls?>">Joining</span>
+            <?=$lmlist?>
+<? if ($lmmore != '') { ?>
+            <p class="mt-1 text-xs text-slate-500"><?=safe_display($lmmore)?></p>
+<? } ?>
+          </div>
+        </div>
+      </section>
+
+      <section class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+        <div class="phead2 bg-slate-100 px-4 py-2 text-sm">Description</div>
+        <div class="space-y-2 p-4">
+          <textarea name="description" rows="5" class="<?=$field_cls?>"><?=safe_display($gteam->get_description())?></textarea>
+          <p class="text-xs text-slate-500">HTML is permitted in the description.</p>
+        </div>
+      </section>
+
+      <section class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+        <div class="phead2 bg-slate-100 px-4 py-2 text-sm">Coordinator</div>
+        <div class="space-y-4 p-4">
+          <div>
+            <label class="<?=$label_cls?>" for="contactname">Coordinator's Name</label>
+            <input id="contactname" name="contactname" value="<?=safe_display($gteam->get_contact_name())?>" maxlength="64" class="<?=$field_cls?>">
+          </div>
+          <div>
+            <label class="<?=$label_cls?>" for="contactemail">Coordinator's Email</label>
+            <input id="contactemail" name="contactemail" value="<?=safe_display($gteam->get_contact_email())?>" maxlength="64" class="<?=$field_cls?>">
+            <p class="mt-1 text-xs text-slate-500">Login links for this team are sent to this address.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+        <div class="phead2 bg-slate-100 px-4 py-2 text-sm">Privacy</div>
+        <div class="space-y-4 p-4">
+          <div>
+            <label class="<?=$label_cls?>" for="showmembers">Members Listing</label>
+            <select id="showmembers" name="showmembers" class="<?=$field_cls?>">
+<? foreach (array('YES' => 'Public Members Listing', 'NO' => 'No Members Listing', 'PAS' => 'Private Members Listing') as $val => $label) { ?>
+              <option value="<?=$val?>"<?=$gteam->get_show_members() == $val ? ' selected' : ''?>><?=$label?></option>
+<? } ?>
+            </select>
+          </div>
+          <div>
+            <label class="<?=$label_cls?>" for="showpassword">Team Members' Password</label>
+            <input id="showpassword" name="showpassword" value="<?=safe_display($gteam->get_show_password())?>" maxlength="16" class="<?=$field_cls?>">
+            <p class="mt-1 text-xs text-slate-500">Needed to view the members listing when it is private.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="text-center">
+        <input type="submit" value="Update information" class="cursor-pointer rounded bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-500">
+      </div>
+    </form>
+<? } ?>
   </div>
-</body>
-</html>
+<? include "../templates/footer.inc"; ?>

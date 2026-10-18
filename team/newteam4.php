@@ -55,14 +55,10 @@
   <div class="mx-auto max-w-xl text-center">
     <h1 class="phead mb-6">Saving your new team&hellip;</h1>
 
-    <div class="mx-auto grid max-w-md gap-4 sm:grid-cols-2">
+    <div class="mx-auto grid max-w-md gap-4">
       <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
         <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Team number</p>
         <p class="mt-1 text-2xl font-bold tabular-nums text-red-700"><?=safe_display($teamnum)?></p>
-      </div>
-      <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Configuration password</p>
-        <p class="mt-1 text-2xl font-bold tabular-nums text-red-700"><?=safe_display($password)?></p>
       </div>
     </div>
 
@@ -72,8 +68,8 @@
 
     <div class="mx-auto mt-6 max-w-md space-y-4 text-left text-sm">
       <div>
-        <p class="text-slate-700">You may edit your team information by using this link:</p>
-        <a class="break-all text-indigo-600 hover:text-indigo-800 hover:underline" href="tmedit.php?team=<?=$teamnum?>&amp;pass=<?=$password?>">http://stats.distributed.net/team/tmedit.php?team=<?=safe_display($teamnum)?>&amp;pass=<?=safe_display($password)?></a>
+        <p class="text-slate-700">To edit your team information, use this page and enter the coordinator's email. We'll email you a login link:</p>
+        <a class="break-all text-indigo-600 hover:text-indigo-800 hover:underline" href="tmedit.php?team=<?=(int) $teamnum?>">http://stats.distributed.net/team/tmedit.php?team=<?=(int) $teamnum?></a>
       </div>
       <div>
         <p class="text-slate-700">You should also join your team by using this link. This will require you to know your email address and your participant password.</p>

@@ -227,20 +227,8 @@ if (private_markupurl_safety($team->get_logo()) != "") {
     <div class="mx-auto mt-8 max-w-md rounded-lg border border-slate-200 bg-slate-50 p-4 text-left">
       <div class="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">Team Coordinator</div>
 
-      <form action="tmedit.php" method="post" class="mb-4">
-        <label class="mb-1 block text-sm text-slate-600">Edit this team's information</label>
-        <div class="flex gap-2">
-          <input class="min-w-0 flex-1 rounded border border-slate-300 px-2 py-1 text-sm" name="pass" size="8" maxlength="8" type="password" placeholder="Team password">
-          <input name="team" type="hidden" value="<?=$team->get_id()?>">
-          <input class="rounded bg-slate-800 px-3 py-1 text-sm font-medium text-white hover:bg-slate-700 cursor-pointer" value="Edit" type="submit">
-        </div>
-      </form>
-
-      <form action="tmpass.php" method="post">
-        <p class="mb-2 text-sm text-slate-600">Forgotten your team password? We'll email it to <?=$team->get_contact_name()?>.</p>
-        <input type="hidden" name="team" value="<?=$team->get_id()?>">
-        <input class="rounded border border-slate-300 bg-white px-3 py-1 text-sm font-medium text-slate-700 hover:bg-slate-100 cursor-pointer" type="submit" value="Email me the password">
-      </form>
+      <p class="mb-2 text-sm text-slate-600">Edit this team's information. We'll email a login link to the coordinator.</p>
+      <a class="inline-block rounded bg-slate-800 px-3 py-1 text-sm font-medium text-white hover:bg-slate-700" href="tmedit.php?team=<?=(int) $team->get_id()?>">Edit this team</a>
     </div>
   </div>
 

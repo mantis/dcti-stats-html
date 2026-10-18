@@ -375,28 +375,14 @@ class Team
          }
 
         /***
-         * This function checks that the passed password matches the team password.
-         *
-         * If the proper password is passed to this routine, the class becomes "authed" which enables
-         * the save logic, and is part of the is valid check.
+         * Marks the team as authenticated (the caller has verified a login link),
+         * which enables the save logic.
          *
          * @access public
-         * @return boolean
          ***/
-         function check_password($test_pass)
+         function authorize()
          {
-           $pass = substr($test_pass, 0, MAX_PASS_LEN);
-           if($pass == "")
-             $this->_authed = false;
-           else
-           {
-             if($pass == $this->get_password())
-               $this->_authed = true;
-             else
-               $this->_authed = false;
-           }
-
-           return $this->_authed;
+           $this->_authed = true;
          }
 
         /***
