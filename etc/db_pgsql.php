@@ -92,14 +92,15 @@ class DB {
      */
     function query($p_query)
       {
+        $t0 = microtime(true);
         $this -> _query_id = @pg_query ($this -> _link_id, $p_query);
         if(!$this -> _query_id) {
           $this -> _error ($p_query);
-          array_push ( $this->_queries_array, array($p_query,false) );
+          array_push ( $this->_queries_array, array($p_query,false,microtime(true)-$t0,0) );
           trigger_error("DB Query Failed",E_USER_ERROR);
           return false;
         }
-        array_push ( $this->_queries_array, array($p_query,true) );
+        array_push ( $this->_queries_array, array($p_query,true,microtime(true)-$t0,pg_affected_rows($this->_query_id)) );
         return $this -> _query_id;
       }
     
@@ -112,6 +113,7 @@ class DB {
      */
     function query_bound($p_query, $arr_parms)
       {
+        $t0 = microtime(true);
         // Check to see if query binding is implemented by extension, otherwise
         // emulate it
         if(in_array('pg_query_params', get_extension_funcs('pgsql')))
@@ -143,12 +145,12 @@ class DB {
             $this -> _query_id = @pg_query($this -> _link_id, $p_query);
           }
         if(!$this -> _query_id) {
-          array_push ( $this->_queries_array, array($p_query,false) );
+          array_push ( $this->_queries_array, array($p_query,false,microtime(true)-$t0,0) );
           $this -> _error ($p_query);
           trigger_error("DB Query Failed",E_USER_ERROR);
           return false;
         }
-        array_push ( $this->_queries_array, array($p_query,true) );
+        array_push ( $this->_queries_array, array($p_query,true,microtime(true)-$t0,pg_affected_rows($this->_query_id)) );
         return $this -> _query_id;
       }
     

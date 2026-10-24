@@ -26,9 +26,9 @@
         $queries = $gdb->get_queries();
         ?>
         <script>
-          console.groupCollapsed("Debug: Total queries: <?=count($queries)?>");
+          console.groupCollapsed("Debug: Total queries: <?=count($queries)?>, <?=sprintf('%.1f', array_sum(array_column($queries, 2)) * 1000)?> ms");
           <?php foreach ($queries as $query) { ?>
-          console.log(<?=json_encode($query[0], JSON_HEX_TAG | JSON_INVALID_UTF8_SUBSTITUTE)?>);
+          console.log("<?=sprintf('%.1f ms, %d rows%s', $query[2] * 1000, $query[3], $query[1] ? '' : ', FAILED')?>", <?=json_encode($query[0], JSON_HEX_TAG | JSON_INVALID_UTF8_SUBSTITUTE)?>);
           <?php } ?>
           console.groupEnd();
         </script>
