@@ -8,15 +8,15 @@ include "etc/modules.inc";
 include "etc/project.inc";
 
 $stats_projects = array(
-    array('id' => 8,   'name' => 'RC5-72',       'icon' => 'rc5.png', 'desc' => "RSA Labs' 72bit RC5 Encryption Challenge",                  'status' => 'active'),
-    array('id' => 24,  'name' => 'OGR-24',       'icon' => 'ogr.png', 'desc' => 'Optimal Golomb Rulers',                                     'status' => 'completed'),
-    array('id' => 25,  'name' => 'OGR-25',       'icon' => 'ogr.png', 'desc' => 'Optimal Golomb Rulers',                                     'status' => 'completed'),
-    array('id' => 26,  'name' => 'OGR-26',       'icon' => 'ogr.png', 'desc' => 'Optimal Golomb Rulers',                                     'status' => 'completed'),
-    array('id' => 27,  'name' => 'OGR-27',       'icon' => 'ogr.png', 'desc' => 'Optimal Golomb Rulers',                                     'status' => 'completed'),
-    array('id' => 28,  'name' => 'OGR-28',       'icon' => 'ogr.png', 'desc' => 'Optimal Golomb Rulers',                                     'status' => 'completed'),
-    array('id' => 3,   'name' => 'RC5-56',       'icon' => 'rc5.png', 'desc' => "RSA Labs' 56bit RC5 Encryption Challenge",                  'status' => 'completed'),
-    array('id' => 5,   'name' => 'RC5-64',       'icon' => 'rc5.png', 'desc' => "RSA Labs' 64bit RC5 Encryption Challenge",                  'status' => 'completed'),
-    array('id' => 205, 'name' => 'RC5-64 (all)', 'icon' => 'rc5.png', 'desc' => 'RC5-64, plus the work done after the key was found',        'status' => 'completed'),
+    array('id' => 8,   'name' => 'RC5-72',       'icon' => 'cowhead-96x96.png', 'desc' => "RSA Labs' 72bit RC5 Encryption Challenge",                  'status' => 'active'),
+    array('id' => 24,  'name' => 'OGR-24',       'icon' => 'roohead-96x96.png', 'desc' => 'Optimal Golomb Rulers',                                     'status' => 'completed'),
+    array('id' => 25,  'name' => 'OGR-25',       'icon' => 'roohead-96x96.png', 'desc' => 'Optimal Golomb Rulers',                                     'status' => 'completed'),
+    array('id' => 26,  'name' => 'OGR-26',       'icon' => 'roohead-96x96.png', 'desc' => 'Optimal Golomb Rulers',                                     'status' => 'completed'),
+    array('id' => 27,  'name' => 'OGR-27',       'icon' => 'roohead-96x96.png', 'desc' => 'Optimal Golomb Rulers',                                     'status' => 'completed'),
+    array('id' => 28,  'name' => 'OGR-28',       'icon' => 'roohead-96x96.png', 'desc' => 'Optimal Golomb Rulers',                                     'status' => 'completed'),
+    array('id' => 3,   'name' => 'RC5-56',       'icon' => 'cowhead-96x96.png', 'desc' => "RSA Labs' 56bit RC5 Encryption Challenge",                  'status' => 'completed'),
+    array('id' => 5,   'name' => 'RC5-64',       'icon' => 'cowhead-96x96.png', 'desc' => "RSA Labs' 64bit RC5 Encryption Challenge",                  'status' => 'completed'),
+    array('id' => 205, 'name' => 'RC5-64 (all)', 'icon' => 'cowhead-96x96.png', 'desc' => 'RC5-64, plus the work done after the key was found',        'status' => 'completed'),
 );
 
 include "templates/header.inc";
