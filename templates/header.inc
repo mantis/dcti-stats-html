@@ -30,7 +30,7 @@ if (isset($project_id)) {
        <span class="shrink-0 rounded-full bg-slate-800 px-2 py-0.5 text-[10px] font-medium text-slate-400">Completed</span>
 <? } ?>
       </div>
-      <div class="text-xs text-slate-500">distributed.net stats</div>
+      <a href="https://www.distributed.net/" class="text-xs text-slate-500 hover:text-slate-300">distributed.net &uarr;</a>
      </div>
      <button type="button" aria-controls="site-menu" aria-expanded="false" aria-label="Menu" onclick="var m=document.getElementById('site-menu');m.classList.toggle('hidden');this.setAttribute('aria-expanded',!m.classList.contains('hidden'))" class="lg:hidden ml-auto shrink-0 rounded p-2 text-slate-300 hover:bg-slate-900 hover:text-white">
       <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -102,16 +102,6 @@ if (isset($project_id)) {
        <a class="block rounded px-2 py-1 -mx-2 text-slate-100 hover:bg-slate-900 hover:text-white" href="/participant/pedit.php?project_id=<?=isset($gproj) ? $gproj->get_id() : ""?>">Edit your Information</a>
        <a class="block rounded px-2 py-1 -mx-2 text-slate-100 hover:bg-slate-900 hover:text-white" href="/team/newteam1.php">Create a new Team</a>
       </div>
-     </div>
-
-     <div class="border-t border-slate-800 pt-4 flex flex-col gap-1 text-xs">
-      <a class="font-semibold text-red-400 hover:text-red-300" href="https://bugs.distributed.net/buglist.cgi?product=Stats&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED">Bug Database</a>
-      <a class="font-semibold text-red-400 hover:text-red-300" href="https://blogs.distributed.net/">Staff Blogs</a>
-      <? if ( isset( $gproj ) && $gproj->get_type() == 'R72' ) { ?>
-       <a class="font-semibold text-red-400 hover:text-red-300" href="http://n0cgi.distributed.net/rc5-proxyinfo.html">Current Proxy Rates</a>
-      <? } elseif ( isset( $gproj ) && $gproj->get_type() == 'OGRNG' ) { ?>
-       <a class="font-semibold text-red-400 hover:text-red-300" href="http://n0cgi.distributed.net/ogr-proxyinfo.html">Current Proxy Rates</a>
-      <? } ?>
      </div>
     </nav>
     </div>
