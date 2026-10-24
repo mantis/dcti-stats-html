@@ -34,7 +34,6 @@ $t_btn = 'rounded bg-indigo-600 px-3 py-1 font-medium text-white hover:bg-indigo
       <div class="space-y-1">
        <a class="<?=$t_link?>" href="/secure/phpinfo.php">PHP Configuration</a>
        <a class="<?=$t_link?>" href="/secure/project_logs.php?project_id=8">RC5-72 Log Tail</a>
-       <a class="<?=$t_link?>" href="/secure/project_logs.php?project_id=27">OGR-NG Log Tail</a>
       </div>
      </div>
 
