@@ -22,77 +22,66 @@ $stats_projects = array(
 include "templates/header.inc";
 ?>
 
-  <div class="mx-auto max-w-4xl">
+  <div class="mx-auto max-w-5xl">
 
-    <h1 class="text-4xl font-extrabold leading-none text-slate-900 sm:text-5xl">stats.distributed.net</h1>
-    <p class="mt-4 max-w-2xl text-lg text-slate-700 sm:text-xl">
-      distributed.net's statistics server, tracking progress on our ongoing distributed computing projects.
-    </p>
+    <header>
+      <h1 class="text-4xl font-extrabold leading-none text-slate-900 sm:text-5xl">stats.distributed.net</h1>
+      <p class="mt-4 max-w-2xl text-lg text-slate-700 sm:text-xl">
+        distributed.net's statistics server, tracking progress on our ongoing distributed computing projects.
+      </p>
+    </header>
+
+<? foreach ($stats_projects as $p) { if ($p['status'] == 'active') { ?>
+    <a href="/projects.php?project_id=<?=$p['id']?>" class="group mt-10 flex items-center gap-6 rounded-2xl border border-indigo-200 bg-white p-6 shadow-sm transition hover:border-indigo-400 hover:shadow-md">
+      <img src="/images/<?=$p['icon']?>" alt="" class="h-24 w-auto max-w-none shrink-0 [image-rendering:pixelated]">
+      <div class="min-w-0">
+        <span class="inline-block rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">active</span>
+        <h2 class="mt-2 text-2xl font-bold text-slate-900 group-hover:text-indigo-700"><?=safe_display($p['name'])?></h2>
+        <p class="mt-1 text-slate-600"><?=safe_display($p['desc'])?></p>
+      </div>
+      <span class="ml-auto hidden text-sm font-medium text-indigo-600 sm:block">View statistics &rarr;</span>
+    </a>
+<? } } ?>
 
     <section class="mt-14">
-      <h2 class="text-xl font-bold text-slate-900">Welcome!</h2>
-      <div class="mt-4 max-w-2xl space-y-3 text-sm text-slate-600">
-        <p>
-          This server hosts the database which keeps track of statistics for the ongoing distributed.net projects.
-        </p>
-        <p>
-          Running progress and development announcements can be found in
-          <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="https://blogs.distributed.net/">staff .plans/blogs</a>
-          and the announcements <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="https://www.distributed.net/Discussion#lists">mailing list</a>.
-        </p>
-        <p>
-          For those of you that have a morbid fascination about the statsbox itself, you can see
-          <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="https://faq.distributed.net/?file=63">some details</a>
-          of the actual box.
-        </p>
-        <p>
-          For CPU benchmark rankings, please visit:
-          <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="https://cgi.distributed.net/speed/">https://cgi.distributed.net/speed/</a>
-        </p>
+      <h2 class="text-xl font-bold text-slate-900">Completed projects</h2>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+<? foreach ($stats_projects as $p) { if ($p['status'] != 'active') { ?>
+        <a href="/projects.php?project_id=<?=$p['id']?>" class="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-indigo-300 hover:shadow-md">
+          <img src="/images/<?=$p['icon']?>" alt="" class="h-14 w-auto max-w-none shrink-0 [image-rendering:pixelated]">
+          <div class="min-w-0">
+            <div class="font-semibold text-slate-900"><?=safe_display($p['name'])?></div>
+            <div class="text-sm text-slate-500"><?=safe_display($p['desc'])?></div>
+          </div>
+        </a>
+<? } } ?>
       </div>
     </section>
 
     <section class="mt-14">
-      <h2 class="text-xl font-bold text-slate-900">Project Statistics</h2>
-      <p class="mt-4 text-sm text-slate-600">Here is a list of our projects that currently offer statistics:</p>
-
-      <div class="mt-4 overflow-x-auto rounded-lg border border-slate-200 shadow-sm">
-        <table class="w-full min-w-[36rem] text-sm">
-          <thead>
-            <tr class="border-b border-slate-200 bg-slate-50 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
-              <th class="py-2 px-3" colspan="2">Project</th>
-              <th class="py-2 px-3">Description</th>
-              <th class="py-2 px-3">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-<? foreach ($stats_projects as $p) { ?>
-            <tr class="border-b border-slate-100 last:border-0">
-              <td class="py-2 px-3 w-10"><img src="/images/<?=$p['icon']?>" alt="" class="h-8 w-auto max-w-none"></td>
-              <td class="py-2 px-3 font-medium">
-                <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="/projects.php?project_id=<?=$p['id']?>"><?=safe_display($p['name'])?></a>
-              </td>
-              <td class="py-2 px-3 text-slate-600"><?=safe_display($p['desc'])?></td>
-              <td class="py-2 px-3">
-<? if ($p['status'] == 'active') { ?>
-                <span class="inline-block rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">active</span>
-<? } else { ?>
-                <span class="inline-block rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500">completed</span>
-<? } ?>
-              </td>
-            </tr>
-<? } ?>
-          </tbody>
-        </table>
+      <h2 class="text-xl font-bold text-slate-900">More from distributed.net</h2>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2">
+        <a class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:border-indigo-300" href="https://cgi.distributed.net/speed/">
+          <div class="font-semibold text-indigo-600 hover:text-indigo-800 hover:underline">CPU benchmark rankings</div>
+          <div class="text-sm text-slate-500">Client speed comparison database (live)</div>
+        </a>
+        <a class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:border-indigo-300" href="https://blogs.distributed.net/">
+          <div class="font-semibold text-indigo-600 hover:text-indigo-800 hover:underline">Staff .plans &amp; blogs</div>
+          <div class="text-sm text-slate-500">Running progress and development announcements</div>
+        </a>
+        <a class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:border-indigo-300" href="https://www.distributed.net/Discussion#lists">
+          <div class="font-semibold text-indigo-600 hover:text-indigo-800 hover:underline">Announcements mailing list</div>
+          <div class="text-sm text-slate-500">Project news by email</div>
+        </a>
+        <a class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:border-indigo-300" href="https://faq.distributed.net/?file=63">
+          <div class="font-semibold text-indigo-600 hover:text-indigo-800 hover:underline">About the statsbox</div>
+          <div class="text-sm text-slate-500">Details of the machine behind these stats</div>
+        </a>
+        <a class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:border-indigo-300" href="http://n1cgi.distributed.net/proxymessages.html">
+          <div class="font-semibold text-indigo-600 hover:text-indigo-800 hover:underline">Proxy greeting messages</div>
+          <div class="text-sm text-slate-500">Revised at least hourly</div>
+        </a>
       </div>
-    </section>
-
-    <section class="mt-14">
-      <h2 class="text-xl font-bold text-slate-900">Cross-Project Statistics</h2>
-      <ul class="mt-4 list-disc space-y-1 pl-5 text-sm text-slate-700">
-        <li><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="http://n1cgi.distributed.net/speed/">Client speed comparison database (live)</a></li>
-        <li><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="http://n1cgi.distributed.net/proxymessages.html">Proxy greeting Messages (revised at least hourly)</a></li>
-      </ul>
     </section>
 
   </div>
