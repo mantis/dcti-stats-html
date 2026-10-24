@@ -25,18 +25,13 @@
     if($debug >= DEBUG_SHOW_QUERY) {
         $queries = $gdb->get_queries();
         ?>
-        <div class="mx-auto max-w-4xl px-4 py-6">
-          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Debug: Total queries: <?=count($queries)?></p>
-          <table class="mt-2 w-full border-collapse overflow-hidden rounded-lg border border-slate-200 text-left text-xs">
-            <tbody>
-              <?php foreach ($queries as $query) { ?>
-              <tr class="border-b border-slate-100 last:border-0 odd:bg-white even:bg-slate-50">
-                <td class="px-3 py-1.5 font-mono text-slate-700"><?=safe_display($query[0])?></td>
-              </tr>
-              <?php } ?>
-            </tbody>
-          </table>
-        </div>
+        <script>
+          console.groupCollapsed("Debug: Total queries: <?=count($queries)?>");
+          <?php foreach ($queries as $query) { ?>
+          console.log(<?=json_encode($query[0], JSON_HEX_TAG | JSON_INVALID_UTF8_SUBSTITUTE)?>);
+          <?php } ?>
+          console.groupEnd();
+        </script>
         <?php
     }
     if($debug >= DEBUG_TRACE) { echo xdebug_dump_function_trace(); }
