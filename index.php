@@ -45,6 +45,10 @@ include "templates/header.inc";
           <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="https://faq.distributed.net/?file=63">some details</a>
           of the actual box.
         </p>
+        <p>
+          For CPU benchmark rankings, please visit:
+          <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="https://cgi.distributed.net/speed/">https://cgi.distributed.net/speed/</a>
+        </p>
       </div>
     </section>
 
@@ -64,7 +68,7 @@ include "templates/header.inc";
           <tbody>
 <? foreach ($stats_projects as $p) { ?>
             <tr class="border-b border-slate-100 last:border-0">
-              <td class="py-2 px-3 w-10"><img src="/images/<?=$p['icon']?>" alt="" class="size-6"></td>
+              <td class="py-2 px-3 w-10"><img src="/images/<?=$p['icon']?>" alt="" class="h-[22px] w-auto max-w-none"></td>
               <td class="py-2 px-3 font-medium">
                 <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="/projects.php?project_id=<?=$p['id']?>"><?=safe_display($p['name'])?></a>
               </td>
