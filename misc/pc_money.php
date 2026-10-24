@@ -81,7 +81,7 @@ print "
         <p>The 20% remaining will be retained by distributed.net to fund additional projects.</p>
         <p>If distributed.net is, however, selected as the recipient non-profit, the 20% that would have otherwise gone to distributed.net will instead be given to the runner-up non-profit.</p>
         <p>Is everyone confused yet?</p>
-        <p>To choose your non-profit, simply edit your participant information. If you know your email address and stats password, you can do so <a class=\"text-indigo-600 hover:text-indigo-800 hover:underline\" href=\"/pedit.php3\">here and now</a>.</p>
+        <p>To choose your non-profit, simply edit your participant information. If you know your email address and stats password, you can do so <a class=\"text-indigo-600 hover:text-indigo-800 hover:underline\" href=\"/participant/pedit.php\">here and now</a>.</p>
       </div>
     </div>
 
