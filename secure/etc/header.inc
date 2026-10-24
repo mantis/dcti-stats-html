@@ -32,7 +32,7 @@ $t_btn = 'rounded bg-indigo-600 px-3 py-1 font-medium text-white hover:bg-indigo
      <div>
       <div class="<?=$t_head?>">General</div>
       <div class="space-y-1">
-       <a class="<?=$t_link?>" href="/secure/phpinfo.php">PHP Configuration</a>
+       <a class="<?=$t_link?>" href="/secure/phpinfo.php">Server Info</a>
        <a class="<?=$t_link?>" href="/secure/project_logs.php?project_id=8">RC5-72 Log Tail</a>
       </div>
      </div>
