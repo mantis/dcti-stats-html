@@ -1,7 +1,7 @@
 <?php
   // $Id: pjointeam.php,v 1.25 2005/12/07 05:44:01 fiddles Exp $
 
-  // psecure.inc will obtain $id and $pass from the user.
+  // psecure.inc logs the user in from an emailed link (?t=) and sets $gpart, $id and $token.
   // Input may come from the url, http headers, or a client cookie
 
   include "../etc/global.inc";
@@ -16,7 +16,7 @@
 <title>Cannot join team: site is read-only</title>
 </head>
 <body>";
-    include "../template/readonly.inc";
+    include "../templates/readonly.inc";
     print "<a href=\"/\">Oh well, I guess I'll go somewhere else then</a>
 </body>
 </html>";
