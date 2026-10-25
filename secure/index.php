@@ -1,6 +1,18 @@
 <?php
 $title = "Home";
-include "../etc/config.inc";
+include "../etc/global.inc";
+include "../etc/project.inc";
+include "../etc/modules.inc";
+
+// Latest stats run per project (same source as the public "data reflects..." banner).
+$lastruns = array();
+$res = $gdb->query("SELECT project_id, TO_CHAR(MAX(last_date), 'dd-Mon-YYYY') AS lastupdate, CURRENT_DATE - MAX(last_date) AS age FROM Email_Rank_Last_Update GROUP BY project_id");
+for ($i = 0, $n = $gdb->num_rows($res); $i < $n; $i++) {
+  $gdb->data_seek($i, $res);
+  $row = $gdb->fetch_object($res);
+  $lastruns[(int) $row->project_id] = $row;
+}
+
 include "etc/header.inc";
 ?>
 <div class="mx-auto max-w-3xl px-4 py-6">
@@ -15,6 +27,21 @@ include "etc/header.inc";
     <p class="mt-1 text-sm">Sorry for any inconvenience caused.</p>
   </div>
 <?php } ?>
+  <div class="mt-6 overflow-hidden rounded-xl border border-slate-200 shadow-sm">
+    <div class="bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700">Last stats run</div>
+    <table class="w-full text-sm">
+<?php foreach ($stats_project_list as $pid => $label) {
+  $run = $lastruns[$pid] ?? null;
+  // Completed projects are expected to be stale; only flag active ones that are over 2 days behind.
+  $stale = $run && $run->age > 2 && !stats_project_is_completed($pid);
+?>
+      <tr class="border-t border-slate-200">
+        <td class="px-4 py-1.5 text-slate-900"><?=safe_display($label)?></td>
+        <td class="px-4 py-1.5 text-right <?=$stale ? 'font-semibold text-amber-700' : 'text-slate-600'?>"><?=$run ? safe_display($run->lastupdate) . ' (' . (int) $run->age . 'd ago)' : 'never'?></td>
+      </tr>
+<?php } ?>
+    </table>
+  </div>
 </div>
 <?php
 include "etc/footer.inc";
