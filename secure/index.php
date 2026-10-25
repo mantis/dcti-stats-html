@@ -13,6 +13,12 @@ for ($i = 0, $n = $gdb->num_rows($res); $i < $n; $i++) {
   $lastruns[(int) $row->project_id] = $row;
 }
 
+// Split into [heading => project ids]; only active projects get the stale flag.
+$groups = array('Active projects' => array(), 'Completed projects' => array());
+foreach ($stats_project_list as $pid => $label) {
+  $groups[stats_project_is_completed($pid) ? 'Completed projects' : 'Active projects'][$pid] = $label;
+}
+
 include "etc/header.inc";
 ?>
 <div class="mx-auto max-w-3xl px-4 py-6">
@@ -27,13 +33,13 @@ include "etc/header.inc";
     <p class="mt-1 text-sm">Sorry for any inconvenience caused.</p>
   </div>
 <?php } ?>
+<?php foreach ($groups as $heading => $projects) { if (!$projects) continue; ?>
   <div class="mt-6 overflow-hidden rounded-xl border border-slate-200 shadow-sm">
-    <div class="bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700">Last stats run</div>
+    <div class="bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700"><?=$heading?> &mdash; last stats run</div>
     <table class="w-full text-sm">
-<?php foreach ($stats_project_list as $pid => $label) {
+<?php foreach ($projects as $pid => $label) {
   $run = $lastruns[$pid] ?? null;
-  // Completed projects are expected to be stale; only flag active ones that are over 2 days behind.
-  $stale = $run && $run->age > 2 && !stats_project_is_completed($pid);
+  $stale = $heading == 'Active projects' && $run && $run->age > 2;
 ?>
       <tr class="border-t border-slate-200">
         <td class="px-4 py-1.5 text-slate-900"><?=safe_display($label)?></td>
@@ -42,6 +48,7 @@ include "etc/header.inc";
 <?php } ?>
     </table>
   </div>
+<?php } ?>
 </div>
 <?php
 include "etc/footer.inc";
