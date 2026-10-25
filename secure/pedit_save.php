@@ -69,11 +69,11 @@ if ($readonly_secure == 0) {
 <html>
  <head>
   <title>Updating <?=$gpart->get_email()?> data</title>
- <?if($debug <= 0){?><meta http-equiv="refresh" content="4; URL=http://stats.distributed.net/secure"><?}?>
+ <?if($debug <= 0){?><meta http-equiv="refresh" content="1; URL=pedit.php?id=<?=(int) $gpart->get_id()?>"><?}?>
  </head>
  <body>
   <div style="text-align: center">
-   <h2>Saving...</h2>
+   <h2>Saved. <a href="pedit.php?id=<?=(int) $gpart->get_id()?>">Back to participant</a></h2>
   </div>
  </body>
 </html>

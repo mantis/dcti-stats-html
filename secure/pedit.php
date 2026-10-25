@@ -70,7 +70,6 @@ for( $i = 0; $i < $countries; $i++) {
 		<option value=\"$country->code\" $selstring>".safe_display($country->country)."</option>";
 }
 
-$sel_normal = '';
 $sel_obscure = '';
 $sel_realname = '';
 $sel_hackershow = '';
@@ -83,7 +82,7 @@ $sel_spammer = '';
 $lmmore = '';
 switch ($gpart->get_list_mode()) {
 	case 0:
-		$sel_normal = 'selected';
+		$sel_obscure = 'selected';
 		break;
 	case 1:
 		$sel_obscure = 'selected';
@@ -116,7 +115,6 @@ $label_cls = "block text-sm font-medium text-slate-700 mb-1";
 
 $lmlist = "
          <select id=\"listas\" name=\"listas\" class=\"$field_cls\">
-         <option value=\"0\" $sel_normal>List me as '".safe_display($gpart->get_email())."'.</option>
          <option value=\"1\" $sel_obscure>List me as 'Participant $id'.</option>
          <option value=\"2\" $sel_realname>List me using my real name.</option>
 	 <option value=\"8\" $sel_hackershow>HACKER, But show them.</option>
