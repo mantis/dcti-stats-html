@@ -52,7 +52,7 @@ foreach (array_reverse($history) as $histrow) {
 ?>
 <? if (count($phistory_dates) > 1) { ?>
     <div class="mx-auto mt-4 max-w-2xl rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      <div id="phistory-chart" class="h-64 w-full text-sm text-slate-500">Loading chart&hellip;</div>
+      <div id="phistory-chart" class="min-h-64 w-full text-sm text-slate-500">Loading chart&hellip;</div>
       <noscript><p class="text-xs text-slate-500">Daily history chart needs JavaScript; the table below has the same data.</p></noscript>
     </div>
 

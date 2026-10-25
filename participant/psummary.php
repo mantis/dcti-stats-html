@@ -214,7 +214,7 @@ were completed at a rate of <?=$best_rate?> Kkeys/sec.
         <a class="whitespace-nowrap text-sm text-indigo-600 hover:text-indigo-800 hover:underline" href="phistory.php?project_id=<?=$project_id?>&amp;id=<?=$id?>">Full history &rarr;</a>
       </div>
       <? if (count($phistory_dates) > 1) { ?>
-      <div id="phistory-chart" class="h-64 w-full text-sm text-slate-500">Loading chart&hellip;</div>
+      <div id="phistory-chart" class="min-h-64 w-full text-sm text-slate-500">Loading chart&hellip;</div>
       <noscript><p class="text-xs text-slate-500">Daily history chart needs JavaScript; see the full history for a table.</p></noscript>
       <? } else { ?>
       <p class="text-xs text-slate-500">Not enough history yet for a chart.</p>
