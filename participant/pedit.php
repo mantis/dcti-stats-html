@@ -85,7 +85,6 @@ for( $i = 0; $i < $countries; $i++) {
 $field_cls = "w-full rounded-md border border-slate-300 px-3 py-1.5 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500";
 $label_cls = "block text-sm font-medium text-slate-700 mb-1";
 
-$sel_normal = '';
 $sel_obscure = '';
 $sel_realname = '';
 
@@ -93,7 +92,7 @@ $lmmore = '';
 if($gpart->get_list_mode() <= 2) {
 	switch ($gpart->get_list_mode()) {
 		case 0:
-			$sel_normal = 'selected';
+			$sel_obscure = 'selected';
 			break;
 		case 1:
 			$sel_obscure = 'selected';
@@ -104,7 +103,6 @@ if($gpart->get_list_mode() <= 2) {
 	}
 	$lmlist = "
           <select name=\"listas\" class=\"$field_cls\">
-          <option value=\"0\" $sel_normal>List me as '".safe_display($gpart->get_email())."'.</option>
           <option value=\"1\" $sel_obscure>List me as 'Participant $id'.</option>
           <option value=\"2\" $sel_realname>List me using my real name.</option>
           </select>";

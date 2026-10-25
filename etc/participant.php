@@ -534,9 +534,8 @@ class Participant {
      * @param string $ The participant's listmode
      */    
     public static function &get_display_name_internal($id, $email, $contact_name, $listmode) {
-        if ($listmode == 0 || $listmode == 8 || $listmode == 9) {
-            $listas = $email;
-        } else if ($listmode == 1) {
+        // Emails are never shown publicly; modes 0, 8 and 9 fall back to the anonymous label.
+        if ($listmode == 0 || $listmode == 1 || $listmode == 8 || $listmode == 9) {
             $listas = "Participant #" . number_style_convert($id);
         } else if ($listmode == 2) {
             if (trim($contact_name) == "")
