@@ -1,5 +1,32 @@
 @import "tailwindcss";
 
+/* DnetGray palette (matches www.distributed.net): remaps the Tailwind scales used in templates. */
+@theme {
+  --color-slate-50: #f9f9f9;
+  --color-slate-100: #f0f0f0;
+  --color-slate-200: #ddd;
+  --color-slate-300: #ccc;
+  --color-slate-400: #aaa;
+  --color-slate-500: #777;
+  --color-slate-600: #555;
+  --color-slate-700: #444;
+  --color-slate-800: #333;
+  --color-slate-900: #222;
+  --color-slate-950: #111;
+  --color-indigo-50: #eeeeff;
+  --color-indigo-100: #dde6f3;
+  --color-indigo-200: #c0d3ea;
+  --color-indigo-300: #93b3d9;
+  --color-indigo-400: #5f90c4;
+  --color-indigo-500: #2f6fab;
+  --color-indigo-600: #036;
+  --color-indigo-700: #025;
+  --color-indigo-800: #024;
+  --color-indigo-900: #013;
+  --color-indigo-950: #001;
+  --color-violet-400: #fabd23;
+}
+
 /*
  * Legacy component classes.
  *
@@ -15,10 +42,10 @@
  */
 @layer components {
   body {
-    @apply bg-slate-50 text-slate-900 antialiased;
+    @apply bg-[#eee] text-slate-900 antialiased;
   }
   a {
-    @apply text-indigo-600 hover:text-indigo-800;
+    @apply text-indigo-600 hover:text-[#630];
   }
 
   .row1 {
