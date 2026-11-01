@@ -45,7 +45,7 @@ http://stats.distributed.net/json/phistory.php?project_id=<?=$project_id?>&id=<?
 <?
 $phistory_daily = array();
 foreach (array_reverse($history) as $histrow) {
-    $phistory_daily[] = array($histrow->stats_date, round((float) $histrow->work_units * $gproj->get_scale()));
+    $phistory_daily[] = array(date('Y-m-d', strtotime($histrow->stats_date . ' UTC')), round((float) $histrow->work_units * $gproj->get_scale()));
 }
 $unit_name = safe_display($gproj->get_scaled_unit_name());
 ?>
