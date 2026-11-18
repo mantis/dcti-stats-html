@@ -1,4 +1,4 @@
-<?
+<?php
 
 if (isset($_GET['low'])) {
         $low = (int)$_GET['low'];

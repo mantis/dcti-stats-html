@@ -1,4 +1,4 @@
-<?
+<?php
 // vi: ts=2 sw=2 tw=120 syntax=php
 
 $title = "Home";
@@ -31,7 +31,7 @@ include "templates/header.inc";
       </p>
     </header>
 
-<? foreach ($stats_projects as $p) { if ($p['status'] == 'active') { ?>
+<?php foreach ($stats_projects as $p) { if ($p['status'] == 'active') { ?>
     <a href="/projects.php?project_id=<?=$p['id']?>" class="group mt-10 flex items-center gap-6 rounded-2xl border border-indigo-200 bg-white p-6 shadow-sm transition hover:border-indigo-400 hover:shadow-md">
       <img src="/images/<?=$p['icon']?>" alt="" class="h-24 w-auto max-w-none shrink-0">
       <div class="min-w-0">
@@ -41,12 +41,12 @@ include "templates/header.inc";
       </div>
       <span class="ml-auto hidden text-sm font-medium text-indigo-600 sm:block">View statistics &rarr;</span>
     </a>
-<? } } ?>
+<?php } } ?>
 
     <section class="mt-14">
       <h2 class="text-xl font-bold text-slate-900">Completed projects</h2>
       <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-<? foreach ($stats_projects as $p) { if ($p['status'] != 'active') { ?>
+<?php foreach ($stats_projects as $p) { if ($p['status'] != 'active') { ?>
         <a href="/projects.php?project_id=<?=$p['id']?>" class="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-indigo-300 hover:shadow-md">
           <img src="/images/<?=$p['icon']?>" alt="" class="h-14 w-auto max-w-none shrink-0">
           <div class="min-w-0">
@@ -54,7 +54,7 @@ include "templates/header.inc";
             <div class="text-sm text-slate-500"><?=safe_display($p['desc'])?></div>
           </div>
         </a>
-<? } } ?>
+<?php } } ?>
       </div>
     </section>
 
@@ -86,6 +86,6 @@ include "templates/header.inc";
 
   </div>
 
-<?
+<?php
 include "templates/footer.inc";
 ?>

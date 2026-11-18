@@ -1,4 +1,4 @@
-<?
+<?php
 include "../etc/global.inc";
 include "../etc/modules.inc";
 include "../etc/project.inc";
@@ -19,7 +19,7 @@ if ($project_id == 8 )
     <img src="http://bovine.statsdev.distributed.net/rc572-rate-1m.png"><br>
     <img src="http://bovine.statsdev.distributed.net/rc572-rate-1w.png"><br>
     </div>
-    <?
+    <?php
 }
 if ($gproj -> get_type() == 'OGR' )
 {
@@ -30,7 +30,7 @@ if ($gproj -> get_type() == 'OGR' )
     <img src="http://bovine.statsdev.distributed.net/ogrng-rate-3y.png"><br>
     <img src="http://bovine.statsdev.distributed.net/ogrng-rate-1y.png"><br>
     </div>
-    <?
+    <?php
 }
 
 if (! isset($found) ) {

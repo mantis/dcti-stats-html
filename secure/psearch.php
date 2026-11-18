@@ -1,4 +1,4 @@
-<?
+<?php
  # $Id: psearch.php,v 1.1 2005/01/05 10:29:03 fiddles Exp $
 
  // Variables Passed in url:
@@ -28,7 +28,7 @@ if (is_numeric($st)) {
          <h2>There was an error processing your request</h2>
          <p>Search Text must be at least 3 characters</p>
          </p></td></tr></table>
-         <?
+         <?php
          include "etc/footer.inc";
     exit;
   }
@@ -55,7 +55,7 @@ $rows = count($result);
        <th class="thead">Participant ID</th>
        <th class="thead">Email Address</th>
       </tr>
- <?
+ <?php
 
  if($rows <= 0)
  {
@@ -69,7 +69,7 @@ $rows = count($result);
          <td align="left"><a href="pedit.php?id=<?=$id?>"><?=$id?></a></td>
          <td align="left"><a href="pedit.php?id=<?=$id?>"><?=safe_display($ROWparticipant->email)?></a></td>
         </tr>
-        <?
+        <?php
  }
 ?>
 	</table>
@@ -78,4 +78,4 @@ $rows = count($result);
 	 All participants were searched, regardless of listmode, only the first 50 results have been returned.
 	</p>
 
-<?include "etc/footer.inc";?>
+<?php include "etc/footer.inc";?>

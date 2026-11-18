@@ -1,4 +1,4 @@
-<?
+<?php
 // $Id: timing.inc,v 1.7 2010/02/17 21:11:21 jlawson Exp $
 
 function timer_start ($name = 'default') {

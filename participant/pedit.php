@@ -208,17 +208,17 @@ display_last_update();
     <h1 class="phead mb-1">Participant Configuration</h1>
     <p class="mb-6 text-center text-sm text-slate-600"><?=safe_display($gpart->get_email())?></p>
 
-<? if ($readonly_pedit != 0) { ?>
+<?php if ($readonly_pedit != 0) { ?>
     <div class="mx-auto max-w-md rounded-lg border border-red-200 bg-red-50 p-4 text-center text-sm text-red-700">
       <strong>Read-only.</strong> The server is currently undergoing maintenance. As a result, you cannot currently edit your details. Sorry for any inconvenience.
     </div>
-<? } else { ?>
-<? if ($saved) { ?>
+<?php } else { ?>
+<?php if ($saved) { ?>
     <div class="mb-6 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-center text-sm text-emerald-700" role="status">
       Your information has been saved.
       <a class="font-medium underline" href="psummary.php?project_id=<?=$gproj->get_id()?>&amp;id=<?=safe_display($gpart->get_id())?>">Return to your participant summary</a>
     </div>
-<? } ?>
+<?php } ?>
     <form action="pedit.php" method="post" class="space-y-6">
       <input name="id" type="hidden" value="<?=safe_display($gpart->get_id())?>">
       <input name="t" type="hidden" value="<?=safe_display($token)?>">
@@ -232,9 +232,9 @@ display_last_update();
             <p class="text-sm text-slate-600"><?=safe_display("$team: $teamname")?></p>
             <p class="mt-1 text-xs text-slate-500">
               To join a team, visit that team's stats summary page.
-<? if ($team != 0) { ?>
+<?php if ($team != 0) { ?>
               If you do not wish to be on a team, click <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="pjointeam.php?team=0&amp;t=<?=urlencode($token)?>">here</a>.
-<? } ?>
+<?php } ?>
             </p>
           </div>
           <div>
@@ -246,9 +246,9 @@ display_last_update();
           <div>
             <span class="<?=$label_cls?>">List Mode</span>
             <?=$lmlist?>
-<? if ($lmmore != '') { ?>
+<?php if ($lmmore != '') { ?>
             <p class="mt-1 text-xs text-slate-500"><?=safe_display($lmmore)?></p>
-<? } ?>
+<?php } ?>
           </div>
         </div>
       </section>
@@ -271,12 +271,12 @@ display_last_update();
       <section class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
         <div class="phead2 bg-slate-100 px-4 py-2 text-sm">Friends</div>
         <div class="grid grid-cols-2 gap-4 p-4 sm:grid-cols-3">
-<? for ($f = 0; $f < 5; $f++) { $letter = chr(ord('a') + $f); ?>
+<?php for ($f = 0; $f < 5; $f++) { $letter = chr(ord('a') + $f); ?>
           <div>
             <label class="<?=$label_cls?>" for="friend_<?=$letter?>">Friend #<?=$f + 1?></label>
             <input id="friend_<?=$letter?>" name="friend_<?=$letter?>" value="<?=safe_display(get_friend_id($gpart, $f))?>" class="<?=$field_cls?>">
           </div>
-<? } ?>
+<?php } ?>
         </div>
       </section>
 
@@ -346,15 +346,15 @@ display_last_update();
         <input type="submit" value="Update my information" class="cursor-pointer rounded bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-500">
       </div>
     </form>
-<? } ?>
+<?php } ?>
 
     <div class="mx-auto mt-10 max-w-lg text-center text-sm text-slate-600">
       <p>If this address is no longer current/valid, you may &ldquo;retire&rdquo; its blocks into another email address. Before you can do this, you should update all of your clients to your new email address and wait for that new address to appear in the stats database.</p>
-<? if ($readonly_pretire == 0) { ?>
+<?php if ($readonly_pretire == 0) { ?>
       <p class="mt-2"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="pretire.php?t=<?=urlencode($token)?>">Retire this email address permanently</a></p>
-<? } else { ?>
+<?php } else { ?>
       <p class="mt-2 text-slate-400">Retiring is temporarily unavailable.</p>
-<? } ?>
+<?php } ?>
     </div>
 
     <div class="mx-auto mt-10 max-w-lg text-center">
@@ -362,7 +362,7 @@ display_last_update();
       <p class="text-sm text-slate-600">Name and phone number are so we can reach you if your client finds the winning block. The other details just help us understand who's running the client and how to best attract new people.</p>
     </div>
   </div>
-<?
+<?php
 include "../templates/footer.inc";
 
 function get_friend_id(&$par, $index)

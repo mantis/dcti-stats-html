@@ -1,4 +1,4 @@
-<?
+<?php
  // $Id: newteam3.php,v 1.11 2005/12/07 05:44:01 fiddles Exp $
 
  $title = "New Team Creation - Information";
@@ -52,6 +52,6 @@
     </div>
   </form>
 </div>
-<?
+<?php
 include "../templates/footer.inc";
 ?>

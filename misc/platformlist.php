@@ -1,4 +1,4 @@
-<?
+<?php
 
 # $Id: platformlist.php,v 1.27 2005/07/22 16:55:04 decibel Exp $
 
@@ -222,7 +222,7 @@ Header("Expires: " . gmdate("D, d M Y", $now) . " $hour:00 GMT");
 ?>
        <th class="thead text-right">First Unit</th>
        <th class="thead text-right">Last Unit</th>
-<?
+<?php
  if($show_yesterday){ print "<th class=\"thead text-right\">Yesterday</th>";}
  if($show_total) { print "<th class=\"thead text-right\">Total ".$gproj->get_scaled_unit_name()."</th>";}
  print '</tr>';
@@ -232,7 +232,7 @@ Header("Expires: " . gmdate("D, d M Y", $now) . " $hour:00 GMT");
    $t_row_bg = ($i % 2 == 0) ? 'bg-white' : 'bg-slate-50';
 ?>
 <tr class="border-b border-slate-100 last:border-0 <?=$t_row_bg?>">
-<?
+<?php
  $gdb->data_seek($i);
  $par = $gdb->fetch_object();
 

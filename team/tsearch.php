@@ -1,4 +1,4 @@
-<?
+<?php
 # vi: ts=2 sw=2 tw=120
 # $Id: tsearch.php,v 1.19 2004/07/19 06:26:00 jlawson Exp $
 
@@ -46,7 +46,7 @@ include "../templates/header.inc";
       <th class="thead text-right"><?=$gproj->get_scaled_unit_name()?> Overall</th>
       <th class="thead text-right"><?=$gproj->get_scaled_unit_name()?> Yesterday</th>
     </tr>
-    <?
+    <?php
 
     $totalblocks = 0;
     $totalblocksy = 0;
@@ -73,7 +73,7 @@ include "../templates/header.inc";
       <td class="py-1.5 px-3 text-right tabular-nums"><?=number_format( (float) $statsTmp->get_stats_item('work_total') * $gproj->get_scale())?></td>
       <td class="py-1.5 px-3 text-right tabular-nums"><?=number_format( (float) $statsTmp->get_stats_item('work_today') * $gproj->get_scale())?></td>
     </tr>
-    <?
+    <?php
     }
     ?>
     <tr>
@@ -84,4 +84,4 @@ include "../templates/header.inc";
     </tr>
    </table>
   </div>
-<?include "../templates/footer.inc";?>
+<?php include "../templates/footer.inc";?>

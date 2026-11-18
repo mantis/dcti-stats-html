@@ -1,26 +1,26 @@
     </main>
 
     <footer class="mt-auto border-t border-slate-200 bg-white">
-<? if( isset( $lastupdate ) ) { ?>
+<?php if( isset( $lastupdate ) ) { ?>
      <div class="border-b border-slate-100 bg-amber-50 text-center text-xs text-amber-700 py-1.5 px-4">
-<? if( $lastupdate <> "" ) { ?>
+<?php if( $lastupdate <> "" ) { ?>
       Data shown reflects all blocks received as of <?=$lastupdate?> at 23:59 UTC. Current time is <?=gmstrftime('%d-%b-%Y %T')?>.
-<? } else { ?>
+<?php } else { ?>
       Update currently in progress...
-<? } ?>
+<?php } ?>
      </div>
-<? } ?>
+<?php } ?>
      <div class="px-4 py-6 text-center text-xs text-slate-400">
       Built with <a class="hover:underline hover:text-slate-500" href="http://www.php.net">PHP</a> and <a class="hover:underline hover:text-slate-500" href="http://www.postgresql.org/">PostgreSQL</a>
      </div>
     </footer>
    </div>
   </div>
-<?
+<?php
 /* if($debug >= DEBUG_TIME ) {
 ?>
     <p style="text-align: center"> Page generated in <?=timer_current()?> seconds </p>
-<?
+<?php
 */
     if($debug >= DEBUG_SHOW_QUERY) {
         $queries = $gdb->get_queries();

@@ -44,7 +44,7 @@
       <p><?=nl2br(safe_display($retVal))?></p>
       <p class="mt-3"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="javascript:history.back()">Go back and correct the problem</a></p>
     </div>
-    <?
+    <?php
     include "../templates/footer.inc";
     exit(0);
   }
@@ -77,6 +77,6 @@
       </div>
     </div>
   </div>
-<?
+<?php
 include "../templates/footer.inc";
 ?>

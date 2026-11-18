@@ -1,4 +1,4 @@
-<?
+<?php
 // vi: ts=2 sw=2 tw=120 syntax=php
 // Keyrate history, rendered client-side with uPlot from our own
 // daily_summary data (misc/rate_history_data.php). Used to embed a fixed
@@ -96,4 +96,4 @@ include "templates/header.inc";
 })();
 </script>
 
-<? include "templates/footer.inc"; ?>
+<?php include "templates/footer.inc"; ?>

@@ -1,4 +1,4 @@
-<?
+<?php
  // $Id: newteam1.php,v 1.11 2005/12/07 05:44:01 fiddles Exp $
  //
  // Team creation, step 1.  This will soon be modified to have a
@@ -43,6 +43,6 @@
     <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="newteam2.php">OK, OK, I still think that I'm doing the right thing</a>
   </p>
 </div>
-<?
+<?php
 include "../templates/footer.inc";
 ?>

@@ -69,7 +69,7 @@ if ($readonly_secure == 0) {
 <html>
  <head>
   <title>Updating <?=$gpart->get_email()?> data</title>
- <?if($debug <= 0){?><meta http-equiv="refresh" content="1; URL=pedit.php?id=<?=(int) $gpart->get_id()?>"><?}?>
+ <?php if($debug <= 0){?><meta http-equiv="refresh" content="1; URL=pedit.php?id=<?=(int) $gpart->get_id()?>"><?php }?>
  </head>
  <body>
   <div style="text-align: center">

@@ -1,4 +1,4 @@
-<?
+<?php
     // $Id: countries.php,v 1.7 2004/07/29 10:12:13 paul Exp $
     // vi: ts=4 sw=4 tw=120
 

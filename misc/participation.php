@@ -1,4 +1,4 @@
-<?
+<?php
 // vi: ts=2 sw=2 tw=120 syntax=php
 // Participation history: daily active participant/team counts, rendered
 // client-side with uPlot from daily_summary (misc/participation_history_data.php).
@@ -96,4 +96,4 @@ include "../templates/header.inc";
 })();
 </script>
 
-<? include "../templates/footer.inc"; ?>
+<?php include "../templates/footer.inc"; ?>

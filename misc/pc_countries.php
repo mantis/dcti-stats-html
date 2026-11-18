@@ -1,4 +1,4 @@
-<?
+<?php
 
  // $Id: pc_countries.php,v 1.18 2005/05/07 18:00:57 decibel Exp $
 
@@ -61,7 +61,7 @@
    <div class="mx-auto max-w-3xl overflow-hidden rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
     <div class="text-sm font-semibold text-slate-700">Top countries by <?=$gproj->get_scaled_unit_name()?> (<?=($source == 'y') ? 'yesterday' : 'overall'?>)</div>
     <div class="mt-3 space-y-2">
-<?
+<?php
    foreach ($bar_top as $r) {
      $icofn = "/images/icons/flags/{$r['code']}.gif";
      if (!file_exists("..$icofn")) {
@@ -74,7 +74,7 @@
       <span class="h-3 flex-1 rounded-full bg-slate-200"><span class="block h-3 rounded-full bg-indigo-600" style="width: <?=$pct?>%"></span></span>
       <span class="w-24 shrink-0 text-right tabular-nums text-slate-600"><?=number_style_convert($r[$bar_metric])?></span>
      </div>
-<?
+<?php
    }
    if ($bar_other > 0) {
      $pct = min(100, max(1, 100 * $bar_other / $bar_max));
@@ -84,12 +84,12 @@
       <span class="h-3 flex-1 rounded-full bg-slate-200"><span class="block h-3 rounded-full bg-slate-400" style="width: <?=$pct?>%"></span></span>
       <span class="w-24 shrink-0 text-right tabular-nums text-slate-600"><?=number_style_convert($bar_other)?></span>
      </div>
-<?
+<?php
    }
 ?>
     </div>
    </div>
-<?
+<?php
  }
 
  print "
@@ -116,7 +116,7 @@
 	    <th class="thead text-center"><?=$gproj->get_scaled_unit_name()?></th>
 	    <th class="thead text-center"><?=$gproj->get_scaled_unit_name()?>/Person</th>
 	   </tr>
-<?
+<?php
 
  foreach ($country_rows as $i => $par) {
    $t_row_bg = ($i % 2 == 0) ? 'bg-white' : 'bg-slate-50';
@@ -141,7 +141,7 @@
 	    <td class="py-1.5 px-3 text-right tabular-nums"><?=$f_units_today?></td>
 	    <td class="py-1.5 px-3 text-right tabular-nums"><?=$f_blockavg_today?></td>
 	   </tr>
-<?
+<?php
  }
 ?>
 	</table>

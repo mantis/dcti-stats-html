@@ -1,4 +1,4 @@
-<?
+<?php
 
 // This file implements the 'markup_to_html' function that translates
 // UBB-style markup codes into HTML that is safe to display.  The

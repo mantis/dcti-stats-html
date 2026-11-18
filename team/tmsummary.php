@@ -1,4 +1,4 @@
-<?
+<?php
 // vi: ts=2 sw=2 tw=120
 // $Id: tmsummary.php,v 1.46 2005/08/07 18:07:34 decibel Exp $
 
@@ -42,16 +42,16 @@ if (private_markupurl_safety($team->get_logo()) != "") {
 ?>
 <div class="text-center">
 <h1 class="phead mb-4"><?= safe_display($team->get_name()) ?></h1>
-<?if($team->get_id_mismatch() == true) {?>
+<?php if($team->get_id_mismatch() == true) {?>
   <h2 class="phead2 text-red-600 mb-4">NOTICE: This team has been renumbered, the new
   team ID is <?=$team->get_id()?>.</h2>
-<?}?>
-<? if ($logo != "" || $team->get_description() != "") { ?>
+<?php }?>
+<?php if ($logo != "" || $team->get_description() != "") { ?>
   <div class="flex items-center justify-center gap-4 mb-4">
     <?= $logo ?>
     <div class="text-left text-sm text-slate-700"><?= markup_to_html($team->get_description()) ?></div>
   </div>
-<? } ?>
+<?php } ?>
   <p class="mb-4 text-sm text-slate-600">
     Team Contact: <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="mailto:<?= safe_display($team->get_contact_email()) ?>"><?=$team->get_contact_name()?></a>.
   </p>
@@ -60,70 +60,70 @@ if (private_markupurl_safety($team->get_logo()) != "") {
     <tr class="border-b border-slate-200">
       <td class="py-2 px-3"></td>
       <td class="phead2 py-2 px-3 text-center">Overall</td>
-<? if ($stats->get_stats_item('work_today') > 0) { ?>
+<?php if ($stats->get_stats_item('work_today') > 0) { ?>
       <td class="phead2 py-2 px-3 text-center">Yesterday</td>
-<? } ?>
+<?php } ?>
     </tr>
     <tr class="border-b border-slate-100">
       <td class="phead2 py-1.5 px-3 text-left">Rank:</td>
       <td class="py-1.5 px-3 text-right tabular-nums whitespace-nowrap"><?= $stats->get_stats_item('overall_rank') . " " . html_rank_arrow($stats->get_stats_item('overall_rank_previous') - $stats->get_stats_item('overall_rank')) ?></td>
-<? if ($stats->get_stats_item('work_today') > 0) { ?>
+<?php if ($stats->get_stats_item('work_today') > 0) { ?>
       <td class="py-1.5 px-3 text-right tabular-nums whitespace-nowrap"><?= $stats->get_stats_item('day_rank') . " " . html_rank_arrow($stats->get_stats_item('day_rank_previous') - $stats->get_stats_item('day_rank')) ?></td>
-<? } ?>
+<?php } ?>
     </tr>
     <tr class="border-b border-slate-100">
-    <? if ( $random_stats == 1 ) { ?>
+    <?php if ( $random_stats == 1 ) { ?>
       <!-- A random we will go... -->
-    <? } ?>
+    <?php } ?>
       <td class="phead2 py-1.5 px-3 text-left"><?= $gproj->get_scaled_unit_name() ?>:</td>
       <td class="py-1.5 px-3 text-right tabular-nums"><?= number_style_convert($stats->get_stats_item('work_total') * $gproj->get_scale()) ?></td>
-<? if ($stats->get_stats_item('work_today') > 0) { ?>
+<?php if ($stats->get_stats_item('work_today') > 0) { ?>
       <td class="py-1.5 px-3 text-right tabular-nums"><?= number_style_convert($stats->get_stats_item('work_today') * $gproj->get_scale()) ?></td>
-<? } ?>
+<?php } ?>
     </tr>
-    <? if ($stats->get_stats_item('days_working') > 0) { ?>
+    <?php if ($stats->get_stats_item('days_working') > 0) { ?>
     <tr class="border-b border-slate-100">
       <td class="phead2 py-1.5 px-3 text-left"><?= $gproj->get_scaled_unit_name() ?>/sec:</td>
       <td class="py-1.5 px-3 text-right tabular-nums"><?= number_style_convert($stats->get_stats_item('work_total') * $gproj->get_scale() / (86400 * $stats->get_stats_item('days_working')), 3) ?></td>
-<? if ($stats->get_stats_item('work_today') > 0) { ?>
+<?php if ($stats->get_stats_item('work_today') > 0) { ?>
       <td class="py-1.5 px-3 text-right tabular-nums"><?= number_style_convert($stats->get_stats_item('work_today') * $gproj->get_scale() / 86400, 3) ?></td>
-    <? } ?>
+    <?php } ?>
     </tr>
-<? } ?>
-    <?if($stats->get_stats_item('members_overall') > 0) {?>
+<?php } ?>
+    <?php if($stats->get_stats_item('members_overall') > 0) {?>
     <tr class="border-b border-slate-100">
       <td class="phead2 py-1.5 px-3 text-left"><?= $gproj->get_scaled_unit_name() ?>/member:</td>
       <td class="py-1.5 px-3 text-right tabular-nums"><?= number_style_convert($stats->get_stats_item('work_total') * $gproj->get_scale() / $stats->get_stats_item('members_overall')) ?></td>
-<? if ($stats->get_stats_item('work_today') > 0) { ?>
+<?php if ($stats->get_stats_item('work_today') > 0) { ?>
       <td class="py-1.5 px-3 text-right tabular-nums"><?= number_style_convert($stats->get_stats_item('work_today') * $gproj->get_scale() / $stats->get_stats_item('members_today')) ?></td>
-<? } ?>
+<?php } ?>
     </tr>
-    <?}?>
+    <?php }?>
     <!-- tr>
       <td align="left" class="phead2"><?= $proj_unscaled_unit_name ?>:</td>
       <td align="right"><?= number_style_convert($par->WORK_TOTAL) ?></td>
-<? if ($par->WORK_TODAY > 0) { ?>
+<?php if ($par->WORK_TODAY > 0) { ?>
       <td align="right"><?= number_style_convert($par->WORK_TODAY) ?></td>
-<? } ?>
+<?php } ?>
     </tr>
-    <?if ($par->Days_Working > 0) { ?>
+    <?php if ($par->Days_Working > 0) { ?>
     <tr>
       <td align="left" class="phead2"><?= $proj_unscaled_unit_name ?>/sec:</td>
       <td align="right"><?= number_style_convert($par->WORK_TOTAL / (86400 * $par->Days_Working)) ?></td>
-<? if ($par->WORK_TODAY > 0) { ?>
+<?php if ($par->WORK_TODAY > 0) { ?>
       <td align="right"><?= number_style_convert($par->WORK_TODAY / 86400) ?></td>
-<? } ?>
+<?php } ?>
     </tr>
-    <?}?>
-    <?if($par->MEMBERS_OVERALL > 0) {?>
+    <?php }?>
+    <?php if($par->MEMBERS_OVERALL > 0) {?>
     <tr>
       <td align="left" class="phead2"><?= $proj_unscaled_unit_name ?>/member:</td>
       <td align="right"><?= number_style_convert($par->WORK_TOTAL / $par->MEMBERS_OVERALL) ?></td>
-<? if ($par->WORK_TODAY > 0) { ?>
+<?php if ($par->WORK_TODAY > 0) { ?>
       <td align="right"><?= number_style_convert($par->WORK_TODAY / $par->MEMBERS_TODAY) ?></td>
-<? } ?>
+<?php } ?>
     </tr>
-    <?}?>
+    <?php }?>
     -->
     <tr>
       <td class="phead2 py-1.5 px-3 text-left">Time Working:</td>
@@ -131,7 +131,7 @@ if (private_markupurl_safety($team->get_logo()) != "") {
     </tr>
   </table>
   </div>
-  <?
+  <?php
   $t_show_odds = ($gproj->get_total_units() > 0);
   if ($t_show_odds) {
       if ($stats->get_stats_item('work_today') == 0) {
@@ -143,12 +143,12 @@ if (private_markupurl_safety($team->get_logo()) != "") {
   }
   ?>
   <div class="mx-auto mt-4 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
-   <? if ($t_show_odds) { ?>
+   <?php if ($t_show_odds) { ?>
     <div class="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
      <div class="text-2xl font-semibold text-slate-900"><?=$t_odds_value?></div>
      <div class="mt-1 text-xs text-slate-500">Odds of finding the key first</div>
     </div>
-   <? } ?>
+   <?php } ?>
     <div class="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
      <div class="text-2xl font-semibold text-slate-900"><?=number_style_convert($stats->get_stats_item('members_overall'))?></div>
      <div class="mt-1 text-xs text-slate-500">Participants contributed</div>
@@ -162,23 +162,23 @@ if (private_markupurl_safety($team->get_logo()) != "") {
      <div class="mt-1 text-xs text-slate-500">Submitted work today</div>
     </div>
   </div>
-  <?
+  <?php
   //Some buttons to view team history will go here
   if ($team->get_show_members() == "NO") {
     ?>
     <p class="mt-4 text-sm text-slate-600">This team wishes to keep its membership private.</p>
-  <? } else { ?>
+  <?php } else { ?>
     <div class="mt-4 flex flex-wrap items-center justify-center gap-2 text-sm text-slate-600">
      <span>View this team's participant stats:</span>
-     <? if ($stats->get_stats_item('work_today') > 0) { ?>
+     <?php if ($stats->get_stats_item('work_today') > 0) { ?>
       <a class="rounded border border-indigo-200 bg-indigo-50 px-3 py-1 font-medium text-indigo-700 hover:bg-indigo-100" href="tmember.php?project_id=<?=$project_id?>&amp;team=<?=$tm?>&amp;source=y">Yesterday</a>
-     <? } ?>
+     <?php } ?>
       <a class="rounded border border-indigo-200 bg-indigo-50 px-3 py-1 font-medium text-indigo-700 hover:bg-indigo-100" href="tmember.php?project_id=<?=$project_id?>&amp;team=<?=$tm?>">Overall</a>
-     <? if ($team->get_show_members() == "PAS") { ?>
+     <?php if ($team->get_show_members() == "PAS") { ?>
       <span class="text-xs text-slate-400">(password required)</span>
-     <? } ?>
+     <?php } ?>
     </div>
-  <? }
+  <?php }
 
   //A list of teams goes here
   ?>
@@ -191,14 +191,14 @@ if (private_markupurl_safety($team->get_logo()) != "") {
         <th class="thead text-right"><?= $gproj->get_scaled_unit_name() ?></th>
         <th class="thead text-right">Yesterday</th>
       </tr>
-      <?
+      <?php
       $totalwork = 0;
       $yestwork = 0;
       for ($i = 0; $i < count($neighbors); $i++) {
         $tmpStats = $neighbors[$i]->get_current_stats();
       ?>
         <tr class="border-b border-slate-100 last:border-0 <?=$i % 2 == 0 ? 'bg-white' : 'bg-slate-50'?>">
-        <?
+        <?php
         $totalwork += $tmpStats->get_stats_item('work_total');
         $yestwork += $tmpStats->get_stats_item('work_today');
         ?>
@@ -210,7 +210,7 @@ if (private_markupurl_safety($team->get_logo()) != "") {
           <td class="py-1.5 px-3 text-right tabular-nums"><?= number_style_convert($tmpStats->get_stats_item('work_total') * $gproj->get_scale()) ?></td>
           <td class="py-1.5 px-3 text-right tabular-nums"><?= number_style_convert($tmpStats->get_stats_item('work_today') * $gproj->get_scale()) ?></td>
         </tr>
-      <?
+      <?php
       }
       ?>
       <tr>
@@ -232,4 +232,4 @@ if (private_markupurl_safety($team->get_logo()) != "") {
     </div>
   </div>
 
-<? include "../templates/footer.inc"; ?>
+<?php include "../templates/footer.inc"; ?>

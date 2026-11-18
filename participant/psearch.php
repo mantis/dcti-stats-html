@@ -1,4 +1,4 @@
-<?
+<?php
  # $Id: psearch.php,v 1.20 2004/07/19 07:16:48 jlawson Exp $
 
  // Variables Passed in url:
@@ -28,7 +28,7 @@ if (is_numeric($st)) {
          <h2>There was an error processing your request</h2>
          <p>Search Text must be at least 3 characters</p>
          </p></td></tr></table>
-         <?
+         <?php
          include "../templates/footer.inc";
     exit;
   }
@@ -59,7 +59,7 @@ $rows = count($result);
        <th class="thead" align="right">Days</th>
        <th class="thead" align="right"><?=$gproj->get_scaled_unit_name()?></th>
       </tr>
- <?
+ <?php
 
  $totalblocks = (float) 0;
  if($rows <= 0)
@@ -81,13 +81,13 @@ $rows = count($result);
          <td align="right"><?=number_style_convert($ROWstats->get_stats_item("days_working"))?></td>
          <td align="right"><?=number_style_convert( (float) $ROWstats->get_stats_item("work_total") * $gproj->get_scale())?></td>
         </tr>
-        <?
+        <?php
  }
 ?>
 	 <tr>
 	  <td class="tfoot"><?=$i?></td>
 	  <td class="tfoot" colspan="4" align="right">Total</td>
-	  <td class="tfoot" align="right"><? echo number_format($totalblocks, 0) ?></td>
+	  <td class="tfoot" align="right"><?php echo number_format($totalblocks, 0) ?></td>
 	 </tr>
 	</table>
 
@@ -95,4 +95,4 @@ $rows = count($result);
 	 Only e-mail addresses were searched.  <a href="http://www.distributed.net/FAQ/">Confused?  Look here</a>.
 	</p>
 
-<?include "../templates/footer.inc";?>
+<?php include "../templates/footer.inc";?>

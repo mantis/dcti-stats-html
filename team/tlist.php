@@ -1,4 +1,4 @@
-<?
+<?php
 // $Id: tlist.php,v 1.22 2004/07/19 18:16:31 jlawson Exp $
 
 # vi: ts=2 sw=2 tw=120 syntax=php
@@ -63,7 +63,7 @@ if ( $rows >= $limit ) {
       <th class="thead text-right"><?=$gproj->get_scaled_unit_name()?> Overall</th>
       <th class="thead text-right"><?=$gproj->get_scaled_unit_name()?> Yesterday</th>
     </tr>
-    <?
+    <?php
     $totalblocks=0;
     $totalblocksy=0;
 
@@ -90,13 +90,13 @@ if ( $rows >= $limit ) {
         <td class="py-1.5 px-3 text-right tabular-nums"><?=number_format( (float) $statsTmp->get_stats_item('work_total') * $gproj->get_scale(), 0)?></td>
         <td class="py-1.5 px-3 text-right tabular-nums"><?=number_format( (float) $statsTmp->get_stats_item('work_today') * $gproj->get_scale(), 0)?></td>
       </tr>
-      <?
+      <?php
       unset($teamTmp);
       unset($statsTmp);
     }
     ?>
     <tr>
-      <td class="tfoot text-left"><? echo "$lo-$hi"?></td>
+      <td class="tfoot text-left"><?php echo "$lo-$hi"?></td>
       <td class="tfoot text-right" colspan="5">Total</td>
       <td class="tfoot text-right"><?=number_format($totalblocks)?></td>
       <td class="tfoot text-right"><?=number_format($totalblocksy)?></td>
@@ -108,4 +108,4 @@ if ( $rows >= $limit ) {
     </tr>
    </table>
   </div>
-<? include "../templates/footer.inc";?>
+<?php include "../templates/footer.inc";?>

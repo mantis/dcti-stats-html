@@ -1,4 +1,4 @@
-<?
+<?php
 // vi: ts=2 sw=2 tw=120 syntax=php
 // OGR Phase 1/2 completion history, rendered client-side with uPlot.
 // Replaces the old jpgraph-generated static PNG (see git history for
@@ -70,4 +70,4 @@ include "../templates/header.inc";
 })();
 </script>
 
-<? include "../templates/footer.inc"; ?>
+<?php include "../templates/footer.inc"; ?>

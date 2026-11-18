@@ -1,4 +1,4 @@
-<?
+<?php
 if (isset($project_id)) {
     $t_project_id = "project_id=$project_id";
 } else {
@@ -12,7 +12,7 @@ if (isset($project_id)) {
  <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>stats.distributed.net - <? if (isset($gproj)) { echo $gproj->get_name(); }?> <?=$title?></title>
+  <title>stats.distributed.net - <?php if (isset($gproj)) { echo $gproj->get_name(); }?> <?=$title?></title>
   <link rel="stylesheet" type="text/css" href="/css/default.css" />
  </head>
  <body class="bg-[#eee] text-slate-900 antialiased">
@@ -29,33 +29,33 @@ if (isset($project_id)) {
      <div class="min-w-0">
       <div class="flex min-w-0 items-center gap-2">
        <div class="min-w-0 truncate text-black font-semibold leading-tight">
-        <? if(isset($gproj) && $gproj->get_name() != null) { echo safe_display($gproj->get_name()); } else { echo "stats.distributed.net"; } ?>
+        <?php if(isset($gproj) && $gproj->get_name() != null) { echo safe_display($gproj->get_name()); } else { echo "stats.distributed.net"; } ?>
        </div>
-<? if ( isset( $project_id ) && function_exists( 'stats_project_is_completed' ) && stats_project_is_completed( $project_id ) ) { ?>
+<?php if ( isset( $project_id ) && function_exists( 'stats_project_is_completed' ) && stats_project_is_completed( $project_id ) ) { ?>
        <span class="shrink-0 rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-medium text-slate-600">Completed</span>
-<? } ?>
+<?php } ?>
       </div>
       <a href="https://www.distributed.net/" class="text-xs text-slate-600 hover:text-black">distributed.net &uarr;</a>
      </div>
     </div>
 
     <div id="site-menu" class="hidden lg:block">
-    <? if ( isset( $project_id ) && function_exists( 'stats_project_switch_options' ) ) { ?>
+    <?php if ( isset( $project_id ) && function_exists( 'stats_project_switch_options' ) ) { ?>
     <div class="pl-[70px] pr-5 pb-5">
      <label for="project-switch" class="block text-xs font-semibold uppercase tracking-wide text-slate-600 mb-1">Project</label>
      <form method="GET" action="<?=$myname?>" class="flex gap-1.5">
-      <? foreach ( $_GET as $t_gk => $t_gv ) { if ( $t_gk != 'project_id' ) { ?>
+      <?php foreach ( $_GET as $t_gk => $t_gv ) { if ( $t_gk != 'project_id' ) { ?>
        <input type="hidden" name="<?=htmlspecialchars($t_gk)?>" value="<?=htmlspecialchars(stripslashes($t_gv))?>">
-      <? } } ?>
+      <?php } } ?>
       <select id="project-switch" name="project_id" onchange="this.form.submit()" class="min-w-0 flex-1 rounded border-0 bg-white px-2 py-1.5 text-slate-800 focus:ring-2 focus:ring-indigo-500">
-       <? foreach ( stats_project_switch_options( isset($project_filter) ? $project_filter : null ) as $t_pid => $t_plabel ) { ?>
+       <?php foreach ( stats_project_switch_options( isset($project_filter) ? $project_filter : null ) as $t_pid => $t_plabel ) { ?>
         <option value="<?=$t_pid?>" <?=($t_pid == $project_id) ? 'selected' : ''?>><?=safe_display($t_plabel)?></option>
-       <? } ?>
+       <?php } ?>
       </select>
       <noscript><input class="rounded bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-500 cursor-pointer" type="submit" value="Go"></noscript>
      </form>
     </div>
-    <? } ?>
+    <?php } ?>
 
     <nav class="pl-[70px] pr-5 pb-6 space-y-6 text-sm">
      <div>
@@ -66,9 +66,9 @@ if (isset($project_id)) {
        <a class="block rounded px-2 py-1 -mx-2 text-slate-800 hover:bg-slate-200 hover:text-black" href="/misc/participation.php?<?=$t_project_id?>">Participation History</a>
        <a class="block rounded px-2 py-1 -mx-2 text-slate-800 hover:bg-slate-200 hover:text-black" href="/misc/platformlist.php?<?=$t_project_id?>&amp;view=tco">CPU/OS Distribution</a>
        <a class="block rounded px-2 py-1 -mx-2 text-slate-800 hover:bg-slate-200 hover:text-black" href="/misc/countries.php?<?=$t_project_id?>">Participating Countries</a>
-       <? if ( isset( $gproj ) && $gproj->get_prize() <> 0 ) { ?>
+       <?php if ( isset( $gproj ) && $gproj->get_prize() <> 0 ) { ?>
         <a class="block rounded px-2 py-1 -mx-2 text-slate-800 hover:bg-slate-200 hover:text-black" href="/misc/money.php?<?=$t_project_id?>">Distribution of Prize Money</a>
-       <? } ?>
+       <?php } ?>
       </div>
      </div>
 
@@ -111,15 +111,15 @@ if (isset($project_id)) {
 
    <div class="min-w-0 flex-1 lg:flex lg:flex-col lg:min-h-screen">
     <div class="border-b border-slate-200 bg-[#bbb] px-4 py-3">
-     <? if (isset($title)) { ?>
+     <?php if (isset($title)) { ?>
       <h1 class="text-lg font-semibold text-slate-900"><?=$title?></h1>
-     <? } ?>
+     <?php } ?>
     </div>
 
-<? if ( isset( $project_id ) && function_exists( 'stats_project_is_completed' ) && stats_project_is_completed( $project_id ) ) { ?>
+<?php if ( isset( $project_id ) && function_exists( 'stats_project_is_completed' ) && stats_project_is_completed( $project_id ) ) { ?>
     <div class="border-b border-slate-200 bg-slate-50 px-4 py-2 text-center text-xs text-slate-600">
      This project is <span class="font-semibold text-slate-900">completed</span> &mdash; its keyspace has been fully searched. Historical statistics remain available below.
     </div>
-<? } ?>
+<?php } ?>
 
     <main class="flex-1 px-4 py-6">

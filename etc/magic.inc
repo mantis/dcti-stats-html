@@ -64,9 +64,9 @@ function render_login_form($message = '', $is_error = true, $hint = "We'll email
 	?>
 	<div class="mx-auto max-w-sm">
 	  <h1 class="phead mb-4 text-center">Log In</h1>
-<? if ($message != '') { ?>
+<?php if ($message != '') { ?>
 	  <div class="mb-4 rounded-lg border p-3 text-center text-sm <?=$is_error ? 'border-red-200 bg-red-50 text-red-700' : 'border-emerald-200 bg-emerald-50 text-emerald-700'?>"><?=safe_display($message)?></div>
-<? } ?>
+<?php } ?>
 	  <form method="post" action="<?=safe_display($action)?>" class="space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
 	    <div>
 	      <label class="<?=$label_cls?>" for="psecure_email">Email address</label>
@@ -78,7 +78,7 @@ function render_login_form($message = '', $is_error = true, $hint = "We'll email
 	    </div>
 	  </form>
 	</div>
-	<?
+	<?php
 	include __DIR__ . "/../templates/footer.inc";
 	exit;
 }

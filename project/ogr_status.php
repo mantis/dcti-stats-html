@@ -88,7 +88,7 @@ $nextRowClass = "row2";
   <th class="thead">Daily Stubs</th>
   <th class="thead">Projected End Date</th>
 </tr>
-<?
+<?php
 if($stubDelta > 0) {
   $endDate = round($stubsLeft / $stubDelta, 0) * 60 * 60 * 24;
   $endDate = strftime("%d-%b-%Y", strtotime($lastupdate) + $endDate);
@@ -98,7 +98,7 @@ if($stubDelta > 0) {
   <td align="right"><?=number_style_convert($stubDelta)?></td>
   <td align="center"><?=$endDate?></td>
 </tr>
-<?
+<?php
   $nextRowClass = ($nextRowClass == "row1")?"row2":"row1";
 }
 
@@ -109,7 +109,7 @@ if($delta3Day > 0) {
   <td align="right"><?=number_style_convert($delta3Day)?></td>
   <td align="center"><?=strftime("%d-%b-%Y", strtotime($lastupdate) + round($stubsLeft / $delta3Day, 0) * 60 * 60 * 24)?></td>
 </tr>
-<?
+<?php
   $nextRowClass = ($nextRowClass == "row1")?"row2":"row1";
 }
 
@@ -121,7 +121,7 @@ if($delta7Day > 0) {
   <td align="right"><?=number_style_convert($delta7Day)?></td>
   <td align="center"><?=strftime("%d-%b-%Y", strtotime($lastupdate) + round($stubsLeft / $delta7Day, 0) * 60 * 60 * 24)?></td>
 </tr>
-<?
+<?php
   $nextRowClass = ($nextRowClass == "row1")?"row2":"row1";
 }
 
@@ -132,7 +132,7 @@ if($delta14Day > 0) {
   <td align="right"><?=number_style_convert($delta14Day)?></td>
   <td align="center"><?=strftime("%d-%b-%Y", strtotime($lastupdate) + round($stubsLeft / $delta14Day, 0) * 60 * 60 * 24)?></td>
 </tr>
-<?
+<?php
   $nextRowClass = ($nextRowClass == "row1")?"row2":"row1";
 }
 
@@ -143,7 +143,7 @@ if($delta30Day > 0) {
   <td align="right"><?=number_style_convert($delta30Day)?></td>
   <td align="center"><?=strftime("%d-%b-%Y", strtotime($lastupdate) + round($stubsLeft / $delta30Day, 0) * 60 * 60 * 24)?></td>
 </tr>
-<?
+<?php
 }
 ?>
 </table>
@@ -162,7 +162,7 @@ if($delta30Day > 0) {
   <th class="thead">Yesterday</th>
   <th class="thead">Remaining</th>
 </tr>
-<?
+<?php
 for($i = 0; $i < $cnt; $i++)
 {
   $statsTmp =& $stubspaceList[$i]->get_current_stats();
@@ -189,7 +189,7 @@ for($i = 0; $i < $cnt; $i++)
   <td align="right"><?=$pctComplete * 100?>%</td>
   <td width="152"><img src="/images/bar.jpg" height="15" width="<?=$barLength?>" alt="<?=$pctComplete?>" /></td>
 </tr>
-<?
+<?php
   unset($stubspace);
   unset($statsTmp);
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 // $Id: global.inc,v 1.12 2005/04/01 19:26:01 decibel Exp $
 
 include "error.php";

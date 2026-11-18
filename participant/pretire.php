@@ -21,13 +21,13 @@ display_last_update('t');
   <div class="mx-auto max-w-2xl">
     <h1 class="phead mb-1">Retire Email Address</h1>
     <p class="mb-6 text-center text-sm text-slate-600"><?=$old_email?></p>
-<?
+<?php
 if ($readonly_pretire == 1) {
     include "../templates/readonly.inc";
     ?>
     <p class="text-center"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="/">I'll go find something else to do then</a></p>
   </div>
-<?
+<?php
     include "../templates/footer.inc";
     exit;
 }
@@ -45,13 +45,13 @@ if (isset($_POST['destid']) && $_POST['destid'] <> '') {
       <p>Future blocks from this address will be attributed to team <?=(int) $destpart->get_team_id()?>, which is your current team. If you change teams later, it will affect all retired emails as you'd expect.</p>
     </div>
     <p class="mt-6 text-center"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="/">Great, take me home</a></p>
-<?
+<?php
     } else {
         ?>
     <div class="rounded-lg border border-red-200 bg-red-50 p-4 text-center text-sm text-red-700" role="alert">
       The retire procedure failed. Nothing was changed.
     </div>
-<?
+<?php
     }
 } elseif (isset($_REQUEST['ems']) && $_REQUEST['ems'] <> "") {
     // Step 2: pick the destination address from the matches.
@@ -68,7 +68,7 @@ if (isset($_POST['destid']) && $_POST['destid'] <> '') {
       For more information, see <a class="underline" href="http://www.distributed.net/faqs">the FAQ</a>.
     </div>
     <p class="text-center"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="pretire.php?t=<?=urlencode($token)?>">Search again</a></p>
-<?
+<?php
     } else {
         ?>
     <h2 class="mb-2 text-lg font-semibold text-slate-900">Choose your new email address</h2>
@@ -82,7 +82,7 @@ if (isset($_POST['destid']) && $_POST['destid'] <> '') {
           <tr><th class="px-4 py-2 text-right">ID #</th><th class="px-4 py-2">Email address</th><th class="px-4 py-2"></th></tr>
         </thead>
         <tbody>
-<? foreach ($matches as $row) { ?>
+<?php foreach ($matches as $row) { ?>
           <tr class="border-t border-slate-100">
             <td class="px-4 py-2 text-right"><?=(int) $row->id?></td>
             <td class="px-4 py-2"><?=safe_display($row->email)?></td>
@@ -94,11 +94,11 @@ if (isset($_POST['destid']) && $_POST['destid'] <> '') {
               </form>
             </td>
           </tr>
-<? } ?>
+<?php } ?>
         </tbody>
       </table>
     </section>
-<?
+<?php
     }
 } else {
     // Step 1: explain, and ask for the new address.
@@ -121,10 +121,10 @@ if (isset($_POST['destid']) && $_POST['destid'] <> '') {
         <input type="submit" value="Search for this email" class="<?=$btn_cls?>">
       </div>
     </form>
-<?
+<?php
 }
 ?>
   </div>
-<?
+<?php
 include "../templates/footer.inc";
 ?>

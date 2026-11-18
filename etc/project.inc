@@ -1,4 +1,4 @@
-<?
+<?php
 // vi: ts=2 sw=2 tw=120 syntax=php
 // $Id: project.inc,v 1.46 2014/02/20 21:11:21 strigona Exp $
 

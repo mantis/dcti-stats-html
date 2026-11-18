@@ -1,4 +1,4 @@
-<?
+<?php
  // $Id: newteam2.php,v 1.12 2005/12/07 05:44:01 fiddles Exp $
 
  $title = "New Team Creation - Information";
@@ -37,6 +37,6 @@
     <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="newteam3.php">OK, Already! I've been waiting <i>months</i>. Let's get on with it!</a>
   </p>
 </div>
-<?
+<?php
 include "../templates/footer.inc";
 ?>

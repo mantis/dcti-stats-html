@@ -1,4 +1,4 @@
-<?
+<?php
 // $Id: debug.inc,v 1.5 2004/07/16 21:25:54 decibel Exp $
 
 if ($_SERVER["SERVER_NAME"] != "stats.distributed.net") {

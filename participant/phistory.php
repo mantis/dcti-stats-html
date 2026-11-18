@@ -1,4 +1,4 @@
-<?
+<?php
 // vi: ts=2 sw=2 tw=120
 // $Id: phistory.php,v 1.24 2005/04/01 16:58:42 decibel Exp $
 // Variables Passed in url:
@@ -42,14 +42,14 @@ http://stats.distributed.net/json/phistory.php?project_id=<?=$project_id?>&id=<?
 -->
     <p class="text-center"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="psummary.php?project_id=<?=$project_id?>&amp;id=<?=$id?>">View <?=safe_display($gpart->get_display_name())?>'s Participant Summary</a></p>
 
-<?
+<?php
 $phistory_daily = array();
 foreach (array_reverse($history) as $histrow) {
     $phistory_daily[] = array(date('Y-m-d', strtotime($histrow->stats_date . ' UTC')), round((float) $histrow->work_units * $gproj->get_scale()));
 }
 $unit_name = safe_display($gproj->get_scaled_unit_name());
 ?>
-<? if (count($phistory_daily) > 0) { ?>
+<?php if (count($phistory_daily) > 0) { ?>
     <div class="mx-auto mt-4 max-w-4xl space-y-4">
       <section id="ph-stats" class="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-slate-300 bg-slate-300 sm:grid-cols-4"></section>
 
@@ -200,7 +200,7 @@ $unit_name = safe_display($gproj->get_scaled_unit_name());
       draw();
     })();
     </script>
-<? } ?>
+<?php } ?>
 
     <details class="mx-auto mt-4 max-w-4xl overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm" <?=count($phistory_daily) > 0 ? '' : 'open'?>>
       <summary class="cursor-pointer p-4 font-medium">Daily history</summary>
@@ -210,7 +210,7 @@ $unit_name = safe_display($gproj->get_scaled_unit_name());
        <th class="thead text-right"><?=$gproj->get_scaled_unit_name()?></th>
        <th class="thead"></th>
       </tr>
-<?
+<?php
 
 $maxwork_units = (float) 0;
 foreach ($history as $histrow)
@@ -228,19 +228,19 @@ foreach ($history as $histrow)
     $width = (int) (((float)$histrow->work_units / $maxwork_units) * 200) + 1;
     ?>
       <tr class="border-b border-slate-100 last:border-0 <?=$i % 2 == 0 ? 'bg-white' : 'bg-slate-50'?>">
-      <? if ( $random_stats == 1 ) { ?>
+      <?php if ( $random_stats == 1 ) { ?>
         <!-- Mmmm... random data... -->
-      <? } ?>
+      <?php } ?>
         <td class="py-1.5 px-3 text-left"><?=$date_fmt?></td>
         <td class="py-1.5 px-3 text-right tabular-nums"><?=$work_units_fmt?></td>
         <td class="py-1.5 px-3"><div class="h-2 rounded-full bg-indigo-600" style="width: <?=$width?>px"></div></td>
       </tr>
-<?
+<?php
 	$i++;
 	}
 ?>
       </table>
     </details>
     <p class="mt-4 text-center"><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="psummary.php?project_id=<?=$project_id?>&amp;id=<?=$id?>">View <?=safe_display($gpart->get_display_name())?>'s Participant Summary</a></p>
-<?include "../templates/footer.inc";
+<?php include "../templates/footer.inc";
 ?>

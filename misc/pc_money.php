@@ -1,4 +1,4 @@
-<?
+<?php
 # $Id: pc_money.php,v 1.7 2004/07/16 20:45:27 decibel Exp $
 # vi: ts=2 sw=2 tw=120 syntax=php
 

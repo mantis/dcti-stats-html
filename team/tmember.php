@@ -1,4 +1,4 @@
-<?
+<?php
 // vi: ts=2 sw=2 tw=120
 // $Id: tmember.php,v 1.40 2005/04/01 16:58:42 decibel Exp $
 
@@ -55,7 +55,7 @@ if ($team->get_show_members() == "NO") {
     <h1>Hey, you ain't supposed to be here!</h1>
     <p>This team does not want to list it's members, so you might as well
     quit asking for them!</p>
-  <?
+  <?php
   include "../templates/footer.inc";
   exit;
 }
@@ -69,14 +69,14 @@ if ($team->get_show_members() == "PAS") {
         <div style="text-align: center">
         <h1>Password required</h1>
         <p>Not so fast!  You need a password to view this page!</p>
-      <?
+      <?php
     } else {
       ?>
         <div style="text-align: center">
         <h1>Invalid password</h1>
         <p>Sorry, but the password you entered doesn't match the one I'm
         looking for... please try again.</p>
-      <?
+      <?php
     }
       ?>
       <form action="<?=$myname?>" method="get">
@@ -89,7 +89,7 @@ if ($team->get_show_members() == "PAS") {
       </p>
       </form>
       </div>
-      <?
+      <?php
     include "../templates/footer.inc";
     exit;
   }
@@ -163,18 +163,18 @@ print "
           <th class="thead">First</th>
           <th class="thead">Last</th>
           <th class="thead"><?=$gproj->get_scaled_unit_name()?> Yesterday</th>
-          <?
+          <?php
           if ($totblocks) { ?>
             <th class="thead">%</th>
-          <? } ?>
+          <?php } ?>
           <th class="thead"><?=$gproj->get_scaled_unit_name()?> Total</th>
-          <?
+          <?php
           if ($totblocks) { ?>
             <th class="thead">%</th>
-          <? } ?>
+          <?php } ?>
         </tr>
 
-        <?
+        <?php
         // Generate the listing here.
         $cnt = count($teamMembers);
         for ($i = 0; $i < $cnt; $i++) {
@@ -229,11 +229,11 @@ print "
   <!-- Navigation Buttons here -->
   <table border="0" width="100%">
     <tr>
-      <?
+      <?php
       if ($low > 0) {
         ?>
         <td align = left>
-        <?
+        <?php
         $newlow = $low - $lim + 1;
         $newlimit=$lim;
         if ($newlow < 1)
@@ -249,12 +249,12 @@ print "
         // needed for alignment
         ?>
         <td></td>
-        <?
+        <?php
       }
       if ($low + $lim < $rows) {
         ?>
         <td align = right>
-        <?
+        <?php
         $newlow = $low + $lim + 1;
         $newlimit = $lim;
         if ($newlow + $newlimit > $rows)
@@ -271,17 +271,17 @@ print "
         // Needed for alignment
         ?>
         <td></td>
-        <?
+        <?php
       }
       ?>
     </tr>
   </table>
-  <?
+  <?php
   // Provide a link back to tmsummary.php
   if ($rows > 25) {
     ?>
     <p style="text-align:center">Return to the <a href="tmsummary.php?project_id=<?=$project_id?>&amp;team=<?=$tm?>">team summary page</a>.</p>
-  <?
+  <?php
 }
 
 include "../templates/footer.inc";

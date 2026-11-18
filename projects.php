@@ -1,4 +1,4 @@
-<?
+<?php
 
 include "etc/global.inc";
 include "etc/modules.inc";

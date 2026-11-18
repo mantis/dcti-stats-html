@@ -72,25 +72,25 @@ display_last_update('t');
     <h1 class="phead mb-1">Team Configuration</h1>
     <p class="mb-6 text-center text-sm text-slate-600">Team #<?=(int) $tm?></p>
 
-<? if ($locked) { ?>
+<?php if ($locked) { ?>
     <div class="mx-auto max-w-md rounded-lg border border-red-200 bg-red-50 p-4 text-center text-sm text-red-700">
       This team is locked and cannot be edited. Contact <a class="underline" href="mailto:help@distributed.net">help@distributed.net</a> for help.
     </div>
-<? } elseif ($readonly_tmedit != 0) { ?>
+<?php } elseif ($readonly_tmedit != 0) { ?>
     <div class="mx-auto max-w-md rounded-lg border border-red-200 bg-red-50 p-4 text-center text-sm text-red-700">
       <strong>Read-only.</strong> The server is currently undergoing maintenance. As a result, you cannot currently edit this team's details. Sorry for any inconvenience.
     </div>
-<? } else { ?>
-<? if ($saved) { ?>
+<?php } else { ?>
+<?php if ($saved) { ?>
     <div class="mb-6 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-center text-sm text-emerald-700" role="status">
       Your information has been saved. Name changes take full effect after the next stats run.
       <a class="font-medium underline" href="tmsummary.php?team=<?=(int) $gteam->get_id()?>">Return to the team summary</a>
     </div>
-<? } elseif ($errors != "") { ?>
+<?php } elseif ($errors != "") { ?>
     <div class="mb-6 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700" role="alert">
       <strong>Validation errors:</strong><br><?=nl2br(safe_display($errors))?>
     </div>
-<? } ?>
+<?php } ?>
     <form action="tmedit.php" method="post" class="space-y-6">
       <input name="team" type="hidden" value="<?=(int) $gteam->get_id()?>">
       <input name="t" type="hidden" value="<?=safe_display($token)?>">
@@ -116,9 +116,9 @@ display_last_update('t');
           <div>
             <span class="<?=$label_cls?>">Joining</span>
             <?=$lmlist?>
-<? if ($lmmore != '') { ?>
+<?php if ($lmmore != '') { ?>
             <p class="mt-1 text-xs text-slate-500"><?=safe_display($lmmore)?></p>
-<? } ?>
+<?php } ?>
           </div>
         </div>
       </section>
@@ -152,9 +152,9 @@ display_last_update('t');
           <div>
             <label class="<?=$label_cls?>" for="showmembers">Members Listing</label>
             <select id="showmembers" name="showmembers" class="<?=$field_cls?>">
-<? foreach (array('YES' => 'Public Members Listing', 'NO' => 'No Members Listing', 'PAS' => 'Private Members Listing') as $val => $label) { ?>
+<?php foreach (array('YES' => 'Public Members Listing', 'NO' => 'No Members Listing', 'PAS' => 'Private Members Listing') as $val => $label) { ?>
               <option value="<?=$val?>"<?=$gteam->get_show_members() == $val ? ' selected' : ''?>><?=$label?></option>
-<? } ?>
+<?php } ?>
             </select>
           </div>
           <div>
@@ -169,6 +169,6 @@ display_last_update('t');
         <input type="submit" value="Update information" class="cursor-pointer rounded bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-500">
       </div>
     </form>
-<? } ?>
+<?php } ?>
   </div>
-<? include "../templates/footer.inc"; ?>
+<?php include "../templates/footer.inc"; ?>

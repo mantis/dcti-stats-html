@@ -1,4 +1,4 @@
-<?
+<?php
   # vi: ts=2 sw=2 tw=120 syntax=php
   # $Id: pc_index.php,v 1.51 2009/02/27 03:45:10 thejet Exp $
 
@@ -224,28 +224,28 @@
      <p class="text-sm text-slate-500">Figures include every block received as of <?=safe_display($lastupdate)?>.</p>
      <div class="mt-2 flex flex-wrap items-center gap-3">
        <h1 class="text-4xl font-extrabold leading-none text-slate-900 sm:text-5xl"><?=safe_display($gproj->get_name())?></h1>
-<? if ($is_completed) { ?>
+<?php if ($is_completed) { ?>
        <span class="inline-block rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-500">Completed</span>
-<? } else { ?>
+<?php } else { ?>
        <span class="inline-block rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">Active</span>
-<? } ?>
+<?php } ?>
      </div>
      <p class="mt-4 max-w-2xl text-lg text-slate-700 sm:text-xl">
-<? if ($timeline_available) { ?>
+<?php if ($timeline_available) { ?>
        Searching since <?=$format_year($timeline_start_year)?> and <strong class="font-bold tabular-nums"><?=$pct_searched?>%</strong> of the way through the keyspace.
-<? } elseif (isset($pct_searched)) { ?>
+<?php } elseif (isset($pct_searched)) { ?>
        <strong class="font-bold tabular-nums"><?=$pct_searched?>%</strong> of the keyspace has been searched so far.
-<? } ?>
-<? if ($pace_multiplier !== null) { ?>
-  <? if ($is_completed) { ?>
+<?php } ?>
+<?php if ($pace_multiplier !== null) { ?>
+  <?php if ($is_completed) { ?>
        On the final day of searching, <?=safe_display($lastupdate)?>, the project ran at <strong class="font-bold tabular-nums"><?=$pace_multiplier?>&times;</strong> its lifetime average.
-  <? } else { ?>
+  <?php } else { ?>
        Yesterday ran at <strong class="font-bold tabular-nums"><?=$pace_multiplier?>&times;</strong> the project's lifetime average.
-  <? } ?>
-<? } ?>
+  <?php } ?>
+<?php } ?>
      </p>
 
-<? if ($timeline_available) { ?>
+<?php if ($timeline_available) { ?>
      <figure class="mt-12">
        <div class="relative h-3 rounded-full bg-slate-200" role="img"
             aria-label="Timeline from <?=$format_year($timeline_start_year)?>. Today is about <?=number_format($timeline_today_pct,0)?> percent of the way along. At yesterday's pace the key is most likely found around <?=$format_year($timeline_50_year)?>, and the full keyspace would be searched by <?=$format_year($timeline_100_year)?>.">
@@ -253,9 +253,9 @@
          <div class="absolute inset-y-0 opacity-40" style="left: <?=$timeline_today_pct?>%; width: <?=($timeline_50_pct - $timeline_today_pct)?>%; background-image: repeating-linear-gradient(90deg, #0f172a 0 2px, transparent 2px 6px);"></div>
          <div class="absolute -top-2 h-7 w-1 -translate-x-1/2 rounded bg-amber-500" style="left: <?=$timeline_today_pct?>%"></div>
          <div class="absolute top-1/2 size-4 -translate-y-1/2 -translate-x-1/2 rounded-full border-[3px] border-slate-900 bg-white" style="left: <?=$timeline_50_pct?>%"></div>
-<? foreach ($timeline_gridlines as $g) { ?>
+<?php foreach ($timeline_gridlines as $g) { ?>
          <span class="absolute top-full mt-2 hidden -translate-x-1/2 text-xs tabular-nums text-slate-500 md:block" style="left: <?=$g['pct']?>%"><?=$format_year($g['year'])?></span>
-<? } ?>
+<?php } ?>
          <span class="absolute top-full mt-2 -translate-x-1/2 text-xs font-semibold tabular-nums text-slate-900" style="left: <?=$timeline_today_pct?>%">Today</span>
          <span class="absolute top-full mt-2 -translate-x-1/2 text-xs font-semibold tabular-nums text-slate-900" style="left: <?=$timeline_50_pct?>%"><?=$format_year($timeline_50_year)?></span>
        </div>
@@ -264,15 +264,15 @@
          Searching every last key would take until <?=$format_year($timeline_100_year)?>. The key could equally be found in tomorrow's blocks.
        </figcaption>
      </figure>
-<? } ?>
+<?php } ?>
 
-<? if ($pace_multiplier !== null) { ?>
+<?php if ($pace_multiplier !== null) { ?>
      <section class="mt-14">
        <h2 class="text-xl font-bold text-slate-900"><?=$is_completed ? 'Final Day' : 'Pace'?></h2>
        <div class="mt-4 grid gap-8 md:items-end <?=(!$is_completed && $gproj->get_total_units() > 0) ? 'md:grid-cols-[1fr_14rem_14rem]' : 'md:grid-cols-[1fr_18rem]'?>">
          <div>
            <p class="text-5xl font-bold leading-none tabular-nums text-slate-900"><?=$pace_multiplier?>&times;</p>
-<? if ($is_completed) { ?>
+<?php if ($is_completed) { ?>
            <p class="mt-2 text-sm text-slate-500">The final day's rate against the lifetime average</p>
            <div class="mt-5 space-y-3 text-sm">
              <div>
@@ -284,7 +284,7 @@
                <div class="mt-1 h-2.5 w-full rounded-full bg-slate-200"><div class="h-2.5 rounded-full bg-slate-400" style="width: <?=$pace_overall_bar_pct?>%"></div></div>
              </div>
            </div>
-<? } else { ?>
+<?php } else { ?>
            <p class="mt-2 text-sm text-slate-500">Yesterday's rate against the lifetime average</p>
            <div class="mt-5 space-y-3 text-sm">
              <div>
@@ -296,15 +296,15 @@
                <div class="mt-1 h-2.5 w-full rounded-full bg-slate-200"><div class="h-2.5 rounded-full bg-slate-400" style="width: <?=$pace_overall_bar_pct?>%"></div></div>
              </div>
            </div>
-<? } ?>
+<?php } ?>
          </div>
-<? if (!$is_completed && $gproj->get_total_units() > 0) { ?>
+<?php if (!$is_completed && $gproj->get_total_units() > 0) { ?>
          <div class="rounded-lg border border-slate-200 bg-white p-4">
            <p class="text-3xl font-bold leading-none tabular-nums text-indigo-700">1 in <?=$odds?></p>
            <p class="mt-2 text-xs text-slate-500">odds of finding the key in the next 24 hours</p>
            <p class="mt-3 border-t border-slate-100 pt-2 text-xs text-slate-500">Yesterday covered <?=$yest_pct?>% of the keyspace &mdash; <?=$yest_pct_remaining?>% of what remains.</p>
          </div>
-<? } ?>
+<?php } ?>
          <div>
            <div id="pace-sparkline" class="h-16 w-full text-xs text-slate-400">Loading&hellip;</div>
            <noscript><p class="text-xs text-slate-500">Daily rate history needs JavaScript.</p></noscript>
@@ -349,7 +349,7 @@
          });
      })();
      </script>
-<? } ?>
+<?php } ?>
 
      <section class="mt-14">
        <h2 class="text-xl font-bold text-slate-900">Work done</h2>
@@ -359,9 +359,9 @@
              <tr class="border-b border-slate-200 bg-slate-50 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
                <th class="py-2 px-3"></th>
                <th class="py-2 px-3">Tested so far</th>
-<? if ($gproj->get_total_units() > 0 ) { ?>
+<?php if ($gproj->get_total_units() > 0 ) { ?>
                <th class="py-2 px-3">Total to search</th>
-<? } ?>
+<?php } ?>
                <th class="py-2 px-3">Yesterday</th>
              </tr>
            </thead>
@@ -369,17 +369,17 @@
              <tr class="border-b border-slate-100">
                <th scope="row" class="py-2 px-3 text-left font-medium text-slate-700"><?=$gproj->get_scaled_unit_name()?></th>
                <td class="py-2 px-3 tabular-nums"><?=$tot_scaled_work_units?></td>
-<? if ($gproj->get_total_units() > 0 ) { ?>
+<?php if ($gproj->get_total_units() > 0 ) { ?>
                <td class="py-2 px-3 tabular-nums"><?=$tot_scaled_units_to_search?></td>
-<? } ?>
+<?php } ?>
                <td class="py-2 px-3 tabular-nums"><?=$yest_scaled_work_units?></td>
              </tr>
              <tr class="border-b border-slate-100">
                <th scope="row" class="py-2 px-3 text-left font-medium text-slate-700"><?=$gproj->get_unscaled_unit_name()?></th>
                <td class="py-2 px-3 tabular-nums"><?=$tot_unscaled_work_units?></td>
-<? if ($gproj->get_total_units() > 0 ) { ?>
+<?php if ($gproj->get_total_units() > 0 ) { ?>
                <td class="py-2 px-3 tabular-nums"><?=$tot_unscaled_units_to_search?></td>
-<? } ?>
+<?php } ?>
                <td class="py-2 px-3 tabular-nums"><?=$yest_unscaled_work_units?></td>
              </tr>
              <tr>
@@ -398,34 +398,34 @@
        </div>
      </section>
 
-<? if ($gproj->get_id() == 24 || $gproj->get_id() == 25 || isset($ogrng_pct_searched)) { ?>
+<?php if ($gproj->get_id() == 24 || $gproj->get_id() == 25 || isset($ogrng_pct_searched)) { ?>
      <section class="mt-14">
        <h2 class="text-xl font-bold text-slate-900">Progress Meters</h2>
        <div class="mt-4 max-w-xs space-y-3">
-<? if ($gproj->get_id() == 24 || $gproj->get_id() == 25) { ?>
+<?php if ($gproj->get_id() == 24 || $gproj->get_id() == 25) { ?>
          <div>
            <div class="mb-1 flex justify-between text-xs text-slate-500"><span>Phase 1</span><span><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="<?=$ogrp1_pct_link?>"><?=$ogrp1_pct_searched?>%</a></span></div>
            <div class="h-3 w-full rounded-full bg-slate-200"><div class="h-3 rounded-full bg-indigo-600" style="width: <?=min(100, max(1, $ogrp1_pct_searched))?>%"></div></div>
          </div>
          <div>
            <div class="mb-1 flex justify-between text-xs text-slate-500"><span>Phase 2</span><span>
-<?if($gproj->get_id() == 24) {?>
+<?php if($gproj->get_id() == 24) {?>
              <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="<?=$ogrp2_pct_link?>"><?=$ogrp2_pct_searched?>%</a>
-<?} else {?>
+<?php } else {?>
              <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="project/ogr_status.php">~<?=$ogrp2_pct_searched?>%</a> <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="<?=$ogrp2_pct_link?>">**</a>
-<?}?>
+<?php }?>
            </span></div>
            <div class="h-3 w-full rounded-full bg-slate-200"><div class="h-3 rounded-full bg-indigo-600" style="width: <?=min(100, max(1, $ogrp2_pct_searched))?>%"></div></div>
          </div>
-<? } elseif (isset($ogrng_pct_searched)) { ?>
+<?php } elseif (isset($ogrng_pct_searched)) { ?>
          <div>
            <div class="mb-1 flex justify-between text-xs text-slate-500"><span>Percent complete</span><span><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="project/ogr_status.php?project_id=<?=$gproj->get_id()?>">~<?=$ogrng_pct_searched?>%</a></span></div>
            <div class="h-3 w-full rounded-full bg-slate-200"><div class="h-3 rounded-full bg-indigo-600" style="width: <?=min(100, max(1, $ogrng_pct_searched))?>%"></div></div>
          </div>
-<? } ?>
+<?php } ?>
        </div>
      </section>
-<? } ?>
+<?php } ?>
 
      <section class="mt-14">
        <h2 class="text-xl font-bold text-slate-900">Who's searching</h2>
@@ -437,23 +437,23 @@
          <p class="text-lg leading-relaxed text-slate-700">
            <span class="block text-4xl font-bold tabular-nums text-slate-900"><?=$yest_teams?></span>
            teams submitted work yesterday, out of <?=$total_teams?> registered
-           <? if ($new_teams != '0') { ?>(<?=$new_teams?> of them <?=($new_teams==1 ? 'is' : 'are')?> brand new)<? } ?>.
+           <?php if ($new_teams != '0') { ?>(<?=$new_teams?> of them <?=($new_teams==1 ? 'is' : 'are')?> brand new)<?php } ?>.
          </p>
        </div>
      </section>
 
-<? if ($gproj->get_id() == 3 || $gproj->get_type() == 'OGRP2') { ?>
+<?php if ($gproj->get_id() == 3 || $gproj->get_type() == 'OGRP2') { ?>
      <div class="mt-14 border-t border-slate-200 pt-5 text-sm">
-<? if ($gproj->get_id() == 3) { ?>
+<?php if ($gproj->get_id() == 3) { ?>
        <p><a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="http://n0cgi.distributed.net/statistics/rc5-56/index.html">Additional Stats</a></p>
-<? } ?>
-<?if( $gproj->get_type() == 'OGRP2' ){?>
+<?php } ?>
+<?php if( $gproj->get_type() == 'OGRP2' ){?>
        <a name="ogrfootnote"></a>
        <p class="mt-3 text-xs text-slate-500">
           For more information about OGR Phase 1 and Phase 2, please <a class="text-indigo-600 hover:text-indigo-800 hover:underline" href="http://n0cgi.distributed.net/faq/cache/230.html">read our FAQ page</a>.
        </p>
-<?}?>
+<?php }?>
      </div>
-<? } ?>
+<?php } ?>
 
    </div>

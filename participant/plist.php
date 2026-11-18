@@ -1,4 +1,4 @@
-<?
+<?php
 // vi: ts=2 sw=2 tw=120 syntax=php
 // $Id: plist.php,v 1.30 2004/07/19 00:59:37 jlawson Exp $
 // Variables Passed in url:
@@ -32,7 +32,7 @@ include "../templates/header.inc";
        <th class="thead text-right">Days</th>
        <th class="thead text-right"><?=$gproj->get_scaled_unit_name()?></th>
       </tr>
-<?
+<?php
 
 $totalrows = 0;
 $plist = Participant::get_ranked_list($source, $lo, $limit, $totalrows, $gdb, $gproj);
@@ -51,7 +51,7 @@ if ($plist) {
 			<td class="py-1.5 px-3 text-right tabular-nums"><?=$statspar -> get_stats_item('days_working')?></td>
 			<td class="py-1.5 px-3 text-right tabular-nums"><?=number_style_convert((float) $statspar -> get_stats_item('blocks') * $gproj->get_scale()) ?></td>
 		</tr>
-	 <?
+	 <?php
 	    $i++;
 	}
 } else {
@@ -71,7 +71,7 @@ if (sizeof($plist) >= $limit) {
 }
 ?>
 	 <tr>
-	  <td class="tfoot text-left"><? echo "$lo-$hi"?></td>
+	  <td class="tfoot text-left"><?php echo "$lo-$hi"?></td>
 	  <td class="tfoot text-right" colspan="4">Total</td>
 	  <td class="tfoot text-right"><?=$totalblocks?></td>
 	 </tr>
@@ -82,4 +82,4 @@ if (sizeof($plist) >= $limit) {
 	 </tr>
      </table>
     </div>
-<? include "../templates/footer.inc"; ?>
+<?php include "../templates/footer.inc"; ?>
